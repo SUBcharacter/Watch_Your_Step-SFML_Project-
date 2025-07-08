@@ -9,4 +9,7 @@
 #include <map>
 #include <vector>
 
+using namespace std;
+using namespace sf;
+
 // 공통적으로 쓰이는 enum, 구조체 선언 공간
