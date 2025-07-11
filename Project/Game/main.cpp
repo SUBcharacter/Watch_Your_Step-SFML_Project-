@@ -1,17 +1,17 @@
-#include "IntegrationLibrary.h"
+#include <SFML/Graphics.hpp>
 
 int main()
 {
     // ¿¹Á¦
-    RenderWindow window(sf::VideoMode({ 800, 600 }), "Game");
-    CircleShape shape(100.f);
-    shape.setFillColor(Color::Green);
+    sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!");
+    sf::CircleShape shape(100.f);
+    shape.setFillColor(sf::Color::Green);
 
     while (window.isOpen())
     {
         while (const std::optional event = window.pollEvent())
         {
-            if (event->is<Event::Closed>())
+            if (event->is<sf::Event::Closed>())
                 window.close();
         }
 
