@@ -4,7 +4,6 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Config.hpp>
 #include <SFML/System.hpp>
-#include <SFML>
 #include <stdlib.h>
 #include <algorithm>
 #include <map>
