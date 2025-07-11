@@ -1,22 +1,38 @@
 #include "IntegrationLibrary.h"
-
+#include "Player.h"
 int main()
 {
-    // ¿¹Á¦
-    sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    RenderWindow window(VideoMode({600,800}), "Game");
+    window.setFramerateLimit(60);
+
+    Player player;
+
+    float groundY = 500.f;
+    bool isOnGround = false;
 
     while (window.isOpen())
     {
-        while (const std::optional event = window.pollEvent())
+        while (const optional event = window.pollEvent())
         {
-            if (event->is<sf::Event::Closed>())
+            if (event->is<Event::Closed>())
+            {
                 window.close();
+            }
+            else if (const auto& keyPressed = event->getIf<Event::KeyPressed>())
+            {
+                if (keyPressed->scancode == Keyboard::Scancode::Escape)
+                {
+                    window.close();
+                }
+            }
         }
 
+        player.Move();
+
         window.clear();
-        window.draw(shape);
+
+        player.Draw(window);
+
         window.display();
     }
 }
