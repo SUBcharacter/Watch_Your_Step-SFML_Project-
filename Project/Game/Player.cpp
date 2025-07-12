@@ -13,6 +13,18 @@ Player::Player() : playerSprite(playerTexture)
 	playerSprite.setPosition({ 300,400 });
 }
 
+void Player::SetPlayerPos()
+{
+	playerPos.x = playerSprite.getPosition().x;
+	playerPos.y = playerSprite.getPosition().y;
+}
+
+Pos Player::GetPlayerPos()
+{
+	SetPlayerPos();
+	return playerPos;
+}
+
 void Player::Draw(RenderWindow& window)
 {
 	window.draw(playerSprite);
@@ -31,7 +43,7 @@ void Player::Move()
 			velocityY = -10.f;
 			isOnGround = false;
 		}
-		else if (!hasDoubleJumped);
+		else if (!hasDoubleJumped)
 		{
 			velocityY = -10.f;
 			hasDoubleJumped = true;
@@ -39,10 +51,11 @@ void Player::Move()
 	}
 
 	jumpKeyPressedLastFrame = jumpKeyNowPressed;
+
 	if (!isOnGround)
 	{
-		velocityY += GRAVITY;
-		playerSprite.move({ 0.0f, velocityY });
+		velocityY += GRAVITY ;
+		playerSprite.move({ 0.0f, velocityY});
 	}
 
 	if (playerSprite.getPosition().y >= groundY)
@@ -58,13 +71,65 @@ void Player::Move()
 
 	if (Keyboard::isKeyPressed(Keyboard::Scan::A) && playerSprite.getPosition().x > 0)
 	{
-		playerSprite.move({ -2.0f,0.0f });
+		playerSprite.move({ -2.0f ,0.0f});
 		playerSprite.setTextureRect(playerRect);
 		playerSprite.setScale({ -1.0f, 1.0f });
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Scan::D) && playerSprite.getPosition().x < 600)
 	{
-		playerSprite.move({ 2.0f,0.0f });
+		playerSprite.move({ 2.0f ,0.0f});
+		playerSprite.setTextureRect(playerRect);
+		playerSprite.setScale({ 1.0f, 1.0f });
+	}
+}
+
+void Player::Move(float deltaTime)
+{
+#pragma region 점프(임시)
+
+	bool jumpKeyNowPressed = Keyboard::isKeyPressed(Keyboard::Scan::W);
+
+	if (jumpKeyNowPressed && !jumpKeyPressedLastFrame)
+	{
+		if (isOnGround)
+		{
+			velocityY = -300.f;
+			isOnGround = false;
+		}
+		else if (!hasDoubleJumped)
+		{
+			velocityY = -300.f;
+			hasDoubleJumped = true;
+		}
+	}
+
+	jumpKeyPressedLastFrame = jumpKeyNowPressed;
+	if (!isOnGround)
+	{
+		velocityY += GRAVITY * deltaTime;
+		playerSprite.move({ 0.0f, velocityY * deltaTime });
+	}
+
+	if (playerSprite.getPosition().y >= groundY)
+	{
+		playerSprite.setPosition({ playerSprite.getPosition().x,groundY });
+		velocityY = 0.f;
+		isOnGround = true;
+		hasDoubleJumped = false;
+	}
+
+#pragma endregion
+
+
+	if (Keyboard::isKeyPressed(Keyboard::Scan::A) && playerSprite.getPosition().x > 0)
+	{
+		playerSprite.move({ -200.0f * deltaTime ,0.0f });
+		playerSprite.setTextureRect(playerRect);
+		playerSprite.setScale({ -1.0f, 1.0f });
+	}
+	if (Keyboard::isKeyPressed(Keyboard::Scan::D) && playerSprite.getPosition().x < 600)
+	{
+		playerSprite.move({ 200.0f * deltaTime ,0.0f });
 		playerSprite.setTextureRect(playerRect);
 		playerSprite.setScale({ 1.0f, 1.0f });
 	}

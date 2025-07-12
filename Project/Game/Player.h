@@ -4,17 +4,14 @@
 class Player
 {
 private:
-	struct Pos
-	{
-		float x;
-		float y;
-	};
+	
+	Pos playerPos;
 	IntRect playerRect;
 	Texture playerTexture;
 	Sprite playerSprite;
 
 	float velocityY = 0.f;
-	const float GRAVITY = 0.5f;
+	const float GRAVITY = 900.f;
 	float groundY = 500.f;
 	bool hasDoubleJumped = false;
 	bool isOnGround = false;
@@ -24,7 +21,11 @@ private:
 public:
 	Player();
 	
+	void SetPlayerPos();
+	Pos GetPlayerPos();
+
 	void Draw(RenderWindow& window);
 	void Move();
+	void Move(float deltaTime);
 };
 

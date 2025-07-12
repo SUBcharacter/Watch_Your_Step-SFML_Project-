@@ -15,3 +15,9 @@ using namespace std;
 using namespace sf;
 
 // 공통적으로 쓰이는 enum, 구조체 선언 공간
+
+struct Pos
+{
+	float x;
+	float y;
+};

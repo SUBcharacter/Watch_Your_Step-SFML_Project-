@@ -3,15 +3,16 @@
 int main()
 {
     RenderWindow window(VideoMode({600,800}), "Game");
-    window.setFramerateLimit(60);
+    window.setFramerateLimit(165);
 
     Player player;
 
-    float groundY = 500.f;
-    bool isOnGround = false;
+    Clock clock;
 
     while (window.isOpen())
     {
+        float deltaTime = clock.restart().asSeconds();
+
         while (const optional event = window.pollEvent())
         {
             if (event->is<Event::Closed>())
@@ -27,7 +28,7 @@ int main()
             }
         }
 
-        player.Move();
+        player.Move(deltaTime);
 
         window.clear();
 
