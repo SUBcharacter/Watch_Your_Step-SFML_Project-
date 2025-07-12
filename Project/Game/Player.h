@@ -13,9 +13,6 @@ private:
 	float velocityY = 0.f;
 	const float GRAVITY = 900.f;
 	float groundY = 500.f;
-	bool hasDoubleJumped = false;
-	bool isOnGround = false;
-	bool jumpKeyPressedLastFrame = false;
 	//Physics& playerPhysics;  // 물리 클래스
 
 public:
