@@ -3,31 +3,32 @@
 void Physics::Jump()
 {
 
-	if (isOnGround) {
-		velocityY = -10.0f;  // 점프 힘
-		isOnGround = false;
-	}
+    //더 이상 떨어지지 않을 때 : 점프를 하지 않는 경우
+    if (!fall) {
+        Yspeed = -10.0f;
+        fall = true;
+    }
 
 }
 
 void Physics::Collision()
 {
-    velocityY += gravity;
-    playery += static_cast<int>(velocityY);
+    Yspeed += gravity;
+    playery += static_cast<int>(Yspeed);
 
     // 충돌 체크
     int playerBottom = playery + playerh;
     int platformTop = platformy;
 
-    bool inXRange = (playerx + playerw > platformx) && (playerx < platformx + platformw);
+    bool Xrange = (playerx + playerw > platformx) && (playerx < platformx + platformw);
     bool onPlatform = (playerBottom >= platformTop) && (playerBottom <= platformTop + platformh);
 
-    if (inXRange && onPlatform && velocityY >= 0) {
+    if (Xrange && onPlatform && Yspeed >= 0) {
         playery = platformy - playerh;
-        velocityY = 0;
-        isOnGround = true;
+        Yspeed = 0;
+        fall = false;
     }
     else {
-        isOnGround = false;
+        fall = true;
     }
 }
