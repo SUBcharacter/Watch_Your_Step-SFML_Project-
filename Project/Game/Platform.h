@@ -10,5 +10,12 @@ private:
 	Sprite platformSprit;
 public:
 	
+	Platform();
+
+
+	void SetPlatformPos();
+	Pos GetPlatformPos();
+
+	void Draw(RenderWindow& window);
 };
 

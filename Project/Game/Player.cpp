@@ -10,7 +10,7 @@ Player::Player() : playerSprite(playerTexture)
 	playerRect = IntRect({ 0,0 }, { 50,50 });
 	playerSprite.setTextureRect(playerRect);
 	playerSprite.setOrigin({ 25.f,25.f });
-	playerSprite.setPosition({ 300,-1000 });
+	playerSprite.setPosition({ 300,500 });
 	SetPlayerPos();
 }
 
@@ -35,37 +35,37 @@ void Player::Move()
 {
 #pragma region 점프(임시)
 
-	bool jumpKeyNowPressed = Keyboard::isKeyPressed(Keyboard::Scan::W);
-
-	if (jumpKeyNowPressed && !jumpKeyPressedLastFrame)
-	{
-		if (isOnGround)
-		{
-			velocityY = -10.f;
-			isOnGround = false;
-		}
-		else if (!hasDoubleJumped)
-		{
-			velocityY = -10.f;
-			hasDoubleJumped = true;
-		}
-	}
-
-	jumpKeyPressedLastFrame = jumpKeyNowPressed;
-
-	if (!isOnGround)
-	{
-		velocityY += GRAVITY ;
-		playerSprite.move({ 0.0f, velocityY});
-	}
-
-	if (playerSprite.getPosition().y >= groundY)
-	{
-		playerSprite.setPosition({ playerSprite.getPosition().x,groundY });
-		velocityY = 0.f;
-		isOnGround = true;
-		hasDoubleJumped = false;
-	}
+	//bool jumpKeyNowPressed = Keyboard::isKeyPressed(Keyboard::Scan::W);
+	//
+	//if (jumpKeyNowPressed && !jumpKeyPressedLastFrame)
+	//{
+	//	if (isOnGround)
+	//	{
+	//		velocityY = -10.f;
+	//		isOnGround = false;
+	//	}
+	//	else if (!hasDoubleJumped)
+	//	{
+	//		velocityY = -10.f;
+	//		hasDoubleJumped = true;
+	//	}
+	//}
+	//
+	//jumpKeyPressedLastFrame = jumpKeyNowPressed;
+	//
+	//if (!isOnGround)
+	//{
+	//	velocityY += GRAVITY ;
+	//	playerSprite.move({ 0.0f, velocityY});
+	//}
+	//
+	//if (playerSprite.getPosition().y >= groundY)
+	//{
+	//	playerSprite.setPosition({ playerSprite.getPosition().x,groundY });
+	//	velocityY = 0.f;
+	//	isOnGround = true;
+	//	hasDoubleJumped = false;
+	//}
 
 #pragma endregion
 
@@ -88,26 +88,26 @@ void Player::Move(float deltaTime)
 {
 #pragma region 점프(임시)
 
-	if (Keyboard::isKeyPressed(Keyboard::Scan::W))
-	{
-		if (isOnGround)
-		{
-			velocityY = -300.f;
-			isOnGround = false;
-		}
-	}
-
-	if (!isOnGround)
-	{
-		velocityY += GRAVITY * deltaTime;
-		playerSprite.move({ 0.0f, velocityY * deltaTime });
-	}
-	if (playerSprite.getPosition().y >= groundY)
-	{
-		playerSprite.setPosition({ playerSprite.getPosition().x,groundY });
-		velocityY = 0.f;
-		isOnGround = true;
-	}
+	//if (Keyboard::isKeyPressed(Keyboard::Scan::W))
+	//{
+	//	if (isOnGround)
+	//	{
+	//		velocityY = -300.f;
+	//		isOnGround = false;
+	//	}
+	//}
+	//
+	//if (!isOnGround)
+	//{
+	//	velocityY += GRAVITY * deltaTime;
+	//	playerSprite.move({ 0.0f, velocityY * deltaTime });
+	//}
+	//if (playerSprite.getPosition().y >= groundY)
+	//{
+	//	playerSprite.setPosition({ playerSprite.getPosition().x,groundY });
+	//	velocityY = 0.f;
+	//	isOnGround = true;
+	//}
 
 #pragma endregion
 
