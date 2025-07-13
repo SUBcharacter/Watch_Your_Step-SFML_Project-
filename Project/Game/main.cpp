@@ -1,22 +1,25 @@
 #include "IntegrationLibrary.h"
 
+#include "Game_Manager.h"
+
+
+enum class mainstate
+{
+    Title,
+	MainMenu,
+    mainPlay,
+    Playing,
+    Paused,
+	Exit
+    //mainOver
+};
+mainstate currentState = mainstate::Title;
+
+
+
 int main()
 {
-    // ¿¹Á¦
-    RenderWindow window(sf::VideoMode({ 800, 600 }), "Game");
-    CircleShape shape(100.f);
-    shape.setFillColor(Color::Green);
-
-    while (window.isOpen())
-    {
-        while (const std::optional event = window.pollEvent())
-        {
-            if (event->is<Event::Closed>())
-                window.close();
-        }
-
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
+    Game_Manager game_manager;
+    game_manager.run();
+    return 0;
 }

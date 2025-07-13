@@ -8,8 +8,10 @@
 #include <algorithm>
 #include <map>
 #include <vector>
+#include <iostream>
+#include <SFML/Window.hpp>
 
 using namespace std;
 using namespace sf;
 
-// 공통적으로 쓰이는 enum, 구조체 선언 공간
+ // 쓰이는 enum, 구조체 선언 공간
