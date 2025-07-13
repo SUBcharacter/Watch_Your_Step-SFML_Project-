@@ -7,10 +7,10 @@ Platform::Platform() : platformSprit(platformTex)
 		cout << "에러 : 플랫폼 스프라이트를 찾을 수 없음" << endl;
 		return;
 	}
-	platformRect = IntRect({ 10,10 }, { 30,20 });
+	platformRect = IntRect({ 0,0 }, { 440,50 });
 	platformSprit.setTextureRect(platformRect);
 	platformSprit.setOrigin({ 30.f,30.f });
-	platformSprit.setPosition({ 400,300 });
+	platformSprit.setPosition({ 400.f,300.f });
 	SetPlatformPos();
 }
 
@@ -24,6 +24,17 @@ Pos Platform::GetPlatformPos()
 {
 	SetPlatformPos();
 	return platformPos;
+}
+
+
+void Platform::update(Player& player,vector<Platform>& platform)
+{
+	if (!Collied )
+	{
+		Collied = true;
+		platform.push_back(*this);
+
+	}
 }
 
 void Platform::Draw(RenderWindow& window)

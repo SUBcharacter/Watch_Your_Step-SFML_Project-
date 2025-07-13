@@ -20,7 +20,10 @@ public:
 	
 	void SetPlayerPos();
 	Pos GetPlayerPos();
-
+	sf::FloatRect getBounds()
+	{
+		return playerSprite.getGlobalBounds();
+	}
 	void Draw(RenderWindow& window);
 	void Move();
 	void Move(float deltaTime);
