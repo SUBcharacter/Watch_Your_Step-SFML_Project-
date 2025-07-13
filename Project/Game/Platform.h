@@ -19,6 +19,8 @@ public:
 	{
 		return platformSprit.getGlobalBounds();
 	}
+
+
 	Pos GetPlatformPos();
 	void update(Player& player,vector<Platform>& platform);
 	void Draw(RenderWindow& window);

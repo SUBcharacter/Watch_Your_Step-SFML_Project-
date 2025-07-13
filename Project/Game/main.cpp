@@ -6,7 +6,7 @@ int main()
     RenderWindow window(VideoMode({600,800}), "Game");
     window.setFramerateLimit(165);
 
-   // Player player;
+    Player player;
     Platform platform;
     Clock clock;
 
@@ -29,11 +29,11 @@ int main()
             }
         }
 
-       // player.Move(deltaTime);
+        player.Move(deltaTime);
 
         window.clear();
 
-       // player.Draw(window);
+        player.Draw(window);
         platform.Draw(window);
         window.display();
     }

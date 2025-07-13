@@ -10,8 +10,16 @@ Player::Player() : playerSprite(playerTexture)
 	playerRect = IntRect({ 0,0 }, { 50,50 });
 	playerSprite.setTextureRect(playerRect);
 	playerSprite.setOrigin({ 25.f,25.f });
-	playerSprite.setPosition({ 300,500 });
+	playerSprite.setPosition({ 300.f,500.f });
 	SetPlayerPos();
+
+	
+	hitbox.setSize(sf::Vector2f(30, 30));
+	hitbox.setFillColor(sf::Color::Transparent);
+	hitbox.setOutlineColor(sf::Color::Red);
+	hitbox.setOutlineThickness(1.f);
+	hitbox.setPosition(playerSprite.getPosition());
+
 }
 
 void Player::SetPlayerPos()
@@ -26,11 +34,21 @@ Pos Player::GetPlayerPos()
 	return playerPos;
 }
 
+void Player::Updatehitbox()
+{
+	hitbox.setPosition(sf::Vector2f(playerSprite.getPosition().x - 15 , playerSprite.getPosition().y -10 ));
+}
+
 void Player::Draw(RenderWindow& window)
 {
 	window.draw(playerSprite);
+	window.draw(hitbox);
 }
 
+sf::FloatRect Player::GethitboxBounds()
+{
+	return hitbox.getGlobalBounds();
+}
 void Player::Move()
 {
 #pragma region 점프(임시)
@@ -123,7 +141,11 @@ void Player::Move(float deltaTime)
 		playerSprite.move({ 200.0f * deltaTime ,0.0f });
 		playerSprite.setTextureRect(playerRect);
 		playerSprite.setScale({ 1.0f, 1.0f });
+
 	}
+
+	Updatehitbox();
+
 }
 
 

@@ -20,6 +20,8 @@ void Platform::SetPlatformPos()
 	platformPos.y = platformSprit.getPosition().y;
 }
 
+
+
 Pos Platform::GetPlatformPos()
 {
 	SetPlatformPos();

@@ -15,6 +15,8 @@ private:
 	float groundY = 500.f;
 	//Physics& playerPhysics;  // 물리 클래스
 
+	RectangleShape hitbox;
+
 public:
 	Player();
 	
@@ -24,6 +26,8 @@ public:
 	{
 		return playerSprite.getGlobalBounds();
 	}
+	sf::FloatRect GethitboxBounds();
+	void Updatehitbox();
 	void Draw(RenderWindow& window);
 	void Move();
 	void Move(float deltaTime);

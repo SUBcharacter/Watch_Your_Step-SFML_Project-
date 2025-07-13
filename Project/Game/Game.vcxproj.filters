@@ -24,6 +24,9 @@
     <ClCompile Include="Platform.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="GridManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IntegrationLibrary.h">
@@ -33,6 +36,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Platform.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GridManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
