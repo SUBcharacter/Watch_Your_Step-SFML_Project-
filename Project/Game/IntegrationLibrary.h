@@ -1,5 +1,5 @@
 #pragma once
-// ÇÊ¿äÇÑ ¶óÀÌºê·¯¸® ¼±¾ğ
+// í•„ìš”í•œ ë¼ì´ë¸ŒëŸ¬ë¦¬ ì„ ì–¸
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Config.hpp>
@@ -14,4 +14,6 @@
 using namespace std;
 using namespace sf;
 
- // ¾²ÀÌ´Â enum, ±¸Á¶Ã¼ ¼±¾ğ °ø°£
+ // ì“°ì´ëŠ” enum, êµ¬ì¡°ì²´ ì„ ì–¸ ê³µê°„
+=======
+
