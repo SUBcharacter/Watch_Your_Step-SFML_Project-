@@ -1,5 +1,6 @@
 #pragma once
 // 필요한 라이브러리 선언
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Config.hpp>
@@ -8,6 +9,8 @@
 #include <algorithm>
 #include <map>
 #include <vector>
+#include <unordered_map>
+#include <utility>
 
 using namespace std;
 using namespace sf;
