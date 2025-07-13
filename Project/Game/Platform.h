@@ -4,12 +4,18 @@
 class Platform
 {
 private:
-	Texture platformTex;
-	Sprite platformSprite;
-	IntRect
+	Texture texture;
+	Sprite sprite;
+	Vector2f hitBoxSize;
+	FloatRect hitBox;
 
 public:
-	Platform();
+	
+	Platform(int left, int top, int width, int height);
+
+	FloatRect GetHitBox();
+
+	void UpdateHitBox();
 
 };
 
