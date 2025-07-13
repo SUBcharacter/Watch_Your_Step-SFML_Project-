@@ -13,7 +13,7 @@ Platform::Platform(int left, int top, int width, int height) : sprite(texture)
 	  { static_cast<Vector2f>(rectI.size)}
 	};
 	sprite.setTextureRect(rectI);
-	sprite.setOrigin({ width/2, height/2 });
+	sprite.setOrigin({ rectF.size.x / 2.f, rectF.size.y / 2.f });
 	hitBoxSize = static_cast<Vector2f>(rectI.size);
 }
 
@@ -30,4 +30,15 @@ void Platform::UpdateHitBox()
 
 	hitBox = { criteria, hitBoxSize };
 
+}
+
+void Platform::SetPosition(float x, float y)
+{
+	sprite.setPosition(Vector2f(x, y));
+	UpdateHitBox();
+}
+
+void Platform::Draw(RenderWindow& window)
+{
+	window.draw(sprite);
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "IntegrationLibrary.h"
+#include "Platform.h"
 
 struct PairHash
 {
@@ -9,15 +10,15 @@ struct PairHash
 	}
 };
 
-struct Platform {};
-
 class Grid
 {
 private:
-	int cellSize = 100;
+	float cellSize;
 	unordered_map<pair<int, int>, vector<Platform*>, PairHash> gridCells;
 
 public:
-	Grid();
+	Grid(float size);
+
+	void RegisterPlatform(Platform* p);
 };
 
