@@ -18,7 +18,8 @@ Player::Player() : playerSprite(playerTexture)
 	hitbox.setFillColor(sf::Color::Transparent);
 	hitbox.setOutlineColor(sf::Color::Red);
 	hitbox.setOutlineThickness(1.f);
-	hitbox.setPosition(playerSprite.getPosition());
+	Updatehitbox();
+	UpdatesenseBox();
 
 }
 
@@ -36,7 +37,17 @@ Pos Player::GetPlayerPos()
 
 void Player::Updatehitbox()
 {
-	hitbox.setPosition(sf::Vector2f(playerSprite.getPosition().x - 15 , playerSprite.getPosition().y -10 ));
+	Vector2f spritepos = playerSprite.getPosition();
+	Vector2f hitboxsize = hitbox.getSize();
+	Vector2f hitboxPos = spritepos - (hitboxsize / 2.f);
+	hitbox.setPosition(hitboxPos);
+}
+
+void Player::UpdatesenseBox()
+{
+	Vector2f spritespos = playerSprite.getPosition();
+	Vector2f offset(-48.f, -40.f); 
+	senseBox.setPosition(spritespos + offset);
 }
 
 void Player::Draw(RenderWindow& window)
@@ -49,83 +60,86 @@ sf::FloatRect Player::GethitboxBounds()
 {
 	return hitbox.getGlobalBounds();
 }
-void Player::Move()
+
+Player::HitboxRect& Player::Gethitbox()
 {
-#pragma region 점프(임시)
+	Vector2f pos = hitbox.getPosition();
+	Vector2f size = hitbox.getSize();
 
-	//bool jumpKeyNowPressed = Keyboard::isKeyPressed(Keyboard::Scan::W);
-	//
-	//if (jumpKeyNowPressed && !jumpKeyPressedLastFrame)
-	//{
-	//	if (isOnGround)
-	//	{
-	//		velocityY = -10.f;
-	//		isOnGround = false;
-	//	}
-	//	else if (!hasDoubleJumped)
-	//	{
-	//		velocityY = -10.f;
-	//		hasDoubleJumped = true;
-	//	}
-	//}
-	//
-	//jumpKeyPressedLastFrame = jumpKeyNowPressed;
-	//
-	//if (!isOnGround)
-	//{
-	//	velocityY += GRAVITY ;
-	//	playerSprite.move({ 0.0f, velocityY});
-	//}
-	//
-	//if (playerSprite.getPosition().y >= groundY)
-	//{
-	//	playerSprite.setPosition({ playerSprite.getPosition().x,groundY });
-	//	velocityY = 0.f;
-	//	isOnGround = true;
-	//	hasDoubleJumped = false;
-	//}
+	static HitboxRect r;
 
-#pragma endregion
+	r.Left = pos.x;
+	r.Right = pos.x + size.x;
+	r.Top = pos.y;
+	r.Bottom = pos.y + size.y;
 
-
-	if (Keyboard::isKeyPressed(Keyboard::Scan::A) && playerSprite.getPosition().x > 0)
-	{
-		playerSprite.move({ -2.0f ,0.0f});
-		playerSprite.setTextureRect(playerRect);
-		playerSprite.setScale({ -1.0f, 1.0f });
-	}
-	if (Keyboard::isKeyPressed(Keyboard::Scan::D) && playerSprite.getPosition().x < 600)
-	{
-		playerSprite.move({ 2.0f ,0.0f});
-		playerSprite.setTextureRect(playerRect);
-		playerSprite.setScale({ 1.0f, 1.0f });
-	}
+	return r;
+}
+RectangleShape& Player::GetSenseBox()
+{
+	return senseBox;
 }
 
+
+vector<pair<int, int>> Player::GetnearGridcells()
+{
+	vector<pair<int, int>> nearplatform;
+
+	FloatRect bounds = senseBox.getGlobalBounds();
+
+	float left = bounds.position.x;
+	float top = bounds.position.y;
+	float right = bounds.position.x + bounds.size.x;
+	float bottom = bounds.position.y + bounds.size.y;
+
+	float cellsize = 100.f;
+
+	int gridleft = static_cast<int>(floor(left / cellsize));
+	int gridright = static_cast<int>(floor(right / cellsize));
+	int gridtop = static_cast<int>(floor(top / cellsize));
+	int gridbottom = static_cast<int>(floor(bottom / cellsize));
+
+	for (int y = gridtop; y <= gridbottom ; y++)
+	{
+		for (int x = gridleft; x <= gridright; x++)
+		{
+			nearplatform.emplace_back(x, y);
+		}
+	}
+	return nearplatform;
+}
 void Player::Move(float deltaTime)
 {
 #pragma region 점프(임시)
 
-	//if (Keyboard::isKeyPressed(Keyboard::Scan::W))
-	//{
-	//	if (isOnGround)
-	//	{
-	//		velocityY = -300.f;
-	//		isOnGround = false;
-	//	}
-	//}
-	//
-	//if (!isOnGround)
-	//{
-	//	velocityY += GRAVITY * deltaTime;
-	//	playerSprite.move({ 0.0f, velocityY * deltaTime });
-	//}
-	//if (playerSprite.getPosition().y >= groundY)
-	//{
-	//	playerSprite.setPosition({ playerSprite.getPosition().x,groundY });
-	//	velocityY = 0.f;
-	//	isOnGround = true;
-	//}
+	bool jumpKey = Keyboard::isKeyPressed(Keyboard::Scan::W);
+
+	if (jumpKey && !jumpKeyPressedLastFrame)
+	{
+		if (IsOnGround)
+		{
+			velocityY = -300.f;
+			Doublejump = false;
+			IsOnGround = false;
+		}
+		else if (!Doublejump)
+		{
+			velocityY = -300.f;
+			Doublejump = true;
+		}
+	}
+	jumpKeyPressedLastFrame = jumpKey;
+	if (!IsOnGround)
+	{
+		velocityY += GRAVITY * deltaTime;
+		playerSprite.move({ 0.0f, velocityY * deltaTime });
+	}
+	if (playerSprite.getPosition().y >= groundY)
+	{
+		playerSprite.setPosition({ playerSprite.getPosition().x,groundY });
+		velocityY = 0.f;
+		IsOnGround = true;
+	}
 
 #pragma endregion
 

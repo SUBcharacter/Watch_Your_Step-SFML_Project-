@@ -29,16 +29,6 @@ Pos Platform::GetPlatformPos()
 }
 
 
-void Platform::update(Player& player,vector<Platform>& platform)
-{
-	if (!Collied )
-	{
-		Collied = true;
-		platform.push_back(*this);
-
-	}
-}
-
 void Platform::Draw(RenderWindow& window)
 {
 	window.draw(platformSprit);
