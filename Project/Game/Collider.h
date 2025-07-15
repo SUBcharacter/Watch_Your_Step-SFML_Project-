@@ -9,10 +9,9 @@ class Collider
 {
 private:
 	Player& p;
-	 
-
+	
 public:
-
+	bool isColliding(const vector<Platform*> np);
 
 };
 
