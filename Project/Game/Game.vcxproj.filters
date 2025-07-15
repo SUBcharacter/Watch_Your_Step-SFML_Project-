@@ -18,7 +18,7 @@
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
+
     <ClCompile Include="Grid.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
@@ -33,7 +33,7 @@
     <ClInclude Include="IntegrationLibrary.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+
     <ClInclude Include="Grid.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
