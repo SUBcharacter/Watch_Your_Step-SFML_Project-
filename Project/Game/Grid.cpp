@@ -1,5 +1,5 @@
 #include "Grid.h"
-#include "Platform.h"
+
 
 Grid::Grid(float size)
 {

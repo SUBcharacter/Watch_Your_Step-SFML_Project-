@@ -1,5 +1,6 @@
 #pragma once
 #include "IntegrationLibrary.h"
+#include "Platform.h"
 // #include "Player.h"
 
 struct PairHash
