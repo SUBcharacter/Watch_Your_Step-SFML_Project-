@@ -14,10 +14,3 @@
 
 using namespace std;
 using namespace sf;
-
-struct Pos
-{
-	float x;
-	float y;
-};
-
