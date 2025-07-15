@@ -4,9 +4,7 @@
 class Player
 {
 private:
-	
-	Pos playerPos;
-	IntRect playerRect;
+
 	Texture playerTexture;
 	Sprite playerSprite;
 
@@ -15,34 +13,22 @@ private:
 	float groundY = 500.f;
 	bool IsOnGround = false;
 	bool jumpKeyPressedLastFrame = false;
-	bool Doublejump = false;
 
-
-	//Physics& playerPhysics;  // 물리 클래스
-
-	RectangleShape hitbox;
-	RectangleShape senseBox;
-
-	struct HitboxRect {
-		float Left, Top, Bottom, Right;
-
-		bool Intersect(HitboxRect& other) {
-			return !(Right < other.Left || Left > other.Right || Bottom < other.Top || Top > other.Bottom);
-		}
-	};
+	 RectangleShape hitbox;
+	 RectangleShape senseBox;
 
 public:
 	Player();
 	
-	void SetPlayerPos();
+	void SetPlayerPos(float x,float y);
 	Pos GetPlayerPos();
-	void Updatehitbox();
-	HitboxRect& Gethitbox();
-	void UpdatesenseBox();
-	sf::FloatRect GethitboxBounds();
-	RectangleShape& GetSenseBox();
 
+	void Updatehitbox();
+	void UpdatesenseBox();
+
+	RectangleShape& GetSenseBox();
 	vector<pair<int, int>> GetnearGridcells();
+
 	void Draw(RenderWindow& window);
 	void Move(float deltaTime);
 };

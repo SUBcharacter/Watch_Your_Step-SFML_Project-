@@ -24,9 +24,6 @@
     <ClCompile Include="Platform.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="girdmap.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IntegrationLibrary.h">
@@ -36,9 +33,6 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Platform.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="girdmap.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

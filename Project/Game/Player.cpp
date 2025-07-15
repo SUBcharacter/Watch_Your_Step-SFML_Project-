@@ -7,32 +7,33 @@ Player::Player() : playerSprite(playerTexture)
 		cerr << "에러 : player 스프라이트 찾을 수 없음." << endl;
 		return;
 	}
-	playerRect = IntRect({ 0,0 }, { 50,50 });
-	playerSprite.setTextureRect(playerRect);
+	playerSprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
 	playerSprite.setOrigin({ 25.f,25.f });
 	playerSprite.setPosition({ 300.f,500.f });
-	SetPlayerPos();
 
 	
 	hitbox.setSize(sf::Vector2f(30, 30));
 	hitbox.setFillColor(sf::Color::Transparent);
 	hitbox.setOutlineColor(sf::Color::Red);
 	hitbox.setOutlineThickness(1.f);
+
 	Updatehitbox();
 	UpdatesenseBox();
 
 }
 
-void Player::SetPlayerPos()
+void Player::SetPlayerPos(float x, float y)
 {
-	playerPos.x = playerSprite.getPosition().x;
-	playerPos.y = playerSprite.getPosition().y;
+	playerSprite.setPosition({ x,y });
+	Updatehitbox();
+	UpdatesenseBox();
 }
 
 Pos Player::GetPlayerPos()
 {
-	SetPlayerPos();
-	return playerPos;
+
+	Vector2f pos = playerSprite.getPosition();
+	return Pos{ pos.x, pos.y };
 }
 
 void Player::Updatehitbox()
@@ -53,37 +54,18 @@ void Player::UpdatesenseBox()
 void Player::Draw(RenderWindow& window)
 {
 	window.draw(playerSprite);
-	window.draw(hitbox);
 }
 
-sf::FloatRect Player::GethitboxBounds()
-{
-	return hitbox.getGlobalBounds();
-}
-
-Player::HitboxRect& Player::Gethitbox()
-{
-	Vector2f pos = hitbox.getPosition();
-	Vector2f size = hitbox.getSize();
-
-	static HitboxRect r;
-
-	r.Left = pos.x;
-	r.Right = pos.x + size.x;
-	r.Top = pos.y;
-	r.Bottom = pos.y + size.y;
-
-	return r;
-}
 RectangleShape& Player::GetSenseBox()
 {
 	return senseBox;
 }
 
 
+// 인식 범위에 있는 맵 좌표를 그리드 좌표로 반환하는 함수
 vector<pair<int, int>> Player::GetnearGridcells()
 {
-	vector<pair<int, int>> nearplatform;
+	vector<pair<int, int>> neargirdcells;
 
 	FloatRect bounds = senseBox.getGlobalBounds();
 
@@ -103,14 +85,14 @@ vector<pair<int, int>> Player::GetnearGridcells()
 	{
 		for (int x = gridleft; x <= gridright; x++)
 		{
-			nearplatform.emplace_back(x, y);
+			neargirdcells.emplace_back(x, y);
 		}
 	}
-	return nearplatform;
+	return neargirdcells;
 }
+
 void Player::Move(float deltaTime)
 {
-#pragma region 점프(임시)
 
 	bool jumpKey = Keyboard::isKeyPressed(Keyboard::Scan::W);
 
@@ -119,14 +101,9 @@ void Player::Move(float deltaTime)
 		if (IsOnGround)
 		{
 			velocityY = -300.f;
-			Doublejump = false;
 			IsOnGround = false;
 		}
-		else if (!Doublejump)
-		{
-			velocityY = -300.f;
-			Doublejump = true;
-		}
+
 	}
 	jumpKeyPressedLastFrame = jumpKey;
 	if (!IsOnGround)
@@ -141,25 +118,22 @@ void Player::Move(float deltaTime)
 		IsOnGround = true;
 	}
 
-#pragma endregion
-
-
 	if (Keyboard::isKeyPressed(Keyboard::Scan::A) && playerSprite.getPosition().x > 0)
 	{
 		playerSprite.move({ -200.0f * deltaTime ,0.0f });
-		playerSprite.setTextureRect(playerRect);
+		playerSprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
 		playerSprite.setScale({ -1.0f, 1.0f });
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Scan::D) && playerSprite.getPosition().x < 600)
 	{
 		playerSprite.move({ 200.0f * deltaTime ,0.0f });
-		playerSprite.setTextureRect(playerRect);
+		playerSprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
 		playerSprite.setScale({ 1.0f, 1.0f });
 
 	}
 
 	Updatehitbox();
-
+	UpdatesenseBox();
 }
 
 
