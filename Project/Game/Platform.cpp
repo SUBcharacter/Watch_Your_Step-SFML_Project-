@@ -10,7 +10,8 @@ Platform::Platform(int left, int top, int width, int height) : sprite(texture)
 	}
 	IntRect rectI = { {left,top},{width,height} };
 	FloatRect rectF =
-	{ {static_cast<Vector2f>(rectI.position)},
+	{ 
+	  {static_cast<Vector2f>(rectI.position)},
 	  { static_cast<Vector2f>(rectI.size)}
 	};
 	sprite.setTextureRect(rectI);

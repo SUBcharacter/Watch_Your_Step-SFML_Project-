@@ -3,8 +3,6 @@
 #include "Platform.h"
 //#include "Player.h"
 
-struct Player {};
-
 class Collider
 {
 private:
@@ -12,6 +10,5 @@ private:
 	
 public:
 	bool isColliding(const vector<Platform*> np);
-
 };
 

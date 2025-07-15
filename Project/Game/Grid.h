@@ -21,6 +21,7 @@ public:
 	Grid(float size);
 
 	void RegisterPlatform(Platform* p);
+
 	vector<Platform*> nearByPlayerPlatform(const vector<pair<int, int>>& gridCoord);
 
 };

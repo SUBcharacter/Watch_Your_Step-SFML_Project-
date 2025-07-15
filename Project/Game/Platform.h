@@ -15,7 +15,9 @@ public:
 	FloatRect GetHitBox();
 
 	void UpdateHitBox();
+
 	void SetPosition(float x, float y);
+
 	void Draw(RenderWindow& window);
 
 };

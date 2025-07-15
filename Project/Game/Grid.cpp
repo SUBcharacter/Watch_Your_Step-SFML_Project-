@@ -48,6 +48,5 @@ vector<Platform*> Grid::nearByPlayerPlatform(const vector<pair<int, int>>& gridC
 			}
 		}
 	}
-
 	return vector<Platform*>(uniquePlatform.begin(),uniquePlatform.end());
 }
