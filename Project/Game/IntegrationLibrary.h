@@ -1,11 +1,11 @@
 
 #pragma once
-
-// 필요한 라이브러리 선언
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Config.hpp>
 #include <SFML/System.hpp>
+#include <SFML/Window.hpp>
 #include <stdlib.h>
 #include <algorithm>
 #include <map>
@@ -13,10 +13,11 @@
 #include <iostream>
 #include <SFML/Window.hpp>
 #include <SFML/System/Vector2.hpp>
-
+#include <Windows.h>
+#include <unordered_map>
+#include <utility>
 
 using namespace std;
 using namespace sf;
 
- // 쓰이는 enum, 구조체 선언 공간
 
