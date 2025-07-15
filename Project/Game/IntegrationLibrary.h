@@ -1,5 +1,6 @@
 #pragma once
 // 필요한 라이브러리 선언
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Config.hpp>
@@ -8,5 +9,7 @@
 #include <algorithm>
 #include <map>
 #include <vector>
+#include <unordered_map>
+#include <utility>
 
 // 공통적으로 쓰이는 enum, 구조체 선언 공간
