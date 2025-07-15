@@ -1,44 +1,46 @@
 #include "TitleScreen.h"
-#include <iostream> // 에러 메시지 출력을 위해 포함 (std::cerr 사용)
+#include <iostream>
 
 // 생성자 구현
+// 멤버 초기화 리스트를 사용하여 backgroundTexture, font를 먼저 로드하고
+// 그 다음 backgroundSprite와 titleText를 초기화합니다.
 TitleScreen::TitleScreen(const std::string& backgroundTexturePath)
- : backgroundTexture(), // 기본 생성자로 먼저 생성
-font()
+// 멤버 초기화 리스트 시작
+// backgroundTexture 로드
+    : backgroundTexture(), // 기본 생성자로 먼저 생성
+    font() // 기본 생성자로 먼저 생성
 {
-    // 1. 배경 텍스처 로드
+    // 1. 배경 텍스처 로드 (생성자 본문에서 로드)
     if (!backgroundTexture.loadFromFile(backgroundTexturePath))
     {
         std::cerr << "에러: 배경 스프라이트(" << backgroundTexturePath << ")를 찾을 수 없습니다." << std::endl;
-        // 실제 애플리케이션에서는 여기서 에러 처리 로직을 추가해야 합니다.
+        // 에러 처리 로직
     }
-    // 배경 스프라이트에 텍스처 설정 (위치/크기 조정은 run()에서 윈도우 크기 기반으로 수행)
-    backgroundSprite.setTexture(backgroundTexture);
+    // 이제 backgroundTexture가 유효하므로 backgroundSprite에 설정합니다.
+    backgroundSprite.setTexture(backgroundTexture); // 여기서 setTexture 호출
 
-    // 2. 폰트 로드
-    // 폰트 파일 경로에 확장자(.ttf, .otf 등)를 정확히 명시해야 합니다.
-    if (!font.openFromFile("Assets/KoPubWorld_Batang_Bold.ttf")) // 예시: .ttf 확장자 사용
+    // 2. 폰트 로드 (생성자 본문에서 로드)
+    if (!font.openFromFile("Assets/KoPubWorld Batang Bold.ttf")) // 정확한 폰트 경로와 확장자 확인
     {
         std::cerr << "에러: 폰트 (Assets/KoPubWorld Batang Bold.ttf)를 찾을 수 없습니다." << std::endl;
-        // 실제 애플리케이션에서는 여기서 에러 처리 로직을 추가해야 합니다.
+        // 에러 처리 로직
     }
+    // 이제 font가 유효하므로 titleText에 설정합니다.
+    titleText.setFont(font); // 여기서 setFont 호출
 
-    // 3. 타이틀 텍스트 초기 설정 (폰트, 문자열, 크기, 색상)
-    titleText.setFont(font);
+    // 3. 타이틀 텍스트의 나머지 설정
     titleText.setString("Welcome to the TitleScreen Screen!");
     titleText.setCharacterSize(48);
     titleText.setFillColor(sf::Color::White);
-    // 텍스트 위치 설정은 run()에서 윈도우 크기 기반으로 수행합니다.
 }
 
-// run() 함수 구현
-void TitleScreen::run(sf::RenderWindow& window) // sf::RenderWindow를 참조로 받음
+// run() 함수는 이전과 동일합니다.
+void TitleScreen::run(sf::RenderWindow& window)
 {
-    // 윈도우의 현재 크기를 가져옵니다.
-    sf::Vector2u windowSize = window.getSize();
-
+   // // 윈도우의 현재 크기를 가져옵니다.
+   // sf::Vector2u windowSize = window.getSize();
+   //
    // // 배경 스프라이트 크기 조정 (윈도우 크기에 맞춤)
-   // // 텍스처 크기가 0일 경우 나눗셈 오류 방지를 위해 체크합니다.
    // if (backgroundTexture.getSize().x > 0 && backgroundTexture.getSize().y > 0) {
    //     float scaleX = static_cast<float>(windowSize.x) / backgroundTexture.getSize().x;
    //     float scaleY = static_cast<float>(windowSize.y) / backgroundTexture.getSize().y;
@@ -55,37 +57,26 @@ void TitleScreen::run(sf::RenderWindow& window) // sf::RenderWindow를 참조로 받�
 
     // 메인 루프: 윈도우가 열려있는 동안 타이틀 화면을 표시
     while (window.isOpen()) {
-        // 이벤트 폴링 (main 함수의 스타일을 따릅니다)
         while (const std::optional event = window.pollEvent())
         {
-            // 창 닫기 버튼을 눌렀을 경우
             if (event->is<sf::Event::Closed>())
             {
-                window.close(); // 창 닫기
-                return; // 타이틀 화면 루프 종료
+                window.close();
+                return;
             }
-            // 키보드 키가 눌렸을 경우 처리
             else if (const auto* keypressed = event->getIf < sf::Event::KeyPressed>())
             {
-                // Enter 또는 Escape를 눌렀을 경우 타이틀 화면 종료
                 if (keypressed->scancode == sf::Keyboard::Scancode::Enter ||
                     keypressed->scancode == sf::Keyboard::Scancode::Escape)
                 {
-                    return; // 타이틀 화면 루프 종료 (창은 닫지 않고 메인 루프로 넘어감)
+                    return;
                 }
             }
         }
 
-        // 창을 지웁니다.
         window.clear(sf::Color::Black);
-
-        // 1. 배경 스프라이트를 먼저 그립니다.
         window.draw(backgroundSprite);
-
-        // 2. 그 위에 타이틀 텍스트를 그립니다.
         window.draw(titleText);
-
-        // 화면에 그린 내용을 표시합니다.
         window.display();
     }
 }
