@@ -29,13 +29,6 @@ void Player::SetPlayerPos(float x, float y)
 	UpdatesenseBox();
 }
 
-Pos Player::GetPlayerPos()
-{
-
-	Vector2f pos = playerSprite.getPosition();
-	return Pos{ pos.x, pos.y };
-}
-
 void Player::Updatehitbox()
 {
 	Vector2f spritepos = playerSprite.getPosition();

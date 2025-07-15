@@ -21,7 +21,6 @@ public:
 	Player();
 	
 	void SetPlayerPos(float x,float y);
-	Pos GetPlayerPos();
 
 	void Updatehitbox();
 	void UpdatesenseBox();
