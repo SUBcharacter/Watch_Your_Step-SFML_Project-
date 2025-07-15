@@ -1,40 +1,41 @@
 #include "IntegrationLibrary.h"
 
-#include "Game_Manager.h"
 
 
-enum class mainstate
+
+
+int main()
 {
-    Title,
-	MainMenu,
-    mainPlay,
-    Playing,
-    Paused,
-	Exit
-    //mainOver
-};
-mainstate currentState = mainstate::Title;
+    // 예제
+    RenderWindow window(sf::VideoMode({ 600, 800 }), "Game");
+    // 프레임 제한
+    window.setFramerateLimit(60);
 
-=======
-    // ¿¹Á¦
-    sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
-
-    while (window.isOpen())
-    {
+    // 메인 루프
+    while (window.isOpen()) {
         while (const std::optional event = window.pollEvent())
         {
+            //창 닫기 버튼을 눌렀을 경우
             if (event->is<sf::Event::Closed>())
+            {
+                // 창 닫기
                 window.close();
+            }
+            //키보드 키가 눌렀을 경우 처리
+            else if (const auto* keypressed = event->getIf < sf::Event::KeyPressed>())
+            {
+                // Esc를 눌렀을 경우 창 닫기
+                if (keypressed->scancode == sf::Keyboard::Scancode::Escape)
+                {
+                    window.close();
+                }
+            }
         }
+        window.clear();
+ 
+        window.display();
 
+    }
 
-
-//int main()
-//{
-//    Game_Manager game_manager;
-//    game_manager.run();
-//    return 0;
-//} 변경한건 우선 주석처리해서 올립니다.
-// 
+    return 0;
+}

@@ -139,16 +139,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Game_Manager.cpp" />
-    <ClCompile Include="IGameState.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Title.cpp" />
+    <ClCompile Include="TitleScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game_Manager.h" />
-    <ClInclude Include="IGameState.h" />
     <ClInclude Include="IntegrationLibrary.h" />
-    <ClInclude Include="Title.h" />
+    <ClInclude Include="TitleScreen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

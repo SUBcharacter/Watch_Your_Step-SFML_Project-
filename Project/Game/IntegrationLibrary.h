@@ -15,5 +15,4 @@ using namespace std;
 using namespace sf;
 
  // 쓰이는 enum, 구조체 선언 공간
-=======
 
