@@ -18,14 +18,19 @@ void Camera::C_UpdateView(const sf::Vector2f& playerPosition)
 	if (playerPosition.y < topOfView + C_top) // 플레이어가 위로 올라가면
 	{
 		float offset = (topOfView + C_top) - playerPosition.y;
-		view.move(sf::Vector2f(0.f, -offset));
+		view.move(sf::Vector2f(0.f, -offset)); // 카메라도 위로 이동
 	}
 
 	else if (playerPosition.y > bottomOfView - C_bottom) // 플레이어가 아래로 내려가면
 	{
 		float offset = playerPosition.y - (bottomOfView - C_bottom);
-		view.move(sf::Vector2f(0.f, offset));
+		view.move(sf::Vector2f(0.f, offset)); // 카메라도 아래로 이동
 	}
+}
+
+void Camera::C_StartGame(const sf::Vector2f& playerPositon)
+{
+	view.setCenter(playerPositon);
 }
 
 sf::View Camera::C_GetView() const

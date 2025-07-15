@@ -20,6 +20,8 @@ public:
 
 	void C_UpdateView(const sf::Vector2f& playerPositon); // 플레이어 위치에 따라 카메라 업뎃
 
+	void C_StartGame(const sf::Vector2f& playerPositon); // 게임 시작할 때 플레이어를 비추게 함
+
 	sf::View C_GetView() const; // 뷰 반환
 
 
