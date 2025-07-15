@@ -1,5 +1,4 @@
 #include "TitleScreen.h"
-#include <iostream>
 
 // 생성자 구현
 // 멤버 초기화 리스트를 사용하여 backgroundTexture, font를 먼저 로드하고
