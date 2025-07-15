@@ -1,48 +1,20 @@
-// TitleScreen.hpp
-
 #pragma once
+#include <SFML/Graphics.hpp>
+#include "IntegrationLibrary.h" // 이 헤더가 필요한 경우 유지합니다.
 
-#include "IntegrationLibrary.h"
-
-// GameState 열거형 (TitleScreen이 다음 상태를 외부에 알려줄 때 필요)
-enum class GameState {
-    MainMenu,   // 타이틀 화면
-    Playing,    // 게임 플레이 중
-    Options,    // 옵션 화면
-    Exiting     // 게임 종료
-};
-
-class TitleScreen
-{
+class TitleScreen {
 public:
-    TitleScreen(int left, int top, int width, int height);
-    GameState run(sf::RenderWindow& window);
+    // 생성자: 배경 이미지 파일 경로를 받아 초기화합니다.
+    TitleScreen(const std::string& backgroundTexturePath);
+
+    // run() 함수: 전달받은 윈도우에 타이틀 화면을 표시하고 이벤트를 처리합니다.
+    // 윈도우가 닫히거나 특정 키가 눌리면 함수를 종료합니다.
+    void run(sf::RenderWindow& window); // sf::RenderWindow를 참조로 받도록 변경
 
 private:
-    sf::Texture backTexture;
-    sf::Sprite backSprite;
-    sf::Texture logoTexture;
-    sf::Sprite logoSprite;
-    sf::Font mFont;
-    sf::Text startButton;
-    sf::Text exitButton;
+    sf::Texture backgroundTexture; // 배경 이미지를 담을 텍스처
+    sf::Sprite backgroundSprite;   // 텍스처를 사용하여 화면에 그릴 스프라이트
 
-    int m_left;
-    int m_top;
-    int m_width;
-    int m_height;
-
-    int m_selectedButtonIndex;
-    std::vector<sf::Text*> m_buttons;
-
-    bool m_finished = false;
-    GameState m_nextState = GameState::MainMenu;
-
-    void loadAssets();
-    void handleEvent(const sf::Event& event);
-    void update(float deltaTime);
-    void draw(sf::RenderWindow& window);
-    void updateButtonSelection();
-    void activateSelectedButton();
-    bool isButtonClicked(const sf::Text& button, const sf::Vector2f& mousePos);
+    sf::Font font;                 // 타이틀 텍스트에 사용할 폰트
+    sf::Text titleText;            // 타이틀 문자열을 표시할 sf::Text 객체
 };
