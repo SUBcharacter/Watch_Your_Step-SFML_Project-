@@ -1,3 +1,6 @@
 #include "IntegrationLibrary.h"
-#include "Player.h"
 
+int main()
+{
+
+}

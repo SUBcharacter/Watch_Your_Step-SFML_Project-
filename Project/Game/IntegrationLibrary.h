@@ -1,5 +1,6 @@
 #pragma once
-// ÇÊ¿äÇÑ ¶óÀÌºê·¯¸® ¼±¾ğ
+// ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºê·¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+// í•„ìš”í•œ ë¼ì´ë¸ŒëŸ¬ë¦¬ ì„ ì–¸
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -10,14 +11,20 @@
 #include <map>
 #include <vector>
 #include <Windows.h>
+#include <unordered_map>
+#include <utility>
+
 
 using namespace std;
 using namespace sf;
 
-// °øÅëÀûÀ¸·Î ¾²ÀÌ´Â enum, ±¸Á¶Ã¼ ¼±¾ğ °ø°£
+
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì´ï¿½ enum, ï¿½ï¿½ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 struct Pos
 {
 	float x;
 	float y;
 };
+
+// ê³µí†µì ìœ¼ë¡œ ì“°ì´ëŠ” enum, êµ¬ì¡°ì²´ ì„ ì–¸ ê³µê°„
