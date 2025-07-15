@@ -1,4 +1,5 @@
 #include "Platform.h"
+//#include "Player.h"
 
 Platform::Platform(int left, int top, int width, int height) : sprite(texture)
 {

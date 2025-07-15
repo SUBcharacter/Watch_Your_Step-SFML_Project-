@@ -1,4 +1,5 @@
 #include "Grid.h"
+#include "Platform.h"
 
 Grid::Grid(float size)
 {
@@ -29,4 +30,24 @@ void Grid::RegisterPlatform(Platform* p)
 			}
 		}
 	}
+}
+
+vector<Platform*> Grid::nearByPlayerPlatform(const vector<pair<int, int>>& gridCoord)
+{
+	unordered_set<Platform*> uniquePlatform;
+
+	for (const auto& coord : gridCoord)
+	{
+		auto it = gridCells.find(coord);
+
+		if (it != gridCells.end())
+		{
+			for (Platform* p : it->second)
+			{
+				uniquePlatform.insert(p);
+			}
+		}
+	}
+
+	return vector<Platform*>(uniquePlatform.begin(),uniquePlatform.end());
 }
