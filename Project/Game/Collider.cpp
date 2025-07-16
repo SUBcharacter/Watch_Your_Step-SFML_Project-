@@ -1,6 +1,6 @@
 #include "Collider.h"
 
-bool Collider::isColliding(const vector<Platform*> np)
+bool Collider::isColliding(const FloatRect& player, const FloatRect& platform)
 {
-    return false;
+    return player.findIntersection(platform);
 }

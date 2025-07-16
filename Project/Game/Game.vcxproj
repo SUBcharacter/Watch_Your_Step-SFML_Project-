@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TitleScreen.cpp" />
@@ -150,6 +151,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="IntegrationLibrary.h" />
     <ClInclude Include="TitleScreen.h" />

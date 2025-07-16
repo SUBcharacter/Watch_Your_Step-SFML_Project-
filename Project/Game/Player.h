@@ -11,8 +11,7 @@ private:
 	float velocityY = 0.f;
 	const float GRAVITY = 900.f;
 	float groundY = 500.f;
-	bool IsOnGround = false;
-	bool jumpKeyPressedLastFrame = false;
+	
 
 	 RectangleShape hitbox;
 	 RectangleShape senseBox;
@@ -20,6 +19,8 @@ private:
 public:
 	Player();
 	
+	bool IsOnGround = false;
+
 	void SetPlayerPos(float x,float y);
 
 	void Updatehitbox();

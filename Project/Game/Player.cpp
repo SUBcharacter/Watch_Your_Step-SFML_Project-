@@ -89,7 +89,7 @@ void Player::Move(float deltaTime)
 
 	bool jumpKey = Keyboard::isKeyPressed(Keyboard::Scan::W);
 
-	if (jumpKey && !jumpKeyPressedLastFrame)
+	if (jumpKey)
 	{
 		if (IsOnGround)
 		{
@@ -98,7 +98,7 @@ void Player::Move(float deltaTime)
 		}
 
 	}
-	jumpKeyPressedLastFrame = jumpKey;
+	
 	if (!IsOnGround)
 	{
 		velocityY += GRAVITY * deltaTime;

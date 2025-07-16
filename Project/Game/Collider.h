@@ -9,6 +9,6 @@ private:
 	Player& p;
 	
 public:
-	bool isColliding(const vector<Platform*> np);
+	bool isColliding(const FloatRect& player, const FloatRect& platform);
 };
 
