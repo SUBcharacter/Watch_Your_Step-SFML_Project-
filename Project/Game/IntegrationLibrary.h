@@ -20,4 +20,10 @@
 using namespace std;
 using namespace sf;
 
-
+enum CollideDir
+{
+	TOP,
+	LEFT_SIDE,
+	RIGHT_SIDE,
+	UNDER
+};

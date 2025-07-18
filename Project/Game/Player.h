@@ -12,6 +12,8 @@ private:
 	const float GRAVITY = 900.f;
 	float groundY = 500.f;
 	
+	FloatRect hitBox;
+	FloatRect senseBox;
 
 	 RectangleShape hitbox;
 	 RectangleShape senseBox;

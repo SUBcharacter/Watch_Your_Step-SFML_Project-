@@ -1,9 +1,9 @@
 #include "Platform.h"
-//#include "Player.h"
 
-Platform::Platform(int left, int top, int width, int height) : sprite(texture)
+
+Platform::Platform(const string& texturePath, int left, int top, int width, int height) : sprite(texture)
 {
-	if (!texture.loadFromFile("Assets/platform.png"))
+	if (!texture.loadFromFile(texturePath))
 	{
 		cerr << "에러 : 텍스쳐 파일 없음" << endl;
 		return;
@@ -43,4 +43,27 @@ void Platform::SetPosition(float x, float y)
 void Platform::Draw(RenderWindow& window)
 {
 	window.draw(sprite);
+}
+
+void Platform::OnCollide(Player& p, CollideDir dir)
+{
+	FloatRect playerHB = p.GetHitBox();
+	FloatRect platformHB = this->GetHitBox();
+
+	switch (dir)
+	{
+	case TOP:
+		p.SetPlayerPos(p.GetPlayerPos().x, platformHB.position.y - (playerHB.size.y / 2));
+		p.IsOnGround = true;
+		break;
+	case LEFT_SIDE:
+		p.SetPlayerPos(platformHB.position.x - (playerHB.size.x / 2),p.GetPlayerPos().y);
+		break;
+	case RIGHT_SIDE:
+		p.SetPlayerPos(platformHB.position.x + (playerHB.size.x / 2), p.GetPlayerPos().y);
+		break;
+	case UNDER:
+		p.SetPlayerPos(p.GetPlayerPos().x, platformHB.position.y + (playerHB.size.y / 2));
+		break;
+	}
 }
