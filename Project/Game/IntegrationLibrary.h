@@ -27,3 +27,10 @@ enum CollideDir
 	RIGHT_SIDE,
 	UNDER
 };
+
+enum PlatformType
+{
+	STATIC,
+	JUMP,
+	MOVING
+};

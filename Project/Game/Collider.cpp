@@ -30,3 +30,20 @@ CollideDir Collider::CollidingDirection(const FloatRect& player, const FloatRect
         }
     }
 }
+
+void Collider::Collider2D(vector<Platform*> nearPlatform)
+{
+    for (Platform* p : nearPlatform)
+    {
+        if (!p)
+            continue;
+
+        FloatRect playerHB = player.GetHitBox();
+        FloatRect platformHB = p->GetHitBox();
+
+        if (isColliding(playerHB, platformHB))
+        {
+            p->OnCollide(player, CollidingDirection(playerHB, platformHB));
+        }
+    }
+}
