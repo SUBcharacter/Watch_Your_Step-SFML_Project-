@@ -7,7 +7,7 @@ class GameManager
 {
 private:
 	Player& player;
-	vector<Platform> allPlatform;
+	vector<Platform*> allPlatform;
 	Grid grid;
 	Collider collider;
 

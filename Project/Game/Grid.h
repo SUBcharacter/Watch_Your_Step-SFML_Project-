@@ -21,6 +21,8 @@ public:
 
 	void RegisterPlatform(Platform* p);
 
+	void UnregisterPlatform(Platform* p);
+
 	vector<Platform*> nearByPlayerPlatform(const vector<pair<int, int>>& gridCoord);
 
 };

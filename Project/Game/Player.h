@@ -8,10 +8,11 @@ private:
 	Texture playerTexture;
 	Sprite playerSprite;
 
-	float velocityY = 0.f;
 	const float GRAVITY = 900.f;
 	float groundY = 500.f;
 	
+	FloatRect hitBox;
+	FloatRect senseBox;
 
 	 RectangleShape hitbox;
 	 RectangleShape senseBox;
@@ -20,6 +21,7 @@ public:
 	Player();
 	
 	bool IsOnGround = false;
+	float velocityY = 0.f;
 
 	void SetPlayerPos(float x,float y);
 

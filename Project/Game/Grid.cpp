@@ -16,6 +16,8 @@ void Grid::RegisterPlatform(Platform* p)
 	int startY = static_cast<int>(floor(box.position.y / cellSize));
 	int endY = static_cast<int>(floor((box.position.y + box.size.y) / cellSize));
 
+	p->registeredCells.clear();
+
 	for (int i = startY; i <= endY; i++)
 	{
 		for (int j = startX; j <= endX; j++)
@@ -28,8 +30,30 @@ void Grid::RegisterPlatform(Platform* p)
 			{
 				platform.push_back(p);
 			}
+
+			p->registeredCells.push_back(cell);
 		}
 	}
+}
+
+void Grid::UnregisterPlatform(Platform* p)
+{
+	for (const auto& cell : p->registeredCells)
+	{
+		auto it = gridCells.find(cell);
+		if (it != gridCells.end())
+		{
+			auto& platformList = it->second;
+			platformList.erase(remove(platformList.begin(), platformList.end(), p), platformList.end());
+
+			if (platformList.empty())
+			{
+				gridCells.erase(it);
+			}
+		}
+	}
+
+	p->registeredCells.clear();
 }
 
 vector<Platform*> Grid::nearByPlayerPlatform(const vector<pair<int, int>>& gridCoord)
