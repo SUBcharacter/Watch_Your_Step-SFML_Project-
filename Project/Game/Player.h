@@ -4,7 +4,7 @@
 class Player
 {
 private:
-
+	FloatRect player;
 	Texture playerTexture;
 	Sprite playerSprite;
 
@@ -13,13 +13,10 @@ private:
 	
 	FloatRect hitBox;
 	FloatRect senseBox;
-
-	 RectangleShape hitbox;
-	 RectangleShape senseBox;
-
+  
 public:
 	Player();
-	
+	float velocityY = 0.f;
 	bool IsOnGround = false;
 	float velocityY = 0.f;
 
@@ -28,9 +25,11 @@ public:
 	void Updatehitbox();
 	void UpdatesenseBox();
 
-	RectangleShape& GetSenseBox();
+	FloatRect& GetSenseBox();
 	vector<pair<int, int>> GetnearGridcells();
-
+	Vector2f Getposition();
+	FloatRect& Gethitbox();
+	
 	void Draw(RenderWindow& window);
 	void Move(float deltaTime);
 };
