@@ -4,26 +4,31 @@
 class Player
 {
 private:
-	FloatRect player;
-	Texture playerTexture;
-	Sprite playerSprite;
+	Texture texture;
+	Sprite sprite;
 
 	const float GRAVITY = 900.f;
-	float groundY = 500.f;
-	
+	float CrowdControlTimer = 1.f;
+
+	Vector2f hitBoxSize;
 	FloatRect hitBox;
-	FloatRect senseBox;
+	Vector2f senceBoxSize;
+	FloatRect senceBox;
   
 public:
-	Player();
+	Player(const string& texturePath, Vector2f pos,int left, int top, int width, int height);
 	float velocityY = 0.f;
 	bool IsOnGround = false;
-	float velocityY = 0.f;
+	bool CrowdControl = false;
+	
+	void Update(float deltaTime);
 
-	void SetPlayerPos(float x,float y);
+	void SetPlayerPos(Vector2f pos);
 
 	void Updatehitbox();
 	void UpdatesenseBox();
+	void CrowdControlUpdate(float deltaTime);
+
 
 	FloatRect& GetSenseBox();
 	vector<pair<int, int>> GetnearGridcells();
