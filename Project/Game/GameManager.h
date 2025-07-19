@@ -12,7 +12,11 @@ private:
 	Collider collider;
 
 public:
-	GameManager();
+	GameManager(Player& p ) :player(p), grid(100.f), collider(player) {}
+
+	void Init();
+	void Update(PlatformType type,float deltaTime);
+	void Draw(RenderWindow& window);
 
 };
 
