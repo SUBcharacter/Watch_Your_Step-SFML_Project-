@@ -4,21 +4,21 @@
 class Player
 {
 private:
-
+	FloatRect player;
 	Texture playerTexture;
 	Sprite playerSprite;
 
-	float velocityY = 0.f;
+	
 	const float GRAVITY = 900.f;
 	float groundY = 500.f;
 	
 
-	 RectangleShape hitbox;
-	 RectangleShape senseBox;
+	 FloatRect hitbox;
+	 FloatRect senseBox;
 
 public:
 	Player();
-	
+	float velocityY = 0.f;
 	bool IsOnGround = false;
 
 	void SetPlayerPos(float x,float y);
@@ -26,9 +26,11 @@ public:
 	void Updatehitbox();
 	void UpdatesenseBox();
 
-	RectangleShape& GetSenseBox();
+	FloatRect& GetSenseBox();
 	vector<pair<int, int>> GetnearGridcells();
-
+	Vector2f Getposition();
+	FloatRect& Gethitbox();
+	
 	void Draw(RenderWindow& window);
 	void Move(float deltaTime);
 };

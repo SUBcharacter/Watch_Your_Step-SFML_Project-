@@ -11,12 +11,6 @@ Player::Player() : playerSprite(playerTexture)
 	playerSprite.setOrigin({ 25.f,25.f });
 	playerSprite.setPosition({ 300.f,500.f });
 
-	
-	hitbox.setSize(sf::Vector2f(30, 30));
-	hitbox.setFillColor(sf::Color::Transparent);
-	hitbox.setOutlineColor(sf::Color::Red);
-	hitbox.setOutlineThickness(1.f);
-
 	Updatehitbox();
 	UpdatesenseBox();
 
@@ -32,16 +26,23 @@ void Player::SetPlayerPos(float x, float y)
 void Player::Updatehitbox()
 {
 	Vector2f spritepos = playerSprite.getPosition();
-	Vector2f hitboxsize = hitbox.getSize();
+	Vector2f hitboxsize(30.f, 30.f);
 	Vector2f hitboxPos = spritepos - (hitboxsize / 2.f);
-	hitbox.setPosition(hitboxPos);
+
+	hitbox.position.x = hitboxPos.x;
+	hitbox.position.y = hitboxPos.y;
+	hitbox.size.x = hitboxPos.x;
+	hitbox.size.y = hitboxPos.y;
 }
 
 void Player::UpdatesenseBox()
 {
 	Vector2f spritespos = playerSprite.getPosition();
+	Vector2f size(96.f, 80.f);
 	Vector2f offset(-48.f, -40.f); 
-	senseBox.setPosition(spritespos + offset);
+	Vector2f topLeft = spritespos + offset;
+
+	senseBox = FloatRect(spritespos,offset);
 }
 
 void Player::Draw(RenderWindow& window)
@@ -49,23 +50,15 @@ void Player::Draw(RenderWindow& window)
 	window.draw(playerSprite);
 }
 
-RectangleShape& Player::GetSenseBox()
-{
-	return senseBox;
-}
-
-
 // 인식 범위에 있는 맵 좌표를 그리드 좌표로 반환하는 함수
 vector<pair<int, int>> Player::GetnearGridcells()
 {
 	vector<pair<int, int>> neargirdcells;
 
-	FloatRect bounds = senseBox.getGlobalBounds();
-
-	float left = bounds.position.x;
-	float top = bounds.position.y;
-	float right = bounds.position.x + bounds.size.x;
-	float bottom = bounds.position.y + bounds.size.y;
+	float left = senseBox.position.x;
+	float top = senseBox.position.y;
+	float right = senseBox.position.x + senseBox.size.x;
+	float bottom = senseBox.position.y + senseBox.size.y;
 
 	float cellsize = 100.f;
 
@@ -82,6 +75,20 @@ vector<pair<int, int>> Player::GetnearGridcells()
 		}
 	}
 	return neargirdcells;
+}
+
+FloatRect& Player::GetSenseBox()
+{
+	return senseBox;
+}
+Vector2f Player::Getposition()
+{
+	return playerSprite.getPosition();
+}
+
+FloatRect& Player::Gethitbox()
+{
+	return hitbox;
 }
 
 void Player::Move(float deltaTime)
