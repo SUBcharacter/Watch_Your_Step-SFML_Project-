@@ -29,10 +29,10 @@ void Player::Updatehitbox()
 	Vector2f hitboxsize(30.f, 30.f);
 	Vector2f hitboxPos = spritepos - (hitboxsize / 2.f);
 
-	hitbox.position.x = hitboxPos.x;
-	hitbox.position.y = hitboxPos.y;
-	hitbox.size.x = hitboxPos.x;
-	hitbox.size.y = hitboxPos.y;
+	hitBox.position.x = hitboxPos.x;
+	hitBox.position.y = hitboxPos.y;
+	hitBox.size.x = hitboxPos.x;
+	hitBox.size.y = hitboxPos.y;
 }
 
 void Player::UpdatesenseBox()
@@ -81,14 +81,14 @@ FloatRect& Player::GetSenseBox()
 {
 	return senseBox;
 }
-Vector2f Player::Getposition()
+Vector2f Player::GetPlayerPos()
 {
 	return playerSprite.getPosition();
 }
 
-FloatRect& Player::Gethitbox()
+FloatRect& Player::GetHitBox()
 {
-	return hitbox;
+	return hitBox;
 }
 
 void Player::Move(float deltaTime)

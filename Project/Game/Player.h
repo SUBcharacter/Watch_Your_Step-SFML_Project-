@@ -27,8 +27,8 @@ public:
 
 	FloatRect& GetSenseBox();
 	vector<pair<int, int>> GetnearGridcells();
-	Vector2f Getposition();
-	FloatRect& Gethitbox();
+	Vector2f GetPlayerPos();
+	FloatRect& GetHitBox();
 	
 	void Draw(RenderWindow& window);
 	void Move(float deltaTime);
