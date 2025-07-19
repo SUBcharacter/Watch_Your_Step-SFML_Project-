@@ -111,12 +111,6 @@ void Player::Move(float deltaTime)
 		velocityY += GRAVITY * deltaTime;
 		playerSprite.move({ 0.0f, velocityY * deltaTime });
 	}
-	if (playerSprite.getPosition().y >= groundY)
-	{
-		playerSprite.setPosition({ playerSprite.getPosition().x,groundY });
-		velocityY = 0.f;
-		IsOnGround = true;
-	}
 
 	if (Keyboard::isKeyPressed(Keyboard::Scan::A) && playerSprite.getPosition().x > 0)
 	{
