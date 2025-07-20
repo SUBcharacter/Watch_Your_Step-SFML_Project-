@@ -12,7 +12,7 @@ int main()
 	platform.push_back(new Platform("Assets/player.png", STATIC, { 100,500 }, 0, 0, 200, 50));
 	platform.push_back(new MovingPlatform("Assets/player.png", MOVING, { 300, 600 }, 0, 0, 50, 50,600,100,1));
 	platform.push_back(new JumpPlatform("Assets/player.png", JUMP, { 500,500 }, 0, 0, 200, 50, 500.f));
-	platform.push_back(new JumpPlatform("Assets/player.png", JUMP, { 0,800 }, 0, 0, 800, 50, 2000.f));
+	platform.push_back(new JumpPlatform("Assets/player.png", JUMP, { 0,800 }, 0, 0, 1000, 50, 2000.f));
 	Grid grid(100);
 	Collider collider(player);
 
