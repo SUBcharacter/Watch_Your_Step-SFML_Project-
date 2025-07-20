@@ -34,3 +34,12 @@ enum PlatformType
 	JUMP,
 	MOVING
 };
+
+enum JumpForceLevel
+{
+	ONE,
+	TWO,
+	THREE,
+	FOUR,
+	FIVE
+};

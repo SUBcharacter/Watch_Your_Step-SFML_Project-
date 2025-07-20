@@ -81,7 +81,7 @@ void Platform::OnCollide(Player& p, CollideDir dir)
 	}
 }
 
-JumpPlatform::JumpPlatform(const string& texturePath, Vector2f pos, int left, int top, int width, int height, float jumpForce)
+JumpPlatform::JumpPlatform(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height, float jumpForce)
 	: Platform(texturePath, type, pos, left, top, width, height), jumpForce(jumpForce)
 {
 	isActive = true;
@@ -112,7 +112,7 @@ void JumpPlatform::OnCollide(Player& p, CollideDir dir)
 	ignoreTimer = 0.f;
 }
 
-MovingPlatform::MovingPlatform(const string& texturePath, Vector2f pos, int left, int top, int width, int height, float mr, float speed, int dir, Player& player)
+MovingPlatform::MovingPlatform(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height, float mr, float speed, int dir)
 	: Platform(texturePath, type, pos, left, top, width, height), moveRange(mr), speed(speed), direction(dir)
 {
 	startPos = pos;

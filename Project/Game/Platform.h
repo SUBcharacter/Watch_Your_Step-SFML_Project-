@@ -44,8 +44,7 @@ private:
 	float jumpForce;
 
 public:
-	JumpPlatform(const string& texturePath, Vector2f pos, int left, int top, int width, int height, float jumpForce);
-
+	JumpPlatform(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height, float jumpForce);
 	void Update(float deltaTime) override;
 
 	void OnCollide(Player& p, CollideDir dir) override;
@@ -62,8 +61,7 @@ private:
 	Vector2f prevPos;
 
 public:
-	MovingPlatform(const string& texturePath, Vector2f pos, int left, int top, int width, int height,
-		float mr, float speed, int dir, Player& player);
+	MovingPlatform(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height, float mr, float speed, int dir);
 
 	void Update(float deltaTime) override;
 
