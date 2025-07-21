@@ -100,9 +100,30 @@ void JumpPlatform::OnCollide(Player& p, CollideDir dir)
 	if (!isActive)
 		return;
 
-	if (jumpForce >= 1600.f)
+	if (jumpForce >= 3000.f)
 	{
 		p.CrowdControl = true;
+		p.SetCrowdControlTimer(1.5f);
+	}
+	else if (jumpForce >= 2400.f)
+	{
+		p.CrowdControl = true;
+		p.SetCrowdControlTimer(1.25f);
+	}
+	else if (jumpForce >= 1800.f)
+	{
+		p.CrowdControl = true;
+		p.SetCrowdControlTimer(1.f);
+	}
+	else if (jumpForce >= 1200.f)
+	{
+		p.CrowdControl = true;
+		p.SetCrowdControlTimer(0.75f);
+	}
+	else
+	{
+		p.CrowdControl = true;
+		p.SetCrowdControlTimer(0.5f);
 	}
 	
 	p.velocityY -= jumpForce + p.velocityY;

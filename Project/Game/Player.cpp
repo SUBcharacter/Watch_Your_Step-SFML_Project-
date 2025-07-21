@@ -60,14 +60,15 @@ void Player::CrowdControlUpdate(float deltaTime)
 		CrowdControlTimer -= deltaTime;
 		if (CrowdControlTimer <= 0.f)
 		{
-			CrowdControlTimer = 1.f;
 			CrowdControl = false;
 		}
 	}
-	else
-	{
-		CrowdControlTimer = 1.f;
-	}
+	
+}
+
+void Player::SetCrowdControlTimer(float time)
+{
+	CrowdControlTimer = time;
 }
 
 void Player::Draw(RenderWindow& window)
@@ -119,13 +120,13 @@ FloatRect& Player::GetHitBox()
 void Player::Move(float deltaTime)
 {
 
-	bool jumpKey = Keyboard::isKeyPressed(Keyboard::Scan::W);
+	bool jumpKey = Keyboard::isKeyPressed(Keyboard::Scan::Space);
 
 	if (jumpKey)
 	{
 		if (IsOnGround)
 		{
-			velocityY = -300.f;
+			velocityY = -350.f;
 			IsOnGround = false;
 		}
 
@@ -142,13 +143,13 @@ void Player::Move(float deltaTime)
 	}
 	
 
-	if (Keyboard::isKeyPressed(Keyboard::Scan::A) && sprite.getPosition().x > 900)
+	if (Keyboard::isKeyPressed(Keyboard::Scan::Left) && sprite.getPosition().x > 900)
 	{
 		sprite.move({ -200.0f * deltaTime ,0.0f });
 		sprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
 		sprite.setScale({ -1.0f, 1.0f });
 	}
-	if (Keyboard::isKeyPressed(Keyboard::Scan::D) && sprite.getPosition().x < 2400)
+	if (Keyboard::isKeyPressed(Keyboard::Scan::Right) && sprite.getPosition().x < 1700)
 	{
 		sprite.move({ 200.0f * deltaTime ,0.0f });
 		sprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));

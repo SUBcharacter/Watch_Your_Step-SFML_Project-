@@ -8,7 +8,7 @@ private:
 	Sprite sprite;
 
 	const float GRAVITY = 900.f;
-	float CrowdControlTimer = 1.f;
+	float CrowdControlTimer = 0.f;
 
 	Vector2f hitBoxSize;
 	FloatRect hitBox;
@@ -28,6 +28,7 @@ public:
 	void Updatehitbox();
 	void UpdatesenseBox();
 	void CrowdControlUpdate(float deltaTime);
+	void SetCrowdControlTimer(float time);
 
 
 	FloatRect& GetSenseBox();
