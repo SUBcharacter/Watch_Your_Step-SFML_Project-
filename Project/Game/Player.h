@@ -18,7 +18,7 @@ public:
 	Player();
 	float velocityY = 0.f;
 	bool IsOnGround = false;
-	float velocityY = 0.f;
+
 
 	void SetPlayerPos(float x,float y);
 

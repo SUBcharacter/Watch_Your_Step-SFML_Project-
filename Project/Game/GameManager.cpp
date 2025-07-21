@@ -6,35 +6,29 @@ GameManager::GameManager(const string& texturePath, PlatformType type, Vector2f 
 	switch (type)
 	{
 	case STATIC :
-		allPlatform.push_back(new Platform("das", type, pos, left, top, width, height));
+		allPlatform.push_back(new Platform(texturePath, type, pos, left, top, width, height));
 		break;
 	case JUMP :
-		JumpForceLevel Lv;
-		switch (Lv)
-		{
-		case ONE:
-			allPlatform.push_back(new JumpPlatform(texturePath, type, pos,left,top,width,height,200));
-			break;
-
-		case TWO:
-			allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 400));
-			break;
-
-		case THREE:
-			allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 600));
-			break;
-
-		case FOUR:
-			allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 800));
-			break;
-
-		case FIVE:
-			allPlatform.push_back(new JumpPlatform(texturePath,type, pos, left, top, width, height, 1000));
-			break;
-		default:
-			break;
-		}
-	
+			if (jumpForce >= 600 && jumpForce < 1200)
+			{
+				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 600));
+			}
+			else if (jumpForce >= 1200 && jumpForce < 1800)
+			{
+				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 1200));
+			}
+			else if (jumpForce >= 1800 && jumpForce < 2400)
+			{
+				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 1800));
+			}
+			else if (jumpForce >= 2400 && jumpForce < 3000)
+			{
+				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 2400));
+			}
+			else if (jumpForce >= 3000)
+			{
+				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 3000));
+			}
 		break;
 	case MOVING: 
 		allPlatform.push_back(new MovingPlatform(texturePath,type,pos, left, top, width, height,mr,speed,dir));
@@ -44,34 +38,45 @@ GameManager::GameManager(const string& texturePath, PlatformType type, Vector2f 
 	}
 }
 
-vector<GameManager*> GameManager::LoadPlatformsFromTXT(const std::string& filepath, Player& player)
+vector<GameManager*> GameManager::LoadPlatformsFromJSON(const std::string& filepath)
 {
-	vector<GameManager*> loadfile;
+	vector<GameManager*> platforms;
 	ifstream file(filepath);
-	string line;
+	if (!file.is_open())
+	{
+		cout << " 파일을 열 수 없습니다 " << endl;
+		return platforms;
+	}
+	json Data;
+	file >> Data;
 
-	while (getline(file, line)) {
-		stringstream ss(line);
-		string texturePath, typestr;
-		float x, y;
-		int left, top, width, height;
-		float jumpForce = 0.0f, moveRange = 0.0f, moveSpeed = 0.0f;
-		int direction = 0;
-
-		ss >> texturePath >> typestr >> x >> y>> left >> top >> width >> height >> jumpForce >> moveRange >> moveSpeed >> direction;
+	for (const auto& informa : Data)
+	{
+		string texturePath = informa["texturePath"];
+		string typestr = informa["type"];
+		float x = informa["x"];
+		float y = informa["y"];
+		int left = informa["left"];
+		int top = informa["top"];
+		int width = informa["width"];
+		int height = informa["height"];
+		float jumpForce = informa.value("jumpForce", 0.0f);
+		float mr = informa.value("moveRange", 0.0f);
+		float speed = informa.value("moveSpeed", 0.0f);
+		int direction = informa.value("direction", 0);
 
 		PlatformType type = StringtoPlatformType(typestr);
 
-		GameManager* gm = new GameManager(
-			texturePath, type,Vector2f(x, y),
+		GameManager* gamemanager = new GameManager(
+			texturePath, type, Vector2f(x, y),
 			left, top, width, height,
-			jumpForce, moveRange, moveSpeed, direction
+			jumpForce, mr, speed, direction
 		);
 
-		loadfile.push_back(gm);
+		platforms.push_back(gamemanager);
 	}
 
-	return loadfile;
+	return platforms;
 }
 
 
@@ -92,8 +97,8 @@ void GameManager::Update(PlatformType type, float deltaTime)
 		MovingPlatform* MovePlatForm = dynamic_cast<MovingPlatform*>(p);
 		if (MovePlatForm)
 		{
-			grid.UnregisterPlatform(MovePlatForm);
 			MovePlatForm->Update(deltaTime);
+			grid.UnregisterPlatform(MovePlatForm);
 			grid.RegisterPlatform(MovePlatForm);
 		}
 		else
@@ -127,7 +132,7 @@ PlatformType  GameManager::StringtoPlatformType(const std::string& typestring)
 	{
 		return JUMP;
 	}
-	else if (typestring == "MOVING");
+	else if (typestring == "MOVING")
 	{
 		return MOVING;
 	}
