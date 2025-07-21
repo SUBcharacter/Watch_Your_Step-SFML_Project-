@@ -17,7 +17,7 @@ Player::Player(const string& texturePath, Vector2f pos, int left, int top, int w
 	sprite.setTextureRect(rectI);
 	sprite.setOrigin({ rectF.size.x / 2.f,rectF.size.y / 2.f });
 	hitBoxSize = rectF.size;
-	senceBoxSize = { 96.f, 80.f };
+	senceBoxSize = {300.f, 300.f };
 
 	SetPlayerPos(pos);
 
@@ -142,13 +142,13 @@ void Player::Move(float deltaTime)
 	}
 	
 
-	if (Keyboard::isKeyPressed(Keyboard::Scan::A) && sprite.getPosition().x > 0)
+	if (Keyboard::isKeyPressed(Keyboard::Scan::A) && sprite.getPosition().x > 900)
 	{
 		sprite.move({ -200.0f * deltaTime ,0.0f });
 		sprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
 		sprite.setScale({ -1.0f, 1.0f });
 	}
-	if (Keyboard::isKeyPressed(Keyboard::Scan::D) && sprite.getPosition().x < 600)
+	if (Keyboard::isKeyPressed(Keyboard::Scan::D) && sprite.getPosition().x < 2400)
 	{
 		sprite.move({ 200.0f * deltaTime ,0.0f });
 		sprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
