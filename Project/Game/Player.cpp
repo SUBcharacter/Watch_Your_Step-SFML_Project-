@@ -1,53 +1,79 @@
 #include "Player.h"
 
-Player::Player() : playerSprite(playerTexture)
+Player::Player(const string& texturePath, Vector2f pos, int left, int top, int width, int height) : sprite(texture)
 {
-	if (!playerTexture.loadFromFile("Assets/player.png"))
+	if (!texture.loadFromFile("Assets/player.png"))
 	{
 		cerr << "에러 : player 스프라이트 찾을 수 없음." << endl;
 		return;
 	}
-	playerSprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
-	playerSprite.setOrigin({ 25.f,25.f });
-	playerSprite.setPosition({ 300.f,500.f });
+	IntRect rectI = { {left,top},{width,height} };
+	FloatRect rectF =
+	{
+	  {static_cast<Vector2f>(rectI.position)},
+	  { static_cast<Vector2f>(rectI.size)}
+	};
 
-	Updatehitbox();
-	UpdatesenseBox();
+	sprite.setTextureRect(rectI);
+	sprite.setOrigin({ rectF.size.x / 2.f,rectF.size.y / 2.f });
+	hitBoxSize = rectF.size;
+	senceBoxSize = {300.f, 300.f };
+
+	SetPlayerPos(pos);
 
 }
 
-void Player::SetPlayerPos(float x, float y)
+void Player::Update(float deltaTime)
 {
-	playerSprite.setPosition({ x,y });
+	Move(deltaTime);
+	CrowdControlUpdate(deltaTime);
+}
+
+void Player::SetPlayerPos(Vector2f pos)
+{
+	sprite.setPosition(pos);
 	Updatehitbox();
 	UpdatesenseBox();
 }
 
 void Player::Updatehitbox()
 {
-	Vector2f spritepos = playerSprite.getPosition();
-	Vector2f hitboxsize(30.f, 30.f);
-	Vector2f hitboxPos = spritepos - (hitboxsize / 2.f);
+	Vector2f worldPos = sprite.getPosition();
+	Vector2f origin = sprite.getOrigin();
+	Vector2f criteria = worldPos - origin;
 
-	hitBox.position.x = hitboxPos.x;
-	hitBox.position.y = hitboxPos.y;
-	hitBox.size.x = hitboxPos.x;
-	hitBox.size.y = hitboxPos.y;
+	hitBox = { criteria , hitBoxSize };
 }
 
 void Player::UpdatesenseBox()
 {
-	Vector2f spritespos = playerSprite.getPosition();
-	Vector2f size(96.f, 80.f);
-	Vector2f offset(-48.f, -40.f); 
-	Vector2f topLeft = spritespos + offset;
+	Vector2f worldPos = sprite.getPosition(); 
+	Vector2f criteria = worldPos - (senceBoxSize/2.f);
 
-	senseBox = FloatRect(spritespos,offset);
+	senceBox = { criteria, senceBoxSize };
+}
+
+void Player::CrowdControlUpdate(float deltaTime)
+{
+	if (CrowdControl)
+	{
+		CrowdControlTimer -= deltaTime;
+		if (CrowdControlTimer <= 0.f)
+		{
+			CrowdControl = false;
+		}
+	}
+	
+}
+
+void Player::SetCrowdControlTimer(float time)
+{
+	CrowdControlTimer = time;
 }
 
 void Player::Draw(RenderWindow& window)
 {
-	window.draw(playerSprite);
+	window.draw(sprite);
 }
 
 // 인식 범위에 있는 맵 좌표를 그리드 좌표로 반환하는 함수
@@ -55,10 +81,10 @@ vector<pair<int, int>> Player::GetnearGridcells()
 {
 	vector<pair<int, int>> neargirdcells;
 
-	float left = senseBox.position.x;
-	float top = senseBox.position.y;
-	float right = senseBox.position.x + senseBox.size.x;
-	float bottom = senseBox.position.y + senseBox.size.y;
+	float left = senceBox.position.x;
+	float top = senceBox.position.y;
+	float right = senceBox.position.x + senceBox.size.x;
+	float bottom = senceBox.position.y + senceBox.size.y;
 
 	float cellsize = 100.f;
 
@@ -79,11 +105,11 @@ vector<pair<int, int>> Player::GetnearGridcells()
 
 FloatRect& Player::GetSenseBox()
 {
-	return senseBox;
+	return senceBox;
 }
 Vector2f Player::GetPlayerPos()
 {
-	return playerSprite.getPosition();
+	return sprite.getPosition();
 }
 
 FloatRect& Player::GetHitBox()
@@ -94,7 +120,7 @@ FloatRect& Player::GetHitBox()
 void Player::Move(float deltaTime)
 {
 
-	bool jumpKey = Keyboard::isKeyPressed(Keyboard::Scan::W);
+	bool jumpKey = Keyboard::isKeyPressed(Keyboard::Scan::Space);
 
 	if (jumpKey)
 	{
@@ -109,20 +135,25 @@ void Player::Move(float deltaTime)
 	if (!IsOnGround)
 	{
 		velocityY += GRAVITY * deltaTime;
-		playerSprite.move({ 0.0f, velocityY * deltaTime });
+		sprite.move({ 0.0f, velocityY * deltaTime });
 	}
+	else
+	{
+		velocityY = 0.f;
+	}
+	
 
-	if (Keyboard::isKeyPressed(Keyboard::Scan::A) && playerSprite.getPosition().x > 0)
+	if (Keyboard::isKeyPressed(Keyboard::Scan::Left) && sprite.getPosition().x > 900)
 	{
-		playerSprite.move({ -200.0f * deltaTime ,0.0f });
-		playerSprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
-		playerSprite.setScale({ -1.0f, 1.0f });
+		sprite.move({ -200.0f * deltaTime ,0.0f });
+		sprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
+		sprite.setScale({ -1.0f, 1.0f });
 	}
-	if (Keyboard::isKeyPressed(Keyboard::Scan::D) && playerSprite.getPosition().x < 600)
+	if (Keyboard::isKeyPressed(Keyboard::Scan::Right) && sprite.getPosition().x < 1700)
 	{
-		playerSprite.move({ 200.0f * deltaTime ,0.0f });
-		playerSprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
-		playerSprite.setScale({ 1.0f, 1.0f });
+		sprite.move({ 200.0f * deltaTime ,0.0f });
+		sprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
+		sprite.setScale({ 1.0f, 1.0f });
 
 	}
 

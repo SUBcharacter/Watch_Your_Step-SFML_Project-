@@ -1,5 +1,6 @@
 #include "GameManager.h"
 
+
 GameManager::GameManager(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height , float jumpForce, float mr, float speed, int dir) : player(player), grid(100.f), collider(player)
 {
 	
@@ -43,7 +44,7 @@ void GameManager::LoadPlatformsFromJSON(const std::string& filepath)
 	ifstream file(filepath);
 	if (!file.is_open())
 	{
-		cout << " ÆÄÀÏÀ» ¿­ ¼ö ¾ø½À´Ï´Ù " << endl;
+		cout << " ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ " << endl;
 	}
 	json Data;
 	file >> Data;
@@ -163,3 +164,4 @@ PlatformType  GameManager::StringtoPlatformType(const std::string& typestring)
 		return MOVING;
 	}
 }
+
