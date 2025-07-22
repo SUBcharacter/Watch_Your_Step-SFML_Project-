@@ -39,12 +39,12 @@ class JumpPlatform : public Platform
 {
 private:
 	bool isActive;
-	float ignoreTimer; // ¹«½Ã Å¸ÀÌ¸Ó
-	float ignoreDuration; // ¹«½Ã Áö¼Ó ½Ã°£(ÃÊ)
+	float ignoreTimer; // å…¬çŸ« é¸¥æèµ£
+	float ignoreDuration; // å…¬çŸ« ç˜¤åŠ  çŸ«åŸƒ(æª¬)
 	float jumpForce;
 
 public:
-	JumpPlatform(const string& texturePath, Vector2f pos, int left, int top, int width, int height, float jumpForce);
+	JumpPlatform(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height, float jumpForce);
 
 	void Update(float deltaTime) override;
 
@@ -62,8 +62,9 @@ private:
 	Vector2f prevPos;
 
 public:
-	MovingPlatform(const string& texturePath, Vector2f pos, int left, int top, int width, int height,
-		float mr, float speed, int dir, Player& player);
+	MovingPlatform(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height,
+		float mr, float speed, int dir);
+
 
 	void Update(float deltaTime) override;
 

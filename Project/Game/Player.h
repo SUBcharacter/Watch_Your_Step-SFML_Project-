@@ -4,17 +4,18 @@
 class Player
 {
 private:
-	FloatRect player;
-	Texture playerTexture;
-	Sprite playerSprite;
+	Texture texture;
+	Sprite sprite;
 
 	const float GRAVITY = 900.f;
-	float groundY = 500.f;
-	
+	float CrowdControlTimer = 0.f;
+
+	Vector2f hitBoxSize;
 	FloatRect hitBox;
+
 	FloatRect senseBox;
 
-	enum class PlayerState // »óÅÂ CJH
+	enum class PlayerState // ï¿½ï¿½ï¿½ï¿½ CJH
 	{
 		Idle,
 		R_Running,
@@ -22,21 +23,30 @@ private:
 		Jumping
 	};
 
-	PlayerState currentState = PlayerState::Idle; // ÇöÀç »óÅÂ º¯¼ö CJH
+	PlayerState currentState = PlayerState::Idle; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ CJH
+
+	Vector2f senceBoxSize;
+	FloatRect senceBox;
+
   
 public:
-	Player();
+	Player(const string& texturePath, Vector2f pos,int left, int top, int width, int height);
 	float velocityY = 0.f;
 	bool IsOnGround = false;
-	float velocityY = 0.f;
+	bool CrowdControl = false;
+	
+	void Update(float deltaTime);
 
-	void SetPlayerPos(float x,float y);
+	void SetPlayerPos(Vector2f pos);
 
 	void Updatehitbox();
 	void UpdatesenseBox();
+	void CrowdControlUpdate(float deltaTime);
+	void SetCrowdControlTimer(float time);
 
-	void UpdateAnimation(); // »óÅÂ¿¡ µû¸¥ ¾Ö´Ï¸ÞÀÌ¼Ç Ã³¸® CJH
-	void UpdateState(); // ÇöÀç »óÅÂ °áÁ¤ CJH
+
+	void UpdateAnimation(); // ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ Ã³ï¿½ï¿½ CJH
+	void UpdateState(); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ CJH
 
 	FloatRect& GetSenseBox();
 	vector<pair<int, int>> GetnearGridcells();

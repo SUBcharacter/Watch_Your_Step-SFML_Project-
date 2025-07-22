@@ -33,9 +33,18 @@ CollideDir Collider::CollidingDirection(const FloatRect& player, const FloatRect
 
 void Collider::Collider2D(vector<Platform*> nearPlatform)
 {
+    if (player.CrowdControl)
+    {
+        return;
+    }
+
+    player.IsOnGround = false;
     for (Platform* p : nearPlatform)
     {
         if (!p)
+            continue;
+
+        if (player.CrowdControl && p->GetType() != JUMP)
             continue;
 
         FloatRect playerHB = player.GetHitBox();
