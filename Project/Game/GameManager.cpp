@@ -38,14 +38,12 @@ GameManager::GameManager(const string& texturePath, PlatformType type, Vector2f 
 	}
 }
 
-vector<GameManager*> GameManager::LoadPlatformsFromJSON(const std::string& filepath)
+void GameManager::LoadPlatformsFromJSON(const std::string& filepath)
 {
-	vector<GameManager*> platforms;
 	ifstream file(filepath);
 	if (!file.is_open())
 	{
 		cout << " 파일을 열 수 없습니다 " << endl;
-		return platforms;
 	}
 	json Data;
 	file >> Data;
@@ -54,29 +52,57 @@ vector<GameManager*> GameManager::LoadPlatformsFromJSON(const std::string& filep
 	{
 		string texturePath = informa["texturePath"];
 		string typestr = informa["type"];
+		PlatformType type = StringtoPlatformType(typestr);
 		float x = informa["x"];
 		float y = informa["y"];
+		Vector2f pos = { x,y };
 		int left = informa["left"];
 		int top = informa["top"];
 		int width = informa["width"];
 		int height = informa["height"];
-		float jumpForce = informa.value("jumpForce", 0.0f);
-		float mr = informa.value("moveRange", 0.0f);
-		float speed = informa.value("moveSpeed", 0.0f);
-		int direction = informa.value("direction", 0);
 
-		PlatformType type = StringtoPlatformType(typestr);
-
-		GameManager* gamemanager = new GameManager(
-			texturePath, type, Vector2f(x, y),
-			left, top, width, height,
-			jumpForce, mr, speed, direction
-		);
-
-		platforms.push_back(gamemanager);
+		switch (type)
+		{
+		case STATIC:
+			allPlatform.push_back(new Platform(texturePath, type, pos, left, top, width, height));
+			break;
+		case JUMP:
+			float jumpForce = informa.value("jumpForce", 0.0f);
+			if (jumpForce >= 600 && jumpForce < 1200)
+			{
+				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 600));
+			}
+			else if (jumpForce >= 1200 && jumpForce < 1800)
+			{
+				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 1200));
+			}
+			else if (jumpForce >= 1800 && jumpForce < 2400)
+			{
+				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 1800));
+			}
+			else if (jumpForce >= 2400 && jumpForce < 3000)
+			{
+				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 2400));
+			}
+			else if (jumpForce >= 3000)
+			{
+				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 3000));
+			}
+			break;
+		case MOVING:
+			float mr = informa.value("moveRange", 0.0f);
+			float speed = informa.value("moveSpeed", 0.0f);
+			int dir = informa.value("direction", 0);
+			allPlatform.push_back(new MovingPlatform(texturePath, type, pos, left, top, width, height, mr, speed, dir));
+			break;
+		default:
+			break;
+		}
+	
+	
 	}
 
-	return platforms;
+	
 }
 
 

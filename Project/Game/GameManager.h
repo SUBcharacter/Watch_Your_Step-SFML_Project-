@@ -19,7 +19,7 @@ private:
 
 public:
 	GameManager(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height , float jumpForce, float mr, float speed, int dir);
-	vector<GameManager*> LoadPlatformsFromJSON(const std::string& filepath);
+	void LoadPlatformsFromJSON(const std::string& filepath);
 	void Init();
 	void Update(PlatformType type,float deltaTime);
 	void Draw(RenderWindow& window);
