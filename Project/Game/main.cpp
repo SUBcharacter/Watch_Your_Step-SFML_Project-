@@ -4,21 +4,39 @@
 
 int main()
 {
-	RenderWindow window(VideoMode({ 800, 600 }), "Test");
+	RenderWindow window(VideoMode({ 800,600 }), "Test");
 	window.setFramerateLimit(100);
 
 	Clock clock;
 
-	Player player("Assets/player.png", { 1000,100 }, 0, 0, 50, 50);  // 플레이 영역 {x : 900 ~ 1700, y = 0 ~ 40000}
+	Player player("Assets/player.png", { 1000,100 }, 0, 0, 40, 40);  // 플레이 영역 {x : 900 ~ 1700, y = 0 ~ 40000}
 	vector<Platform*> platform;
-	platform.push_back(new Platform("Assets/platform.png", STATIC, { 1000,200 }, 0, 0, 200, 40));
-	platform.push_back(new Platform("Assets/platform.png", STATIC, { 1300,350 }, 0, 0, 200, 40));
-	platform.push_back(new Platform("Assets/platform.png", STATIC, { 1000,500 }, 0, 0, 200, 40));
-	platform.push_back(new MovingPlatform("Assets/platform.png", MOVING, {1300, 600 }, 0, 0, 50, 40,800,100,1));
-	platform.push_back(new JumpPlatform("Assets/platform.png", JUMP, { 1000,800 }, 0, 0, 200, 40, 3000.f));
-	platform.push_back(new Platform("Assets/platform.png", STATIC, { 1300,700 }, 0, 0, 200, 40));
-	platform.push_back(new JumpPlatform("Assets/platform.png", JUMP, {1500,800 }, 0, 0, 200, 40, 600.f));
-	platform.push_back(new JumpPlatform("Assets/platform.png", JUMP, {1300,10000 }, 0, 0, 800, 40, 3000.f));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1025,200 }, 0, 0, 250, 25));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1480,375 }, 0, 0, 300, 25));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1000, 625 }, 0, 0, 200, 25));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1220, 625 }, 370, 0, 60, 25,600.f));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1670, 525 }, 370, 0, 60, 25,600.f));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1200, 875 }, 0, 0, 200, 25));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1025 , 1200 }, 0, 0, 250, 25));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1005, 1050 }, 370, 0, 60, 25, 1800.f));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1530, 1070 }, 260, 0, 280, 25, 1200.f));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1340, 1120 }, 370, 0, 60, 25, 1200.f));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1540 , 1300 }, 0, 0, 140, 25));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1320 , 1500 }, 0, 0, 190, 25));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1010 , 1590 }, 0, 0, 90, 25));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1430, 1400 }, 370, 0, 60, 25, 1200.f));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1065, 1870 }, 370, 0, 60, 25, 1800.f));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1100 , 1990 }, 0, 0, 400, 25));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1320 , 1940 }, 0, 0, 50, 25));
+	platform.push_back(new MovingPlatform("Assets/platform_static.png", MOVING, { 1450 , 1890 }, 0, 0, 50, 25,150,100.f,1));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1320 , 1840 }, 0, 0, 50, 25));
+	platform.push_back(new MovingPlatform("Assets/platform_static.png", MOVING, { 1450 , 1790 }, 0, 0, 50, 25, 120, 100.f, 1));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1450, 1990 }, 250, 0, 300, 25, 1800.f));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1585, 1890 }, 365, 0, 70, 25, 1200.f));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1655, 1590 }, 370, 0, 60, 25, 1800.f));
+
+
+	
 	
 	Grid grid(100);
 	Collider collider(player);
@@ -35,7 +53,7 @@ int main()
 				window.close();
 			}
 		}
-		window.clear();
+		window.clear(Color::White);
 		for (Platform* p : platform)
 		{
 			p->Update(deltaTime);
