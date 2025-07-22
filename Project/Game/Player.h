@@ -12,8 +12,22 @@ private:
 
 	Vector2f hitBoxSize;
 	FloatRect hitBox;
+
+	FloatRect senseBox;
+
+	enum class PlayerState // ���� CJH
+	{
+		Idle,
+		R_Running,
+		L_Running,
+		Jumping
+	};
+
+	PlayerState currentState = PlayerState::Idle; // ���� ���� ���� CJH
+
 	Vector2f senceBoxSize;
 	FloatRect senceBox;
+
   
 public:
 	Player(const string& texturePath, Vector2f pos,int left, int top, int width, int height);
@@ -30,6 +44,9 @@ public:
 	void CrowdControlUpdate(float deltaTime);
 	void SetCrowdControlTimer(float time);
 
+
+	void UpdateAnimation(); // ���¿� ���� �ִϸ��̼� ó�� CJH
+	void UpdateState(); // ���� ���� ���� CJH
 
 	FloatRect& GetSenseBox();
 	vector<pair<int, int>> GetnearGridcells();

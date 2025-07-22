@@ -71,6 +71,31 @@ void Player::SetCrowdControlTimer(float time)
 	CrowdControlTimer = time;
 }
 
+void Player::UpdateAnimation()
+{
+
+}
+
+void Player::UpdateState()
+{
+	if (!IsOnGround) // 점프할 때
+	{
+		currentState = PlayerState::Jumping;
+	}
+	else if (Keyboard::isKeyPressed(Keyboard::Scan::A) && playerSprite.getPosition().x > 0) // 왼쪽 키 누를 때
+	{
+		currentState = PlayerState::L_Running;
+	}
+	else if (Keyboard::isKeyPressed(Keyboard::Scan::D) && playerSprite.getPosition().x < 600) // 오른쪽 키 누를 때
+	{
+		currentState = PlayerState::R_Running;
+	}
+	else // 아무것도 안 할 때
+	{
+		currentState = PlayerState::Idle;
+	}
+}
+
 void Player::Draw(RenderWindow& window)
 {
 	window.draw(sprite);
