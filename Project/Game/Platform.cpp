@@ -18,7 +18,7 @@ Platform::Platform(const string& texturePath, PlatformType type, Vector2f pos, i
 	};
 	sprite.setTextureRect(rectI);
 	sprite.setOrigin({ rectF.size.x / 2.f, rectF.size.y / 2.f });
-	hitBoxSize = static_cast<Vector2f>(rectI.size);
+	hitBoxSize = rectF.size;
 	SetPosition(pos);
 }
 
@@ -66,26 +66,19 @@ void Platform::OnCollide(Player& p, CollideDir dir)
 	switch (dir)
 	{
 	case TOP:
-		p.SetPlayerPos(p.GetPlayerPos().x, platformHB.position.y - (playerHB.size.y / 2));
+		p.SetPlayerPos({ p.GetPlayerPos().x, platformHB.position.y - (playerHB.size.y / 2) });
 		p.IsOnGround = true;
 		break;
-	case LEFT_SIDE:
-		p.SetPlayerPos(platformHB.position.x - (playerHB.size.x / 2),p.GetPlayerPos().y);
-		break;
-	case RIGHT_SIDE:
-		p.SetPlayerPos(platformHB.position.x + (playerHB.size.x / 2), p.GetPlayerPos().y);
-		break;
-	case UNDER:
-		p.SetPlayerPos(p.GetPlayerPos().x, platformHB.position.y + (playerHB.size.y / 2));
-		break;
+	default:
+		p.IsOnGround = false;
 	}
 }
 
-JumpPlatform::JumpPlatform(const string& texturePath, Vector2f pos, int left, int top, int width, int height, float jumpForce)
+JumpPlatform::JumpPlatform(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height, float jumpForce)
 	: Platform(texturePath, type, pos, left, top, width, height), jumpForce(jumpForce)
 {
 	isActive = true;
-	ignoreDuration = 1.0f;
+	ignoreDuration = 0.01f;
 	ignoreTimer = 0.0f;
 }
 
@@ -107,12 +100,38 @@ void JumpPlatform::OnCollide(Player& p, CollideDir dir)
 	if (!isActive)
 		return;
 
-	p.velocityY -= jumpForce;
+	if (jumpForce >= 3000.f)
+	{
+		p.CrowdControl = true;
+		p.SetCrowdControlTimer(1.5f);
+	}
+	else if (jumpForce >= 2400.f)
+	{
+		p.CrowdControl = true;
+		p.SetCrowdControlTimer(1.25f);
+	}
+	else if (jumpForce >= 1800.f)
+	{
+		p.CrowdControl = true;
+		p.SetCrowdControlTimer(1.f);
+	}
+	else if (jumpForce >= 1200.f)
+	{
+		p.CrowdControl = true;
+		p.SetCrowdControlTimer(0.75f);
+	}
+	else
+	{
+		p.CrowdControl = true;
+		p.SetCrowdControlTimer(0.5f);
+	}
+	
+	p.velocityY -= jumpForce + p.velocityY;
 	isActive = false;
 	ignoreTimer = 0.f;
 }
 
-MovingPlatform::MovingPlatform(const string& texturePath, Vector2f pos, int left, int top, int width, int height, float mr, float speed, int dir, Player& player)
+MovingPlatform::MovingPlatform(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height, float mr, float speed, int dir)
 	: Platform(texturePath, type, pos, left, top, width, height), moveRange(mr), speed(speed), direction(dir)
 {
 	startPos = pos;
@@ -127,8 +146,8 @@ void MovingPlatform::Update(float deltaTime)
 	Vector2f newPos = GetPosition();
 	newPos.x += movement;
 
-	float leftBound = startPos.x - moveRange;
-	float rightBound = startPos.x + moveRange;
+	float leftBound = startPos.x - moveRange/2.f;
+	float rightBound = startPos.x + moveRange/2.f;
 
 	if (newPos.x < leftBound)
 	{
@@ -149,22 +168,16 @@ void MovingPlatform::OnCollide(Player& p, CollideDir dir)
 	FloatRect playerHB = p.GetHitBox();
 	FloatRect platformHB = this->GetHitBox();
 
+	Vector2f delta = GetPosition() - prevPos;
+	Vector2f newPlayerPos = p.GetPlayerPos();
 	switch (dir)
 	{
 	case TOP:
-		Vector2f delta = GetPosition() - prevPos;
-		Vector2f newPlayerPos = p.GetPlayerPos();
-		newPlayerPos.x += delta.x;
-		p.SetPlayerPos(newPlayerPos.x, platformHB.position.y - (playerHB.size.y / 2));
+		newPlayerPos.x += delta.x * 2;
+		p.SetPlayerPos({ newPlayerPos.x, platformHB.position.y - (playerHB.size.y / 2) });
+		p.IsOnGround = true;
 		break;
-	case LEFT_SIDE:
-		p.SetPlayerPos(platformHB.position.x - (playerHB.size.x / 2), p.GetPlayerPos().y);
-		break;
-	case RIGHT_SIDE:
-		p.SetPlayerPos(platformHB.position.x + (playerHB.size.x / 2), p.GetPlayerPos().y);
-		break;
-	case UNDER:
-		p.SetPlayerPos(p.GetPlayerPos().x, platformHB.position.y + (playerHB.size.y / 2));
-		break;
+	default:
+		p.IsOnGround = false;
 	}
 }
