@@ -126,7 +126,7 @@ void Player::Move(float deltaTime)
 	{
 		if (IsOnGround)
 		{
-			velocityY = -350.f;
+			velocityY = -300.f;
 			IsOnGround = false;
 		}
 
