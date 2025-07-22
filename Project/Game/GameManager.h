@@ -23,6 +23,8 @@ public:
 	void Init();
 	void Update(PlatformType type,float deltaTime);
 	void Draw(RenderWindow& window);
-	PlatformType StringtoPlatformType(const std::string& typestring);
+	PlatformType StringtoPlatformType(const string& typestring);
+	JumpForceLevel StringtoJumpForceLevel(const string& Levelstring);
+	float GetJumpForce(JumpForceLevel level);
 };
 
