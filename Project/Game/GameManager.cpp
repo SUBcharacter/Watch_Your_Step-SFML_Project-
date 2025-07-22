@@ -3,57 +3,29 @@
 
 GameManager::GameManager(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height , float jumpForce, float mr, float speed, int dir) : player(player), grid(100.f), collider(player)
 {
-	
-	switch (type)
-	{
-	case STATIC :
-		allPlatform.push_back(new Platform(texturePath, type, pos, left, top, width, height));
-		break;
-	case JUMP :
-			if (jumpForce >= 600 && jumpForce < 1200)
-			{
-				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 600));
-			}
-			else if (jumpForce >= 1200 && jumpForce < 1800)
-			{
-				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 1200));
-			}
-			else if (jumpForce >= 1800 && jumpForce < 2400)
-			{
-				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 1800));
-			}
-			else if (jumpForce >= 2400 && jumpForce < 3000)
-			{
-				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 2400));
-			}
-			else if (jumpForce >= 3000)
-			{
-				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 3000));
-			}
-		break;
-	case MOVING: 
-		allPlatform.push_back(new MovingPlatform(texturePath,type,pos, left, top, width, height,mr,speed,dir));
-		break;
-	default:
-		break;
-	}
 }
 
 void GameManager::LoadPlatformsFromJSON(const std::string& filepath)
 {
+
+	allPlatform.reserve(104);
+
 	ifstream file(filepath);
 	if (!file.is_open())
 	{
-		cout << " ������ �� �� �����ϴ� " << endl;
+		cout << " File not found" << endl;
+		return;
 	}
 	json Data;
 	file >> Data;
-
+	
 	for (const auto& informa : Data)
 	{
 		string texturePath = informa["texturePath"];
 		string typestr = informa["type"];
+		string levelstr = informa["level"];
 		PlatformType type = StringtoPlatformType(typestr);
+		JumpForceLevel level = StringtoJumpForceLevel(levelstr);
 		float x = informa["x"];
 		float y = informa["y"];
 		Vector2f pos = { x,y };
@@ -68,28 +40,28 @@ void GameManager::LoadPlatformsFromJSON(const std::string& filepath)
 			allPlatform.push_back(new Platform(texturePath, type, pos, left, top, width, height));
 			break;
 		case JUMP:
-			float jumpForce = informa.value("jumpForce", 0.0f);
-			if (jumpForce >= 600 && jumpForce < 1200)
+
+			float jumpForce = GetJumpForce(level);
+			switch (level)
 			{
-				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 600));
+			case ONE:
+				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, jumpForce));
+				break;
+			case TWO:
+				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, jumpForce));
+				break;
+			case THREE:
+				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, jumpForce));
+				break;
+			case FOUR:
+				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, jumpForce));
+				break;
+			case FIVE:
+				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, jumpForce));
+				break;
+			default:
+				break;
 			}
-			else if (jumpForce >= 1200 && jumpForce < 1800)
-			{
-				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 1200));
-			}
-			else if (jumpForce >= 1800 && jumpForce < 2400)
-			{
-				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 1800));
-			}
-			else if (jumpForce >= 2400 && jumpForce < 3000)
-			{
-				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 2400));
-			}
-			else if (jumpForce >= 3000)
-			{
-				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, 3000));
-			}
-			break;
 		case MOVING:
 			float mr = informa.value("moveRange", 0.0f);
 			float speed = informa.value("moveSpeed", 0.0f);
@@ -105,7 +77,6 @@ void GameManager::LoadPlatformsFromJSON(const std::string& filepath)
 
 	
 }
-
 
 void GameManager::Init()
 {
@@ -149,7 +120,7 @@ void GameManager::Draw(RenderWindow& window)
 	player.Draw(window);
 	}
 
-PlatformType  GameManager::StringtoPlatformType(const std::string& typestring)
+PlatformType  GameManager::StringtoPlatformType(const string& typestring)
 {
 	if (typestring == "STATIC")
 	{
@@ -163,5 +134,34 @@ PlatformType  GameManager::StringtoPlatformType(const std::string& typestring)
 	{
 		return MOVING;
 	}
+}
+
+JumpForceLevel GameManager::StringtoJumpForceLevel(const string& Levelstring)
+{
+	if (Levelstring == "ONE")
+	{
+		return ONE;
+	}
+	else if (Levelstring == "TWO")
+	{
+		return TWO;
+	}
+	else if (Levelstring == "THREE")
+	{
+		return THREE;
+	}
+	else if (Levelstring == "FOUR")
+	{
+		return FOUR;
+	}
+	else if (Levelstring == "FIVE")
+	{
+		return FIVE;
+	}
+}
+
+float GameManager::GetJumpForce(JumpForceLevel level)
+{
+	return (static_cast<float>(level) + 1) * 600;
 }
 
