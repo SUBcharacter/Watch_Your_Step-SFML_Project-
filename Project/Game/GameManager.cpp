@@ -162,6 +162,6 @@ JumpForceLevel GameManager::StringtoJumpForceLevel(const string& Levelstring)
 
 float GameManager::GetJumpForce(JumpForceLevel level)
 {
-	return (static_cast<float>(level) + 1) * 600;
+	return (static_cast<float>(level) + 1.f) * 600.f;
 }
 
