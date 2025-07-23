@@ -34,10 +34,37 @@ int main()
 	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1450, 1990 }, 250, 0, 300, 25, 1800.f));
 	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1585, 1890 }, 365, 0, 70, 25, 1200.f));
 	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1655, 1590 }, 370, 0, 60, 25, 1800.f));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1650 , 2140 }, 0, 0, 100, 25));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1610, 2190 }, 310, 0, 180, 25, 1800.f));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1340, 2290 }, 370, 0, 60, 25, 600.f));
+	platform.push_back(new MovingPlatform("Assets/platform_static.png", MOVING, { 1535 , 2390 }, 0, 0, 50, 25, 200, 100.f, 1));
+	platform.push_back(new MovingPlatform("Assets/platform_static.png", MOVING, { 1080 , 2240 }, 0, 0, 50, 25, 200, 100.f, -1));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1590 , 2640 }, 0, 0, 220, 25));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1240, 2640 }, 160, 0, 480, 25, 1800.f));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1030, 2390 }, 370, 0, 60, 25, 2400.f));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1030, 2515 }, 370, 0, 60, 25, 1200.f));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1410 , 2590 }, 0, 0, 80, 20));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1310 , 2530 }, 0, 0, 80, 20));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1210 , 2470 }, 0, 0, 80, 20));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1310 , 2410 }, 0, 0, 80, 20));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1210 , 2350 }, 0, 0, 80, 20));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1410 , 2350 }, 0, 0, 80, 20));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1050, 3440 }, 0, 0, 300, 25));
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 1550 , 3440 }, 0, 0, 300, 25));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1110, 2760 }, 325, 0, 150, 25, 1800.f));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1380, 2880 }, 325, 0, 150, 25, 1800.f));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 975,  3000 }, 325, 0, 150, 25, 1800.f));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1560, 3100 }, 325, 0, 150, 25, 1800.f));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1240, 3200 }, 325, 0, 150, 25, 1800.f));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1110, 3310 }, 325, 0, 150, 25, 1800.f));
+	platform.push_back(new JumpPlatform("Assets/platform_jump.png", JUMP, { 1480, 3310 }, 325, 0, 150, 25, 1800.f));
+	platform.push_back(new MovingPlatform("Assets/platform_static.png", MOVING, { 1125 , 2830 }, 0, 0, 100, 20, 350, 100.f, 1));
+	platform.push_back(new MovingPlatform("Assets/platform_static.png", MOVING, { 1450 , 3030 }, 0, 0, 100, 20, 300, 100.f, -1));
+	platform.push_back(new MovingPlatform("Assets/platform_static.png", MOVING, { 1300 , 3355 }, 0, 0, 180, 20, 500, 120.f, 1));
 
 
-	
-	
+
+
 	Grid grid(100);
 	Collider collider(player);
 	Camera camera({ 800,600 });

@@ -181,7 +181,15 @@ void Player::Move(float deltaTime)
 		sprite.setScale({ 1.0f, 1.0f });
 
 	}
-
+	//if (Keyboard::isKeyPressed(Keyboard::Scan::Up))
+	//{
+	//	sprite.move({ 0.0f,  -200.f * deltaTime });
+	//}
+	//if (Keyboard::isKeyPressed(Keyboard::Scan::Down))
+	//{
+	//	sprite.move({ 0.0f,  200.f * deltaTime });
+	//}
+	cout <<"x:" << sprite.getPosition().x << " " << "y:" << sprite.getPosition().y << endl;
 	Updatehitbox();
 	UpdatesenseBox();
 }
