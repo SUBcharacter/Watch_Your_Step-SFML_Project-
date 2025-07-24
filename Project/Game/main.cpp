@@ -62,7 +62,7 @@ int main()
 	platform.push_back(new MovingPlatform("Assets/platform_static.png", MOVING, { 1450 , 3030 }, 0, 0, 100, 20, 300, 100.f, -1));
 	platform.push_back(new MovingPlatform("Assets/platform_static.png", MOVING, { 1300 , 3355 }, 0, 0, 180, 20, 500, 120.f, 1));
 
-
+	platform.push_back(new Platform("Assets/platform_static.png", STATIC, { 935 , 2760 }, 0, 0, 70, 25));
 
 
 	Grid grid(100);
