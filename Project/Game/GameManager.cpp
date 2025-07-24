@@ -5,6 +5,15 @@ GameManager::GameManager(const string& texturePath, PlatformType type, Vector2f 
 {
 }
 
+GameManager::~GameManager()
+{
+	for (Platform* allplatform : allPlatform)
+	{
+		delete allplatform;
+	}
+	allPlatform.clear();
+}
+
 void GameManager::LoadPlatformsFromJSON(const std::string& filepath)
 {
 
