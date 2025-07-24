@@ -18,7 +18,7 @@ private:
 	Texture texture;
 
 public:
-	GameManager(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height , float jumpForce, float mr, float speed, int dir);
+	GameManager();
 	~GameManager();
 	void LoadPlatformsFromJSON(const std::string& filepath);
 	void Init();
@@ -26,6 +26,8 @@ public:
 	void Draw(RenderWindow& window);
 	PlatformType StringtoPlatformType(const string& typestring);
 	JumpForceLevel StringtoJumpForceLevel(const string& Levelstring);
+	vector<Platform*>& Getallplatform();
+
 	float GetJumpForce(JumpForceLevel level);
 };
 

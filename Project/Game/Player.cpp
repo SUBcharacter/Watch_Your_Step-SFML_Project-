@@ -82,11 +82,11 @@ void Player::UpdateState()
 	{
 		currentState = PlayerState::Jumping;
 	}
-	else if (Keyboard::isKeyPressed(Keyboard::Scan::A) && playerSprite.getPosition().x > 0) // 왼쪽 키 누를 때
+	else if (Keyboard::isKeyPressed(Keyboard::Scan::A) && sprite.getPosition().x > 0) // 왼쪽 키 누를 때
 	{
 		currentState = PlayerState::L_Running;
 	}
-	else if (Keyboard::isKeyPressed(Keyboard::Scan::D) && playerSprite.getPosition().x < 600) // 오른쪽 키 누를 때
+	else if (Keyboard::isKeyPressed(Keyboard::Scan::D) && sprite.getPosition().x < 600) // 오른쪽 키 누를 때
 	{
 		currentState = PlayerState::R_Running;
 	}

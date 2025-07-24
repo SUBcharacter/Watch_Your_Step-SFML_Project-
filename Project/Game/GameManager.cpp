@@ -1,7 +1,7 @@
 #include "GameManager.h"
 
 
-GameManager::GameManager(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height , float jumpForce, float mr, float speed, int dir) : player(player), grid(100.f), collider(player)
+GameManager::GameManager() : player(player), grid(100.f), collider(player)
 {
 }
 
@@ -30,53 +30,54 @@ void GameManager::LoadPlatformsFromJSON(const std::string& filepath)
 	
 	for (const auto& informa : Data)
 	{
-		string texturePath = informa["texturePath"];
 		string typestr = informa["type"];
-		string levelstr = informa["level"];
 		PlatformType type = StringtoPlatformType(typestr);
-		JumpForceLevel level = StringtoJumpForceLevel(levelstr);
-		float x = informa["x"];
-		float y = informa["y"];
+		string level = informa["jumpforcelevel"];
+		float x = informa["posX"];
+		float y = informa["posY"];
 		Vector2f pos = { x,y };
 		int left = informa["left"];
 		int top = informa["top"];
 		int width = informa["width"];
 		int height = informa["height"];
-
+		int mr;
+		float speed;
+		int dir;
 		switch (type)
 		{
 		case STATIC:
-			allPlatform.push_back(new Platform(texturePath, type, pos, left, top, width, height));
+			allPlatform.push_back(new Platform("asd", type, pos, left, top, width, height));
 			break;
 		case JUMP:
-
-			float jumpForce = GetJumpForce(level);
-			switch (level)
+			switch (StringtoJumpForceLevel(level))
 			{
 			case ONE:
-				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, jumpForce));
+				allPlatform.push_back(new JumpPlatform("das", type, pos, left, top, width, height, 600.f));
 				break;
 			case TWO:
-				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, jumpForce));
+				allPlatform.push_back(new JumpPlatform("dsa", type, pos, left, top, width, height, 1200.f));
 				break;
 			case THREE:
-				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, jumpForce));
+				allPlatform.push_back(new JumpPlatform("ads", type, pos, left, top, width, height, 1800.f));
 				break;
 			case FOUR:
-				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, jumpForce));
+				allPlatform.push_back(new JumpPlatform("das", type, pos, left, top, width, height, 2400.f));
 				break;
 			case FIVE:
-				allPlatform.push_back(new JumpPlatform(texturePath, type, pos, left, top, width, height, jumpForce));
+				allPlatform.push_back(new JumpPlatform("das", type, pos, left, top, width, height, 3000.f));
 				break;
 			default:
 				break;
 			}
-		case MOVING:
-			float mr = informa.value("moveRange", 0.0f);
-			float speed = informa.value("moveSpeed", 0.0f);
-			int dir = informa.value("direction", 0);
-			allPlatform.push_back(new MovingPlatform(texturePath, type, pos, left, top, width, height, mr, speed, dir));
 			break;
+		case MOVING:
+		{
+			mr = informa["moverange"];
+			speed = informa["speed"];
+			dir = informa["dir"];
+			allPlatform.push_back(new MovingPlatform("sda", type, pos, left, top, width, height, mr, speed, dir));
+			break;
+		}
 		default:
 			break;
 		}
@@ -167,6 +168,11 @@ JumpForceLevel GameManager::StringtoJumpForceLevel(const string& Levelstring)
 	{
 		return FIVE;
 	}
+}
+
+vector<Platform*>& GameManager::Getallplatform()
+{
+	return allPlatform;
 }
 
 float GameManager::GetJumpForce(JumpForceLevel level)
