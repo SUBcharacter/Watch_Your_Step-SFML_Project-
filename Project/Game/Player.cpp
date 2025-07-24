@@ -2,7 +2,7 @@
 
 Player::Player(const string& texturePath, Vector2f pos, int left, int top, int width, int height) : sprite(texture)
 {
-	if (!texture.loadFromFile("Assets/player.png"))
+	if (!texture.loadFromFile("Assets/PlayerSprite.png"))
 	{
 		cerr << "에러 : player 스프라이트 찾을 수 없음." << endl;
 		return;
@@ -71,28 +71,25 @@ void Player::SetCrowdControlTimer(float time)
 	CrowdControlTimer = time;
 }
 
-void Player::UpdateAnimation()
+void Player::UpdateAnimation(float deltaTime)
 {
+	animationTimer += deltaTime;
 
-}
+	switch (currentState)
+	{
+	case PlayerState::Idle:
+		sprite.setTextureRect(IntRect({ 0, 0 }, { frameWidth, frameHeight }));
+		break;
 
-void Player::UpdateState()
-{
-	if (!IsOnGround) // 점프할 때
-	{
-		currentState = PlayerState::Jumping;
-	}
-	else if (Keyboard::isKeyPressed(Keyboard::Scan::A) && playerSprite.getPosition().x > 0) // 왼쪽 키 누를 때
-	{
-		currentState = PlayerState::L_Running;
-	}
-	else if (Keyboard::isKeyPressed(Keyboard::Scan::D) && playerSprite.getPosition().x < 600) // 오른쪽 키 누를 때
-	{
-		currentState = PlayerState::R_Running;
-	}
-	else // 아무것도 안 할 때
-	{
-		currentState = PlayerState::Idle;
+	case PlayerState::Jumping:
+		sprite.setTextureRect(IntRect({ frameWidth*1, 0 }, { frameWidth, frameHeight }));
+		break;
+		
+	case PlayerState::R_Running:
+		if (animationTimer >= animationIntervel)
+		{
+
+		}
 	}
 }
 
@@ -161,25 +158,42 @@ void Player::Move(float deltaTime)
 	{
 		velocityY += GRAVITY * deltaTime;
 		sprite.move({ 0.0f, velocityY * deltaTime });
+
+		currentState = PlayerState::Jumping;
 	}
 	else
 	{
 		velocityY = 0.f;
 	}
-	
+
+	bool IsMoving = false;
 
 	if (Keyboard::isKeyPressed(Keyboard::Scan::Left) && sprite.getPosition().x > 900)
 	{
 		sprite.move({ -200.0f * deltaTime ,0.0f });
 		sprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
 		sprite.setScale({ -1.0f, 1.0f });
+		if (IsOnGround)
+		{
+			currentState = PlayerState::L_Running;
+		}
+		IsMoving = true;
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Scan::Right) && sprite.getPosition().x < 1700)
 	{
 		sprite.move({ 200.0f * deltaTime ,0.0f });
 		sprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
 		sprite.setScale({ 1.0f, 1.0f });
+		if (IsOnGround)
+		{
+			currentState = PlayerState::R_Running;
+		}
+		IsMoving = true;
+	}
 
+	if(!IsMoving && IsOnGround)
+	{
+		currentState = PlayerState::Idle;
 	}
 
 	Updatehitbox();
