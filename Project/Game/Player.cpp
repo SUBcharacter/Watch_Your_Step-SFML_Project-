@@ -157,17 +157,16 @@ void Player::Move(float deltaTime)
 
 	}
 	
-	//if (!IsOnGround)
-	//{
-	//	velocityY += GRAVITY * deltaTime;
-	//	sprite.move({ 0.0f, velocityY * deltaTime });
-	//}
-	//else
-	//{
-	//	velocityY = 0.f;
-	//}
+	if (!IsOnGround)
+	{
+		velocityY += GRAVITY * deltaTime;
+		sprite.move({ 0.0f, velocityY * deltaTime });
+	}
+	else
+	{
+		velocityY = 0.f;
+	}
 	
-
 	if (Keyboard::isKeyPressed(Keyboard::Scan::Left) && sprite.getPosition().x > 900)
 	{
 		sprite.move({ -200.0f * deltaTime ,0.0f });
@@ -181,15 +180,7 @@ void Player::Move(float deltaTime)
 		sprite.setScale({ 1.0f, 1.0f });
 
 	}
-	if (Keyboard::isKeyPressed(Keyboard::Scan::Up))
-	{
-		sprite.move({ 0.0f,  -200.f * deltaTime });
-	}
-	if (Keyboard::isKeyPressed(Keyboard::Scan::Down))
-	{
-		sprite.move({ 0.0f,  200.f * deltaTime });
-	}
-	cout <<"x:" << sprite.getPosition().x << " " << "y:" << sprite.getPosition().y << endl;
+	
 	Updatehitbox();
 	UpdatesenseBox();
 }
