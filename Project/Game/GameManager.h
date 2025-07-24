@@ -27,7 +27,6 @@ public:
 	PlatformType StringtoPlatformType(const string& typestring);
 	JumpForceLevel StringtoJumpForceLevel(const string& Levelstring);
 	vector<Platform*>& Getallplatform();
-
 	float GetJumpForce(JumpForceLevel level);
 };
 

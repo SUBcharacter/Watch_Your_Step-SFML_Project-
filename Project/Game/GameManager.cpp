@@ -46,25 +46,25 @@ void GameManager::LoadPlatformsFromJSON(const std::string& filepath)
 		switch (type)
 		{
 		case STATIC:
-			allPlatform.push_back(new Platform("asd", type, pos, left, top, width, height));
+			allPlatform.push_back(new Platform("Assets/platform_static.png", type, pos, left, top, width, height));
 			break;
 		case JUMP:
 			switch (StringtoJumpForceLevel(level))
 			{
 			case ONE:
-				allPlatform.push_back(new JumpPlatform("das", type, pos, left, top, width, height, 600.f));
+				allPlatform.push_back(new JumpPlatform("Assets/platform_jump1.png", type, pos, left, top, width, height, 600.f));
 				break;
 			case TWO:
-				allPlatform.push_back(new JumpPlatform("dsa", type, pos, left, top, width, height, 1200.f));
+				allPlatform.push_back(new JumpPlatform("Assets/platform_jump2.png", type, pos, left, top, width, height, 1200.f));
 				break;
 			case THREE:
-				allPlatform.push_back(new JumpPlatform("ads", type, pos, left, top, width, height, 1800.f));
+				allPlatform.push_back(new JumpPlatform("Assets/platform_jump3.png", type, pos, left, top, width, height, 1800.f));
 				break;
 			case FOUR:
-				allPlatform.push_back(new JumpPlatform("das", type, pos, left, top, width, height, 2400.f));
+				allPlatform.push_back(new JumpPlatform("Assets/platform_jump4.png", type, pos, left, top, width, height, 2400.f));
 				break;
 			case FIVE:
-				allPlatform.push_back(new JumpPlatform("das", type, pos, left, top, width, height, 3000.f));
+				allPlatform.push_back(new JumpPlatform("Assets/platform_jump5.png", type, pos, left, top, width, height, 3000.f));
 				break;
 			default:
 				break;
@@ -75,7 +75,7 @@ void GameManager::LoadPlatformsFromJSON(const std::string& filepath)
 			mr = informa["moverange"];
 			speed = informa["speed"];
 			dir = informa["dir"];
-			allPlatform.push_back(new MovingPlatform("sda", type, pos, left, top, width, height, mr, speed, dir));
+			allPlatform.push_back(new MovingPlatform("Assets/platform_static.png", type, pos, left, top, width, height, mr, speed, dir));
 			break;
 		}
 		default:
