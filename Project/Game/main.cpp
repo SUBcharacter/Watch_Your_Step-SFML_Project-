@@ -4,7 +4,7 @@
 
 int main()
 {
-	RenderWindow window(VideoMode({ 800,600 }), "Test");
+	RenderWindow window(VideoMode({ 1200,900 }), "Test");
 	window.setFramerateLimit(100);
 
 	Clock clock;
@@ -114,7 +114,7 @@ int main()
 
 	Grid grid(100);
 	Collider collider(player);
-	Camera camera({ 800,600 });
+	Camera camera({ 1200, 900 });
 
 	camera.C_StartGame({1300,100});
 	while (window.isOpen())

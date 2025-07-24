@@ -169,14 +169,14 @@ void Player::Move(float deltaTime)
 	
 	if (Keyboard::isKeyPressed(Keyboard::Scan::Left) && sprite.getPosition().x > 900)
 	{
-		sprite.move({ -200.0f * deltaTime ,0.0f });
-		sprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
+		sprite.move({ -250.0f * deltaTime ,0.0f });
+		
 		sprite.setScale({ -1.0f, 1.0f });
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Scan::Right) && sprite.getPosition().x < 1700)
 	{
-		sprite.move({ 200.0f * deltaTime ,0.0f });
-		sprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
+		sprite.move({ 250.0f * deltaTime ,0.0f });
+		
 		sprite.setScale({ 1.0f, 1.0f });
 
 	}
