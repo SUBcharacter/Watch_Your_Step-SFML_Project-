@@ -101,24 +101,13 @@ void GameManager::Update(PlatformType type, float deltaTime)
 {
 	for (Platform* p : allPlatform)
 	{
-		 
-		MovingPlatform* MovePlatForm = dynamic_cast<MovingPlatform*>(p);
-		if (MovePlatForm)
-		{
-			MovePlatForm->Update(deltaTime);
-			grid.UnregisterPlatform(MovePlatForm);
-			grid.RegisterPlatform(MovePlatForm);
-		}
-		else
-		{
-			p->Update(deltaTime);
-		}
-		player.Move(deltaTime);
-		vector<pair<int, int>> Nearbycells = player.GetnearGridcells();
-		vector<Platform*> NearbyPlatform = grid.nearByPlayerPlatform(Nearbycells);
-		collider.Collider2D(NearbyPlatform);
+		p->Update(deltaTime);
+		grid.UnregisterPlatform(p);
+		grid.RegisterPlatform(p);
 
 	}
+	player.Move(deltaTime);
+	collider.Collider2D(grid.nearByPlayerPlatform(player.GetnearGridcells()));
 }
 
 void GameManager::Draw(RenderWindow& window)

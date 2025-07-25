@@ -9,7 +9,7 @@ int main()
 
 	Clock clock;
 
-	Player player("Assets/player.png", { 1000,100 }, 0, 0, 50, 50);  // 플레이 영역 {x : 900 ~ 1700, y = 0 ~ 40000}
+	Player player("Assets/player.png", { 1000,100 }, 0, 0, 40, 40);  // 플레이 영역 {x : 900 ~ 1700, y = 0 ~ 40000}
 	GameManager gamemanager;
 	gamemanager.LoadPlatformsFromJSON("PlatformJsondata/PlatformData.json");
 
