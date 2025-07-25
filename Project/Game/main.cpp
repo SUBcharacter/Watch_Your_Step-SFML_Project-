@@ -9,7 +9,7 @@ int main()
 
 	Clock clock;
 
-	Player player("Assets/player.png", { 1000,100 }, 0, 0, 50, 50);  // 플레이 영역 {x : 900 ~ 1700, y = 0 ~ 40000}
+	Player player("Assets/PlayerSprite.png", { 1000,100 }, 0, 0, 35, 50);  // 플레이 영역 {x : 900 ~ 1700, y = 0 ~ 40000}
 	vector<Platform*> platform;
 	platform.push_back(new Platform("Assets/platform.png", STATIC, { 1000,200 }, 0, 0, 200, 40));
 	platform.push_back(new Platform("Assets/platform.png", STATIC, { 1300,350 }, 0, 0, 200, 40));

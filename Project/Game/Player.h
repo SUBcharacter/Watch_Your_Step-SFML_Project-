@@ -28,9 +28,9 @@ private:
 	const int frameWidth = 35;
 	const int frameHeight = 50;
 
+	bool animationIndex = 0;
 	float animationTimer = 0.f;
 	float animationIntervel = 0.15f; // 프레임 전환 간격. 수정가능.
-	int runningIndex = 0;
 
 	Vector2f senceBoxSize;
 	FloatRect senceBox;

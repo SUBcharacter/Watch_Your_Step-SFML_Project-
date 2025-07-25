@@ -14,6 +14,7 @@ Player::Player(const string& texturePath, Vector2f pos, int left, int top, int w
 	  { static_cast<Vector2f>(rectI.size)}
 	};
 
+	currentState = PlayerState::Idle;
 	sprite.setTextureRect(rectI);
 	sprite.setOrigin({ rectF.size.x / 2.f,rectF.size.y / 2.f });
 	hitBoxSize = rectF.size;
@@ -27,6 +28,7 @@ void Player::Update(float deltaTime)
 {
 	Move(deltaTime);
 	CrowdControlUpdate(deltaTime);
+	UpdateAnimation(deltaTime);
 }
 
 void Player::SetPlayerPos(Vector2f pos)
@@ -82,14 +84,32 @@ void Player::UpdateAnimation(float deltaTime)
 		break;
 
 	case PlayerState::Jumping:
-		sprite.setTextureRect(IntRect({ frameWidth*1, 0 }, { frameWidth, frameHeight }));
+		sprite.setTextureRect(IntRect({ frameWidth * 1, 0 }, { frameWidth, frameHeight }));
 		break;
 		
 	case PlayerState::R_Running:
 		if (animationTimer >= animationIntervel)
 		{
-
+			if (animationIndex == 0)
+			{
+				sprite.setTextureRect(IntRect({ frameWidth * 2, 0 }, { frameWidth, frameHeight }));
+				animationIndex = 1;
+				animationTimer = deltaTime;
+				break;
+			}
+			else if (animationIndex == 1)
+			{
+				sprite.setTextureRect(IntRect({ frameWidth * 3, 0 }, { frameWidth, frameHeight }));
+				animationIndex = 0;
+				animationTimer = deltaTime;
+				break;
+			}
 		}
+
+	case PlayerState::L_Running:
+		sprite.setTextureRect(IntRect({ frameWidth * 4, 0 }, { frameWidth, frameHeight }));
+		break;
+
 	}
 }
 
@@ -154,6 +174,8 @@ void Player::Move(float deltaTime)
 
 	}
 	
+	bool IsMoving = false;
+
 	if (!IsOnGround)
 	{
 		velocityY += GRAVITY * deltaTime;
@@ -164,14 +186,14 @@ void Player::Move(float deltaTime)
 	else
 	{
 		velocityY = 0.f;
+		currentState = PlayerState::Idle;
 	}
 
-	bool IsMoving = false;
 
 	if (Keyboard::isKeyPressed(Keyboard::Scan::Left) && sprite.getPosition().x > 900)
 	{
 		sprite.move({ -200.0f * deltaTime ,0.0f });
-		sprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
+		
 		sprite.setScale({ -1.0f, 1.0f });
 		if (IsOnGround)
 		{
@@ -182,7 +204,7 @@ void Player::Move(float deltaTime)
 	if (Keyboard::isKeyPressed(Keyboard::Scan::Right) && sprite.getPosition().x < 1700)
 	{
 		sprite.move({ 200.0f * deltaTime ,0.0f });
-		sprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
+		
 		sprite.setScale({ 1.0f, 1.0f });
 		if (IsOnGround)
 		{
