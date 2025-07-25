@@ -66,7 +66,7 @@ void Platform::OnCollide(Player& p, CollideDir dir)
 	switch (dir)
 	{
 	case TOP:
-		p.SetPlayerPos({ p.GetPlayerPos().x, platformHB.position.y - (playerHB.size.y / 2) });
+		p.SetPlayerPos({ p.GetPlayerPos().x, platformHB.position.y - (playerHB.size.y / 2)+1 });
 		p.IsOnGround = true;
 		break;
 	default:
@@ -173,8 +173,8 @@ void MovingPlatform::OnCollide(Player& p, CollideDir dir)
 	switch (dir)
 	{
 	case TOP:
-		newPlayerPos.x += delta.x * 2;
-		p.SetPlayerPos({ newPlayerPos.x, platformHB.position.y - (playerHB.size.y / 2) });
+		newPlayerPos.x += delta.x;
+		p.SetPlayerPos({ newPlayerPos.x, platformHB.position.y - (playerHB.size.y / 2)+1 });
 		p.IsOnGround = true;
 		break;
 	default:
