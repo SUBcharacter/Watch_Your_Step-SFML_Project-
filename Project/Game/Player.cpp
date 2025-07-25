@@ -94,22 +94,34 @@ void Player::UpdateAnimation(float deltaTime)
 			{
 				sprite.setTextureRect(IntRect({ frameWidth * 2, 0 }, { frameWidth, frameHeight }));
 				animationIndex = 1;
-				animationTimer = deltaTime;
-				break;
+				animationTimer = 0;
 			}
 			else if (animationIndex == 1)
 			{
 				sprite.setTextureRect(IntRect({ frameWidth * 3, 0 }, { frameWidth, frameHeight }));
 				animationIndex = 0;
-				animationTimer = deltaTime;
-				break;
+				animationTimer = 0;
 			}
 		}
-
-	case PlayerState::L_Running:
-		sprite.setTextureRect(IntRect({ frameWidth * 4, 0 }, { frameWidth, frameHeight }));
 		break;
 
+	case PlayerState::L_Running:
+		if (animationTimer >= animationIntervel)
+		{
+			if (animationIndex == 0)
+			{
+				sprite.setTextureRect(IntRect({ frameWidth * 4, 0 }, { frameWidth, frameHeight }));
+				animationIndex = 1;
+				animationTimer = 0;
+			}
+			else if (animationIndex == 1)
+			{
+				sprite.setTextureRect(IntRect({ frameWidth * 5, 0 }, { frameWidth, frameHeight }));
+				animationIndex = 0;
+				animationTimer = 0;
+			}
+		}
+		break;
 	}
 }
 
@@ -194,7 +206,7 @@ void Player::Move(float deltaTime)
 	{
 		sprite.move({ -200.0f * deltaTime ,0.0f });
 		
-		sprite.setScale({ -1.0f, 1.0f });
+		sprite.setScale({ 1.0f, 1.0f });
 		if (IsOnGround)
 		{
 			currentState = PlayerState::L_Running;
