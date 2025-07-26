@@ -13,11 +13,11 @@ struct PairHash
 class Grid
 {
 private:
-	float cellSize;
+	const float cellSize = 100.f;
 	unordered_map<pair<int, int>, vector<Platform*>, PairHash> gridCells;
 
 public:
-	Grid(float size);
+	Grid();
 
 	void RegisterPlatform(Platform* p);
 

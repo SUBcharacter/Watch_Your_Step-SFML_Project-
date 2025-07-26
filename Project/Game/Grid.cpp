@@ -1,9 +1,8 @@
 #include "Grid.h"
 
 
-Grid::Grid(float size)
+Grid::Grid()
 {
-	cellSize = size;
 }
 
 void Grid::RegisterPlatform(Platform* p)

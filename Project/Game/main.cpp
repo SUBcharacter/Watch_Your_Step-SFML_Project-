@@ -111,8 +111,7 @@ int main()
 	platform.push_back(new MovingPlatform("Assets/platform_static.png", MOVING, { 1380 , 5030 }, 0, 0, 60 , 25, 200, 100.f, 1));
 	platform.push_back(new MovingPlatform("Assets/platform_static.png", MOVING, { 1550 , 5425 }, 0, 0, 100, 25, 200, 100.f, 1));
 
-
-	Grid grid(100);
+	Grid grid;
 	Collider collider(player);
 	Camera camera({ 1200, 900 });
 
