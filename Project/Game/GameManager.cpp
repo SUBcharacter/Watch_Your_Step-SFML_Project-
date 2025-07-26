@@ -1,8 +1,18 @@
 #include "GameManager.h"
 
 
-GameManager::GameManager() : player(player), grid(100.f), collider(player)
+GameManager::GameManager(const string& filepath, Player& player, Collider& collider,Grid & grid) : player(player), grid(100.f),collider(collider), sprite(texture)
 {
+	if (!texture.loadFromFile(filepath))
+	{
+		cout << "file not found" << endl;
+		return;
+	}
+	 
+	sprite.setTextureRect(IntRect({0,0},{1200,7000}));
+	sprite.setPosition({ 700,0 });
+
+
 }
 
 GameManager::~GameManager()
@@ -111,13 +121,16 @@ void GameManager::Update(PlatformType type, float deltaTime)
 }
 
 void GameManager::Draw(RenderWindow& window)
-	{
+{
+	window.draw(sprite);
+	player.Draw(window);
 	for (Platform* p : allPlatform)
 	{
 		p->Draw(window);
 	}
-	player.Draw(window);
-	}
+	
+
+}
 
 PlatformType  GameManager::StringtoPlatformType(const string& typestring)
 {

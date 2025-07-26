@@ -4,19 +4,20 @@
 
 int main()
 {
-	RenderWindow window(VideoMode({ 800, 600 }), "Test");
+	RenderWindow window(VideoMode({ 1200, 700 }), "Test");
 	window.setFramerateLimit(100);
 
 	Clock clock;
 
 	Player player("Assets/player.png", { 1000,100 }, 0, 0, 40, 40);  // 플레이 영역 {x : 900 ~ 1700, y = 0 ~ 40000}
-	GameManager gamemanager;
-	gamemanager.LoadPlatformsFromJSON("PlatformJsondata/PlatformData.json");
+
 
 	Grid grid(100);
 	Collider collider(player);
-	Camera camera({ 800,600 });
+	Camera camera({ 1200,700 });
 
+	GameManager gamemanager("Assets/background.png",player,collider,grid );
+	gamemanager.LoadPlatformsFromJSON("PlatformJsondata/PlatformData.json");
 	camera.C_StartGame({1300,100});
 	while (window.isOpen())
 	{
@@ -48,13 +49,14 @@ int main()
 
 		window.setView(camera.C_GetView());
 
-		for (Platform* p : gamemanager.Getallplatform())
-		{
-			p->Draw(window);
-		}
-		
-
-		player.Draw(window);
+		gamemanager.Draw(window);
+		//for (Platform* p : gamemanager.Getallplatform())
+		//{
+		//	p->Draw(window);
+		//}
+		//
+		//
+		//player.Draw(window);
 
 		window.display();
 	}

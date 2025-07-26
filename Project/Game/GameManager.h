@@ -11,14 +11,17 @@ using json = nlohmann::json;
 class GameManager
 {
 private:
-	Player player;
+	Player& player;
 	vector<Platform*> allPlatform;
 	Grid grid;
-	Collider collider;
+	Collider& collider;
 	Texture texture;
+	Vector2f backgound = {1200.f,7000.f};
+	Sprite sprite;
+
 
 public:
-	GameManager();
+	GameManager(const string& filepath,Player& player, Collider& collider, Grid& grid);
 	~GameManager();
 	void LoadPlatformsFromJSON(const std::string& filepath);
 	void Init();
