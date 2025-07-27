@@ -1,204 +1,206 @@
-#include "TitleScreen.h" 
+// TitleScreen.cpp
+#include "TitleScreen.h"
+#include <iostream>
 
-#include <iostream>      
-#include <string>        
-#include <vector>
-#include <algorithm> 
-
-
-TitleScreen::TitleScreen(const string& backgroundTexturePath)
+TitleScreen::TitleScreen(sf::RenderWindow& window, const std::string& backgroundTexturePath)
+    : m_window(window),
+    m_currentState(TITLE),
+    m_backgroundSprite(nullptr),
+    m_titleText(nullptr),
+    m_highlightedOptionIndex(-1),
+    m_keyPressClock(),
+    m_keyPressDelay(sf::milliseconds(200))
 {
-    //  1. 배경 텍스처 로드  
-    if (!backgroundTexture.loadFromFile(backgroundTexturePath))
-    {
-        cerr << "에러: 배경 텍스처(" << backgroundTexturePath << ")를 로드할 수 없습니다." << endl;
-    }
-    else 
-    {
-        backgroundSprite.emplace(backgroundTexture); 
-    }
+    m_window.setFramerateLimit(60);
 
-    //  2. 폰트 로드 
-    if (!font.openFromFile("Assets/KoPubWorld Batang Bold.ttf"))
-    {
-        cerr << "에러: 폰트 (Assets/KoPubWorld Batang Bold.ttf)를 로드할 수 없습니다." << endl;
-    }
-    else 
-    {
-        //  3. 타이틀 텍스트 설정
-        titleText.emplace(font); 
-        titleText->setString("Welcome to the TitleScreen Screen!");
-        titleText->setCharacterSize(48);
-        titleText->setFillColor(Color::White);
-
-        //   4. 선택지 문자열 및 이미지 경로 설정  
-        m_optionStrings = { "게임 시작", "옵션", "나가기" };
-        m_optionImagePath = {
-            "Assets/TextBTN_Big.png",
-            "Assets/TextBTN_Big.png",
-            "Assets/TextBTN_Big.png"
-        };
-        m_selectedOptionIndex = 0; // 초기 선택은 첫 번째 옵션
-
-        //   5. 각 선택지 텍스트 객체 생성 및 기본 설정  
-        m_optionTexts.clear(); 
-        for (size_t i = 0; i < m_optionStrings.size(); ++i) {
-            sf::Text optionText(font); 
-            optionText.setString(m_optionStrings[i]);
-            optionText.setCharacterSize(36);      
-            optionText.setFillColor(m_defaultOptionColor); 
-            m_optionTexts.push_back(optionText); 
-        }
-
-        //   6. 각 선택지 이미지 텍스처 생성  
-        m_optionImageTextures.clear(); 
-        m_optionImageSprites.clear();  
-
-        for (const auto& path : m_optionImagePath) {
-            sf::Texture texture;
-            if (!texture.loadFromFile(path)) {
-                cerr << "에러: 옵션 이미지(" << path << ")를 로드할 수 없습니다." << endl;
-                m_optionImageTextures.emplace_back();
-                m_optionImageSprites.emplace_back(); 
-            }
-            else {
-                m_optionImageTextures.push_back(std::move(texture));
-                m_optionImageSprites.emplace_back(m_optionImageTextures.back());
-            }
-        }
-    } 
+    initViews();
+    setupTitleElements(backgroundTexturePath);
 }
 
-void TitleScreen::run(sf::RenderWindow& window) 
-{
-   
-    sf::Vector2u windowSize = window.getSize(); 
-    float centerX = static_cast<float>(windowSize.x / 2.0f);
-    float centerY = static_cast<float>(windowSize.y / 2.0f);
+TitleScreen::~TitleScreen() {
+    delete m_backgroundSprite;
+    delete m_titleText;
+    for (sf::Text& text : m_optionTexts) {
+           }
+    m_optionTexts.clear();
+}
 
-    // 1. 배경 스프라이트 크기 및 위치 조정
-    if (backgroundTexture.getSize().x > 0 && backgroundTexture.getSize().y > 0) {
-        float scaleX = static_cast<float>(windowSize.x) / backgroundTexture.getSize().x;
-        float scaleY = static_cast<float>(windowSize.y) / backgroundTexture.getSize().y;
-        if (backgroundSprite.has_value()) { 
-            backgroundSprite->setScale({ scaleX, scaleY }); 
-            backgroundSprite->setPosition({ 0.f, 0.f }); 
-        }
+void TitleScreen::initViews() {
+    m_titleView.setCenter({ 1200.0f / 2.0f, 900.0f / 2.0f });
+    m_titleView.setSize({ 1200.0f, 900.0f });
+
+    m_gameplayView.setCenter({ 0.0f, 0.0f });
+    m_gameplayView.setSize({ 1920.0f, 1080.0f });
+}
+void TitleScreen::setupTitleElements(const std::string& backgroundTexturePath) {
+    // 1. 배경 텍스처 로드 및 스프라이트 생성
+    if (!m_backgroundTexture.loadFromFile(backgroundTexturePath)) {
+        std::cerr << "오류: 배경 텍스처를 로드할 수 없습니다: " << backgroundTexturePath << std::endl;
+        m_backgroundSprite = nullptr; // 로드 실패 시 nullptr로 설정
+    }
+    else {
+        m_backgroundSprite = new sf::Sprite(m_backgroundTexture);
+        float scaleX = m_titleView.getSize().x / m_backgroundTexture.getSize().x;
+        float scaleY = m_titleView.getSize().y / m_backgroundTexture.getSize().y;
+        m_backgroundSprite->setScale({ scaleX, scaleY });
     }
 
-    // 2. 타이틀 텍스트 위치 및 원점 설정
-    if (titleText.has_value()) { 
-        sf::FloatRect textRect = titleText->getLocalBounds();
-        titleText->setOrigin({ (textRect.position.x + textRect.size.x / 2.0f),
-                               (textRect.position.y + textRect.size.y / 2.0f) });
-        titleText->setPosition({ centerX, centerY - 150.f }); 
+    // 2. 폰트 로드 및 타이틀 텍스트 생성
+	if (!m_font.openFromFile("Assets/KoPubWorld Batang Medium.ttf" )) { // TODO: 실제 폰트 경로로 변경!
+        std::cerr << "오류: 폰트를 로드할 수 없습니다. 폰트 경로를 확인하세요." << std::endl;
+        m_titleText = nullptr; // 폰트 로드 실패 시 nullptr로 설정
+    }
+    else {
+     if (m_titleText) { // 객체 생성 성공 여부 확인
+            m_titleText->setFont(m_font); // 폰트 설정
+            m_titleText->setString(sf::String("My Game Title")); // 텍스트 내용 설정 (sf::String 명시)
+            m_titleText->setCharacterSize(80); // 글자 크기 설정
+            m_titleText->setFillColor(sf::Color::Cyan); // 텍스트 색상 설정
 
-    float optionStartY = centerY + 50.f;
+            // 텍스트 원점 및 위치 설정 (기존 로직과 동일)
+            sf::FloatRect textRect = m_titleText->getLocalBounds();
+            m_titleText->setOrigin({
+                textRect.position.x + textRect.size.x / 2.0f,
+                textRect.position.y + textRect.size.y / 2.0f
+                });
+            m_titleText->setPosition({
+                m_titleView.getCenter().x,
+                m_titleView.getCenter().y / 2.0f
+                });
+        }
+    }
+}
+void TitleScreen::setupOptions() {
+    m_optionTexts.clear();
+
+    for (size_t i = 0; i < m_optionStrings.size(); ++i) {
+        sf::Text optionText(m_font, sf::String(m_optionStrings[i]), 40);
+
+
+        sf::FloatRect textRect = optionText.getLocalBounds();
+        optionText.setOrigin({
+            textRect.position.x + textRect.size.x / 2.0f,
+            textRect.position.y + textRect.size.y / 2.0f
+            });
+        optionText.setPosition({
+            m_titleView.getCenter().x,
+            m_titleView.getCenter().y + 80.0f + static_cast<float>(i) * 80.0f
+            });
+
+        m_optionTexts.push_back(optionText);
+    }
+}
+void TitleScreen::initGameplayElements() {
+    std::cout << "게임 플레이 요소들이 초기화되었습니다!" << std::endl;
+}
+
+void TitleScreen::run() {
+    sf::Clock clock;
+
+    while (m_window.isOpen()) {
+        float deltaTime = clock.restart().asSeconds();
+                     
+        update(deltaTime);
+        render();
+    }
+}
+
+void TitleScreen::handleTitleStateEvents(const sf::Event& event) {
+    if (event.is<sf::Event::KeyPressed>()) {
+        if (m_keyPressClock.getElapsedTime() >= m_keyPressDelay) {
+            if (auto keyEvent = event.getIf<sf::Event::KeyPressed>()) {
+                if (keyEvent->code == sf::Keyboard::Key::Up) {
+                    m_highlightedOptionIndex = (m_highlightedOptionIndex - 1 + m_optionTexts.size()) % m_optionTexts.size();
+                    m_keyPressClock.restart();
+                }
+                else if (keyEvent->code == sf::Keyboard::Key::Down) {
+                    m_highlightedOptionIndex = (m_highlightedOptionIndex + 1) % m_optionTexts.size();
+                    m_keyPressClock.restart();
+                }
+                // 엔터키 처리 부분은 나중에 구현 예정
+            }
+        }
+    }
+}
+
+void TitleScreen::handleGameplayStateEvents(const sf::Event& event) {
+    // TODO: 게임 플레이 이벤트 처리
+}
+
+
+
+void TitleScreen::update(float deltaTime) {
+    switch (m_currentState) {
+    case TITLE:
+        updateTitleState(deltaTime);
+        break;
+    case GAMEPLAY:
+        updateGameplayState(deltaTime);
+        break;
+    }
+}
+
+void TitleScreen::updateTitleState(float deltaTime) {
+    // 타이틀 화면은 정적이므로 별도 업데이트 없음
+}
+
+void TitleScreen::updateGameplayState(float deltaTime) {
+    // TODO: 게임 플레이 로직 업데이트
+}
+
+void TitleScreen::render() {
+    m_window.clear(sf::Color::Black);
+
+    switch (m_currentState) {
+    case TITLE:
+        renderTitleState();
+        break;
+    case GAMEPLAY:
+        renderGameplayState();
+        break;
+    }
+
+    m_window.display();
+}
+
+void TitleScreen::renderTitleState() {
+    m_window.setView(m_titleView);
+
+    if (m_backgroundSprite) {
+        m_window.draw(*m_backgroundSprite);
+    }
+    if (m_titleText) {
+        m_window.draw(*m_titleText);
+    }
+
+    for (auto& text : m_optionTexts) {
+        // text는 sf::Text& 타입, 항상 유효하므로 nullptr 체크 불필요
+        m_window.draw(text);
+    }
+}
+
+void TitleScreen::renderGameplayState() {
+    m_window.setView(m_gameplayView);
+
+    sf::Text gameplayDebugText(m_font, sf::String("In Game Play Mode!"),  60);
+    gameplayDebugText.setFillColor(sf::Color::Red);
+    gameplayDebugText.setPosition({
+        m_gameplayView.getCenter().x - 300,
+        m_gameplayView.getCenter().y
+        });
+    m_window.draw(gameplayDebugText);
+}
+
+TitleButton TitleScreen::getButtonClicked(const sf::Vector2f& mousePos) {
     for (size_t i = 0; i < m_optionTexts.size(); ++i) {
-        sf::FloatRect optionRect = m_optionTexts[i].getLocalBounds();
-        m_optionTexts[i].setOrigin({ (optionRect.position.x + optionRect.size.x / 2.0f),
-                                     (optionRect.position.y + optionRect.size.y / 2.0f) });
-        m_optionTexts[i].setPosition({ centerX, optionStartY + i * 50.f });
-    }
-
-   
-    for (size_t i = 0; i < m_optionImageSprites.size(); ++i)
-    {
-        const sf::Texture& texture = m_optionImageSprites[i].getTexture();
-        if (texture.getSize().x > 0 && texture.getSize().y > 0) {
-            std::cout << "Sprite " << i << " has a valid texture. Processing..." << std::endl;
-            { 
-                sf::FloatRect imageRect = m_optionImageSprites[i].getLocalBounds();
-                m_optionImageSprites[i].setOrigin({ (imageRect.position.x + imageRect.size.x / 2.0f),
-                                                     (imageRect.position.y + imageRect.size.y / 2.0f) });
-               m_optionImageSprites[i].setPosition({ centerX - 150.f, optionStartY + i * 50.f });
-                m_optionImageSprites[i].setScale({ 0.5f, 0.5f }); 
+        if (m_optionTexts[i].getGlobalBounds().contains(mousePos)) {
+            if (m_optionStrings[i] == "새 게임") {
+                return TitleButton::StartGame;
+            }
+            else if (m_optionStrings[i] == "게임 종료") {
+                return TitleButton::ExitGame;
             }
         }
-
-        // 메인 게임 루프  
-        while (window.isOpen()) {
-            while (const optional<sf::Event> eventOpt = window.pollEvent())
-            {
-                const sf::Event& event = *eventOpt; 
-
-               
-                if (event.is<sf::Event::Closed>()) {
-                    window.close();
-                    return; 
-                }
-                else if (const auto* keypressed = event.getIf<sf::Event::KeyPressed>()) {
-     
-                    if (m_keyPressClock.getElapsedTime() < m_keyPressDelay) {
-                        continue;
-                    }
-                    m_keyPressClock.restart(); 
-
-                  
-                    if (keypressed->scancode == sf::Keyboard::Scancode::Up) {
-                        m_selectedOptionIndex = (m_selectedOptionIndex - 1 + m_optionTexts.size()) % m_optionTexts.size();
-                    }
-                    else if (keypressed->scancode == sf::Keyboard::Scancode::Down) {
-                        m_selectedOptionIndex = (m_selectedOptionIndex + 1) % m_optionTexts.size();
-                    }
-       
-                    else if (keypressed->scancode == sf::Keyboard::Scancode::Enter ||
-                        keypressed->scancode == sf::Keyboard::Scancode::Escape) {
-                        window.close();
-                        return;
-                    }
-                }
-            }
-
-            for (size_t i = 0; i < m_optionTexts.size(); ++i) {
-                if (i == m_selectedOptionIndex) {
-                    m_optionTexts[i].setFillColor(m_highlightOptionColor); 
-                    m_optionTexts[i].setCharacterSize(40); 
-
-                  
-                    const sf::Texture& texture = m_optionImageSprites[i].getTexture();
-                    if (texture.getSize().x > 0 && texture.getSize().y > 0) {
-                        m_optionImageSprites[i].setColor(sf::Color::White);
-                        m_optionImageSprites[i].setScale({ 0.6f, 0.6f });   
-                    }
-             }
-                else {
-                    m_optionTexts[i].setFillColor(m_defaultOptionColor);
-                    m_optionTexts[i].setCharacterSize(36); 
-
-                    const sf::Texture& texture = m_optionImageSprites[i].getTexture();
-                    if (texture.getSize().x > 0 && texture.getSize().y > 0) { 
-                        m_optionImageSprites[i].setColor(sf::Color(150, 150, 150));
-                        m_optionImageSprites[i].setScale({ 0.5f, 0.5f });            
-                    }
-                   
-                }
-            }
-
-            window.clear(Color::Blue);
-
-          
-            if (backgroundSprite.has_value()) {
-                window.draw(*backgroundSprite);
-            }
-
-            if (titleText.has_value()) {
-                window.draw(*titleText);
-            }
-
-            for (const auto& optSprite : m_optionImageSprites) { 
-                const sf::Texture& texture = optSprite.getTexture(); 
-                if (texture.getSize().x > 0 && texture.getSize().y > 0) { 
-                    window.draw(optSprite); 
-                }
-            }
-
-            
-            for (const auto& text : m_optionTexts) {
-                window.draw(text);
-            }
-
-            window.display(); 
-        }
     }
+    return TitleButton::None;
 }

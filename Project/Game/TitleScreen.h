@@ -1,36 +1,68 @@
+// TitleScreen.h
 #pragma once
 
-#include <string>    
-#include <vector>    
-#include <optional>  
+#include "IntegrationLibrary.h" // SFML 3.0 관련 헤더 포함 가정
 
-#include "IntegrationLibrary.h"
+enum GameState
+{
+    TITLE,
+    GAMEPLAY,
+};
 
+enum class TitleButton {
+    StartGame,
+    ExitGame,
+    None
+};
 
 class TitleScreen {
 public:
-      TitleScreen(const std::string& backgroundTexturePath);
+    TitleScreen(sf::RenderWindow& window, const std::string& backgroundTexturePath);
+    ~TitleScreen();
 
-    
-    void run(sf::RenderWindow& window);
+    void run();
 
 private:
-    sf::Texture backgroundTexture;               
-    std::optional<sf::Sprite> backgroundSprite;  
+    sf::RenderWindow& m_window;
 
-    sf::Font font;                               
-    std::optional<sf::Text> titleText;           
+    sf::View m_titleView;
+    sf::View m_gameplayView;
 
-    std::vector<std::string> m_optionStrings;    
-    std::vector<sf::Text> m_optionTexts;         
-    int m_selectedOptionIndex;                   
+    GameState m_currentState;
 
-    std::vector<std::string> m_optionImagePath;     
-    std::vector<sf::Texture> m_optionImageTextures; 
-    std::vector<sf::Sprite> m_optionImageSprites;   
+    sf::Texture m_backgroundTexture;
+    sf::Sprite* m_backgroundSprite;
+
+    sf::Font m_font;  
+    bool m_fontLoaded = false;
+    sf::Text* m_titleText;
+
+    std::vector<std::string> m_optionStrings;
+    std::vector<sf::Text> m_optionTexts;
+    int m_highlightedOptionIndex;
 
     const sf::Color m_defaultOptionColor = sf::Color::White;
-    const sf::Color m_highlightOptionColor = sf::Color::Yellow; 
+    const sf::Color m_highlightOptionColor = sf::Color::Yellow;
+
     sf::Clock m_keyPressClock;
-    sf::Time m_keyPressDelay = sf::milliseconds(200); 
+    sf::Time m_keyPressDelay;
+
+    void initViews();
+    void setupTitleElements(const std::string& backgroundTexturePath);
+    void setupOptions();
+    void initGameplayElements();
+
+    void update(float deltaTime);
+    void render();
+
+    void handleTitleStateEvents(const sf::Event& event);
+    void handleGameplayStateEvents(const sf::Event& event);
+
+    void updateTitleState(float deltaTime);
+    void updateGameplayState(float deltaTime);
+
+    void renderTitleState();
+    void renderGameplayState();
+
+    TitleButton getButtonClicked(const sf::Vector2f& mousePos);
 };
