@@ -47,6 +47,9 @@ private:
     sf::Clock m_keyPressClock;
     sf::Time m_keyPressDelay;
 
+    sf::Texture m_indicatorTexture; // 지시자 스프라이트의 텍스처
+    sf::Sprite m_indicatorSprite;   // 지시자 스프라이트
+
     void initViews();
     void setupTitleElements(const std::string& backgroundTexturePath);
     void setupOptions();
@@ -60,6 +63,7 @@ private:
 
     void updateTitleState(float deltaTime);
     void updateGameplayState(float deltaTime);
+    void handleEvents();
 
     void renderTitleState();
     void renderGameplayState();

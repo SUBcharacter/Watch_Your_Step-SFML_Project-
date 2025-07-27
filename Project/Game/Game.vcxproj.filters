@@ -7,6 +7,12 @@
     <ClCompile Include="TitleScreen.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Platform.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IntegrationLibrary.h">
