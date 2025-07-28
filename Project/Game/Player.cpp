@@ -82,11 +82,11 @@ void Player::UpdateState()
 	{
 		currentState = PlayerState::Jumping;
 	}
-	else if (Keyboard::isKeyPressed(Keyboard::Scan::A) && playerSprite.getPosition().x > 0) // 왼쪽 키 누를 때
+	else if (Keyboard::isKeyPressed(Keyboard::Scan::A) && sprite.getPosition().x > 0) // 왼쪽 키 누를 때
 	{
 		currentState = PlayerState::L_Running;
 	}
-	else if (Keyboard::isKeyPressed(Keyboard::Scan::D) && playerSprite.getPosition().x < 600) // 오른쪽 키 누를 때
+	else if (Keyboard::isKeyPressed(Keyboard::Scan::D) && sprite.getPosition().x < 600) // 오른쪽 키 누를 때
 	{
 		currentState = PlayerState::R_Running;
 	}
@@ -167,21 +167,20 @@ void Player::Move(float deltaTime)
 		velocityY = 0.f;
 	}
 	
-
 	if (Keyboard::isKeyPressed(Keyboard::Scan::Left) && sprite.getPosition().x > 900)
 	{
-		sprite.move({ -200.0f * deltaTime ,0.0f });
-		sprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
+		sprite.move({ -250.0f * deltaTime ,0.0f });
+		
 		sprite.setScale({ -1.0f, 1.0f });
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Scan::Right) && sprite.getPosition().x < 1700)
 	{
-		sprite.move({ 200.0f * deltaTime ,0.0f });
-		sprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
+		sprite.move({ 250.0f * deltaTime ,0.0f });
+		
 		sprite.setScale({ 1.0f, 1.0f });
 
 	}
-
+	
 	Updatehitbox();
 	UpdatesenseBox();
 }
