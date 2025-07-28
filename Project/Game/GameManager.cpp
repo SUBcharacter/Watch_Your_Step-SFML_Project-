@@ -1,6 +1,6 @@
 #include "GameManager.h"
 
-GameManager::GameManager(const string& filepath, const string& LeftwallPath, const string& RightwallPath, Player& player, Collider& collider,Grid & grid) : player(player), grid(100.f),collider(collider), sprite(texture),Leftwall(texturewall),Rightwall(texturewall2)
+GameManager::GameManager(const string& filepath, const string& LeftwallPath, const string& RightwallPath, Player& player, Collider& collider,Grid & grid) : player(player), grid(),collider(collider), sprite(texture),Leftwall(texturewall),Rightwall(texturewall2)
 {
 	if (!texture.loadFromFile(filepath))
 	{
