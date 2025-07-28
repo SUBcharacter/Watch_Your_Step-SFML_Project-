@@ -1,20 +1,22 @@
 #include "IntegrationLibrary.h"
 #include "GameManager.h"
 #include "Camera.h"
+#include "TitleScreen.h"
 
 int main()
-{
-	RenderWindow window(VideoMode({ 1200,900 }), "Test");
-	window.setFramerateLimit(100);
 
+	RenderWindow window(VideoMode({ 1200,800 }), "Test");
+	window.setFramerateLimit(100);
+	
 	Clock clock;
 
-	Player player("Assets/player.png", { 1000,100 }, 0, 0, 40, 40);  // ÇÃ·¹ÀÌ ¿µ¿ª {x : 900 ~ 1700, y = 0 ~ 40000}
+	Player player("Assets/player.png", { 1000,100 }, 0, 0, 40, 40);  // Ã‡ÃƒÂ·Â¹Ã€ÃŒ Â¿ÂµÂ¿Âª {x : 900 ~ 1700, y = 0 ~ 40000}
 	vector<Platform*> platform;
 
 	Grid grid;
 	Collider collider(player);
-	Camera camera({ 1200, 900 });
+
+	Camera camera({ 1200, 800 });
 
 	bool isPaused = false;
 
@@ -60,9 +62,8 @@ int main()
 			camera.C_UpdateView(player.GetPlayerPos());
 		}
 		
-
 		window.setView(camera.C_GetView());
-
+	
 		for (Platform* p : platform)
 		{
 			p->Draw(window);
@@ -72,12 +73,12 @@ int main()
 		
 		if (isPaused)
 		{
-			// ÀÏ½Ã Á¤Áö UI
+			// Ã€ÃÂ½Ãƒ ÃÂ¤ÃÃ¶ UI
 			
 		}
 
 		window.display();
 	}
-
+	
 	return 0;
 }
