@@ -103,22 +103,22 @@ void JumpPlatform::OnCollide(Player& p, CollideDir dir)
 	if (jumpForce >= 3000.f)
 	{
 		p.CrowdControl = true;
-		p.SetCrowdControlTimer(1.5f);
+		p.SetCrowdControlTimer(2.f);
 	}
 	else if (jumpForce >= 2400.f)
 	{
 		p.CrowdControl = true;
-		p.SetCrowdControlTimer(1.25f);
+		p.SetCrowdControlTimer(1.75f);
 	}
 	else if (jumpForce >= 1800.f)
 	{
 		p.CrowdControl = true;
-		p.SetCrowdControlTimer(1.f);
+		p.SetCrowdControlTimer(1.5f);
 	}
 	else if (jumpForce >= 1200.f)
 	{
 		p.CrowdControl = true;
-		p.SetCrowdControlTimer(0.75f);
+		p.SetCrowdControlTimer(1.f);
 	}
 	else
 	{
@@ -173,8 +173,8 @@ void MovingPlatform::OnCollide(Player& p, CollideDir dir)
 	switch (dir)
 	{
 	case TOP:
-		newPlayerPos.x += delta.x * 2;
-		p.SetPlayerPos({ newPlayerPos.x, platformHB.position.y - (playerHB.size.y / 2) });
+		newPlayerPos.x += delta.x;
+		p.SetPlayerPos({ newPlayerPos.x, platformHB.position.y - (playerHB.size.y / 2)+1 });
 		p.IsOnGround = true;
 		break;
 	default:

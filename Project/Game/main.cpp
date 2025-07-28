@@ -1,28 +1,23 @@
 #include "IntegrationLibrary.h"
 #include "GameManager.h"
 #include "Camera.h"
+#include "TitleScreen.h"
 
 int main()
-{
-	RenderWindow window(VideoMode({ 800, 600 }), "Test");
+
+	RenderWindow window(VideoMode({ 1200,800 }), "Test");
 	window.setFramerateLimit(100);
-
-	Clock clock;
-
-	Player player("Assets/PlayerSprite.png", { 1000,100 }, 0, 0, 35, 50);  // «√∑π¿Ã øµø™ {x : 900 ~ 1700, y = 0 ~ 40000}
-	vector<Platform*> platform;
-	platform.push_back(new Platform("Assets/platform.png", STATIC, { 1000,200 }, 0, 0, 200, 40));
-	platform.push_back(new Platform("Assets/platform.png", STATIC, { 1300,350 }, 0, 0, 200, 40));
-	platform.push_back(new Platform("Assets/platform.png", STATIC, { 1000,500 }, 0, 0, 200, 40));
-	platform.push_back(new MovingPlatform("Assets/platform.png", MOVING, {1300, 600 }, 0, 0, 50, 40,800,100,1));
-	platform.push_back(new JumpPlatform("Assets/platform.png", JUMP, { 1000,800 }, 0, 0, 200, 40, 3000.f));
-	platform.push_back(new Platform("Assets/platform.png", STATIC, { 1300,700 }, 0, 0, 200, 40));
-	platform.push_back(new JumpPlatform("Assets/platform.png", JUMP, {1500,800 }, 0, 0, 200, 40, 600.f));
-	platform.push_back(new JumpPlatform("Assets/platform.png", JUMP, {1300,10000 }, 0, 0, 800, 40, 3000.f));
 	
-	Grid grid(100);
+	Clock clock;
+	Player player("Assets/PlayerSprite.png", { 1000,100 }, 0, 0, 35, 50);  // ÔøΩ√∑ÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ {x : 900 ~ 1700, y = 0 ~ 40000}
+	vector<Platform*> platform;
+
+	Grid grid;
 	Collider collider(player);
-	Camera camera({ 800,600 });
+
+	Camera camera({ 1200, 800 });
+
+	bool isPaused = false;
 
 	camera.C_StartGame({1300,100});
 	while (window.isOpen())
@@ -34,37 +29,55 @@ int main()
 			{
 				window.close();
 			}
+
+			if (const auto keyPressed = event->getIf<Event::KeyPressed>())
+			{
+				if (keyPressed->scancode == Keyboard::Scancode::Escape)
+				{
+					isPaused = !isPaused;
+				}
+			}
 		}
-		window.clear();
-		for (Platform* p : platform)
+
+		window.clear(Color::White);
+
+		if (!isPaused)
 		{
-			p->Update(deltaTime);
+			for (Platform* p : platform)
+			{
+				p->Update(deltaTime);
+			}
+
+			for (Platform* p : platform)
+			{
+				grid.UnregisterPlatform(p);
+				grid.RegisterPlatform(p);
+			}
+
+			player.Update(deltaTime);
+
+			collider.Collider2D(grid.nearByPlayerPlatform(player.GetnearGridcells()));
+
+			camera.C_UpdateView(player.GetPlayerPos());
 		}
 		
-		for (Platform* p : platform)
-		{
-			grid.UnregisterPlatform(p);
-			grid.RegisterPlatform(p);
-		}
-
-		player.Update(deltaTime);
-
-		collider.Collider2D(grid.nearByPlayerPlatform(player.GetnearGridcells()));
-
-		camera.C_UpdateView(player.GetPlayerPos());
-
 		window.setView(camera.C_GetView());
-
+	
 		for (Platform* p : platform)
 		{
 			p->Draw(window);
 		}
 		
-
 		player.Draw(window);
+		
+		if (isPaused)
+		{
+			// √Ä√è¬Ω√É √Å¬§√Å√∂ UI
+			
+		}
 
 		window.display();
 	}
-
+	
 	return 0;
 }

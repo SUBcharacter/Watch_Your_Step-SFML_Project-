@@ -4,7 +4,7 @@ Player::Player(const string& texturePath, Vector2f pos, int left, int top, int w
 {
 	if (!texture.loadFromFile("Assets/PlayerSprite.png"))
 	{
-		cerr << "¿¡·¯ : player ½ºÇÁ¶óÀÌÆ® Ã£À» ¼ö ¾øÀ½." << endl;
+		cerr << "ì—ëŸ¬ : player ìŠ¤í”„ë¼ì´íŠ¸ ì°¾ì„ ìˆ˜ ì—†ìŒ." << endl;
 		return;
 	}
 	IntRect rectI = { {left,top},{width,height} };
@@ -77,8 +77,9 @@ void Player::UpdateAnimation(float deltaTime)
 {
 	animationTimer += deltaTime;
 
+
 	switch (currentState)
-	{
+  {
 	case PlayerState::Idle:
 		sprite.setTextureRect(IntRect({ 0, 0 }, { frameWidth, frameHeight }));
 		break;
@@ -104,7 +105,7 @@ void Player::UpdateAnimation(float deltaTime)
 			}
 		}
 		break;
-
+      
 	case PlayerState::L_Running:
 		if (animationTimer >= animationIntervel)
 		{
@@ -123,6 +124,10 @@ void Player::UpdateAnimation(float deltaTime)
 		}
 		break;
 	}
+
+}
+
+	
 }
 
 void Player::Draw(RenderWindow& window)
@@ -130,7 +135,7 @@ void Player::Draw(RenderWindow& window)
 	window.draw(sprite);
 }
 
-// ÀÎ½Ä ¹üÀ§¿¡ ÀÖ´Â ¸Ê ÁÂÇ¥¸¦ ±×¸®µå ÁÂÇ¥·Î ¹İÈ¯ÇÏ´Â ÇÔ¼ö
+// ì¸ì‹ ë²”ìœ„ì— ìˆëŠ” ë§µ ì¢Œí‘œë¥¼ ê·¸ë¦¬ë“œ ì¢Œí‘œë¡œ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
 vector<pair<int, int>> Player::GetnearGridcells()
 {
 	vector<pair<int, int>> neargirdcells;
@@ -201,11 +206,9 @@ void Player::Move(float deltaTime)
 		currentState = PlayerState::Idle;
 	}
 
-
 	if (Keyboard::isKeyPressed(Keyboard::Scan::Left) && sprite.getPosition().x > 900)
 	{
-		sprite.move({ -200.0f * deltaTime ,0.0f });
-		
+		sprite.move({ -250.0f * deltaTime ,0.0f });
 		sprite.setScale({ 1.0f, 1.0f });
 		if (IsOnGround)
 		{
@@ -215,8 +218,7 @@ void Player::Move(float deltaTime)
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Scan::Right) && sprite.getPosition().x < 1700)
 	{
-		sprite.move({ 200.0f * deltaTime ,0.0f });
-		
+		sprite.move({ 250.0f * deltaTime ,0.0f });
 		sprite.setScale({ 1.0f, 1.0f });
 		if (IsOnGround)
 		{
@@ -229,7 +231,7 @@ void Player::Move(float deltaTime)
 	{
 		currentState = PlayerState::Idle;
 	}
-
+	
 	Updatehitbox();
 	UpdatesenseBox();
 }
