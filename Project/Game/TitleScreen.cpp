@@ -5,7 +5,7 @@
 TitleScreen::TitleScreen(sf::RenderWindow& window, const std::string& backgroundTexturePath)
     : m_window(window),
     m_currentState(TITLE),
-    m_backgroundSprite(m_backgroundTexture),
+    b_Sprite(b_texture),
     m_titleText(nullptr),
     m_fontLoaded(false),
     m_highlightedOptionIndex(-1),
@@ -14,42 +14,43 @@ TitleScreen::TitleScreen(sf::RenderWindow& window, const std::string& background
 {  //<-여기서 '"sf::Sprite" 클래스의 기본 생성자가 없습니다.'오류때문에 결과물 확인 못했습니다.
     m_window.setFramerateLimit(60);
 
-    if (!m_backgroundTexture.loadFromFile(""))
+    if (!b_texture.loadFromFile(""))
     {
         cout << "에러 메세지" << endl;
     }
-    m_backgroundSprite.setTexture(m_backgroundTexture);
+    b_Sprite.setTexture(b_texture);
+    b_Sprite.setOrigin({600.0f, 400.0f});
+    b_Sprite.setPosition({ 600.f, 400.0f });
     initViews();
     setupTitleElements(backgroundTexturePath);
     setupOptions();
 }
 
 TitleScreen::~TitleScreen() {
-    delete m_backgroundSprite;
-    delete m_titleText;
-    m_optionTexts.clear();
+    
+   m_optionTexts.clear();
 }
 
 void TitleScreen::initViews() {
-    m_titleView.setCenter({ 1200.0f / 2.0f, 900.0f / 2.0f });
-    m_titleView.setSize({ 1200.0f, 900.0f });
+    m_titleView.setCenter({ 1200.0f / 2.0f, 800.0f / 2.0f });
+    m_titleView.setSize({ 1200.0f, 800.0f });
 
     m_gameplayView.setCenter({ 0.0f, 0.0f });
     m_gameplayView.setSize({ 1920.0f, 1080.0f });
 }
 void TitleScreen::setupTitleElements(const std::string& backgroundTexturePath) {
     // 1. 배경 텍스처 로드 및 스프라이트 생성
-    if (!m_backgroundTexture.loadFromFile("Assets/platform.png")) {
+    if (!b_texture.loadFromFile("Assets/platform.png")) {
         std::cerr << "오류: 배경 텍스처를 로드할 수 없습니다: " << backgroundTexturePath << std::endl;
-        m_backgroundSprite = nullptr; 
+        b_Sprite = nullptr; 
        
     }
     else {
-        if (m_backgroundSprite) { delete m_backgroundSprite; }
-        m_backgroundSprite = new sf::Sprite(m_backgroundTexture);
-        float scaleX = m_titleView.getSize().x / m_backgroundTexture.getSize().x;
-        float scaleY = m_titleView.getSize().y / m_backgroundTexture.getSize().y;
-        m_backgroundSprite.setScale({ scaleX, scaleY });
+        if (b_Sprite) { delete b_Sprite; }
+        b_Sprite = new sf::Sprite(b_texture);
+        float scaleX = m_titleView.getSize().x / b_texture.getSize().x;
+        float scaleY = m_titleView.getSize().y / b_texture.getSize().y;
+        b_Sprite.setScale({ scaleX, scaleY });
     }
 
     // 2. 폰트 로드 및 타이틀 텍스트 생성
@@ -274,8 +275,8 @@ void TitleScreen::render() {
 void TitleScreen::renderTitleState() {
     m_window.setView(m_titleView);
 
-    if (m_backgroundSprite) {
-        m_window.draw(*m_backgroundSprite);
+    if (b_Sprite) {
+        m_window.draw(*b_Sprite);
     }
     if (m_titleText) {
         m_window.draw(*m_titleText);
