@@ -1,7 +1,7 @@
 // TitleScreen.cpp
 #include "TitleScreen.h"
 #include <iostream>
-
+/*
 TitleScreen::TitleScreen(sf::RenderWindow& window, const std::string& backgroundTexturePath)
     : m_window(window),
     m_currentState(TITLE),
@@ -326,3 +326,4 @@ TitleButton TitleScreen::getButtonClicked(const sf::Vector2f& mousePos) {
     }
     return TitleButton::None;
 }
+*/

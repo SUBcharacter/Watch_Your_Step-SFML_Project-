@@ -1,3 +1,5 @@
+/*
+
 // TitleScreen.h
 #pragma once
 
@@ -70,3 +72,4 @@ private:
 
     TitleButton getButtonClicked(const  Vector2f& mousePos);
 };
+*/

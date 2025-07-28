@@ -25,8 +25,8 @@ private:
 
 	PlayerState currentState = PlayerState::Idle;
 
-	const int frameWidth = 35;
-	const int frameHeight = 50;
+	const int frameWidth = 30;
+	const int frameHeight = 40;
 
 	bool animationIndex = 0;
 	float animationTimer = 0.f;
