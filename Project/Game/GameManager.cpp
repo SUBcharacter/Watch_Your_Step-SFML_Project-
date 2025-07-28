@@ -1,7 +1,7 @@
 #include "GameManager.h"
 
 
-GameManager::GameManager(const string& filepath, Player& player, Collider& collider,Grid & grid) : player(player), grid(100.f),collider(collider), sprite(texture)
+GameManager::GameManager(const string& filepath, const string& LeftwallPath, const string& RightwallPath, Player& player, Collider& collider,Grid & grid) : player(player), grid(100.f),collider(collider), sprite(texture),Leftwall(texture),Rightwall(texture)
 {
 	if (!texture.loadFromFile(filepath))
 	{
@@ -9,10 +9,26 @@ GameManager::GameManager(const string& filepath, Player& player, Collider& colli
 		return;
 	}
 	 
+	if (!texture.loadFromFile(LeftwallPath))
+	{
+		cout << "file not found" << endl;
+		return;
+	}
+
+	if (!texture.loadFromFile(RightwallPath))
+	{
+		cout << "file not found" << endl;
+		return;
+	}
 	sprite.setTextureRect(IntRect({0,0},{1200,7000}));
 	sprite.setPosition({ 700,0 });
 
-
+	Leftwall.setTextureRect(IntRect({ 0, 0 }, { 100, 7000 })); 
+	Leftwall.setPosition({ 600, 0 }); 
+	
+	Rightwall.setTextureRect(IntRect({ 0, 0 }, { 100, 7000 }));
+	Rightwall.setScale({-1.f, 1.f}); 
+	Rightwall.setPosition({ 1900, 0 });
 }
 
 GameManager::~GameManager()
@@ -123,6 +139,8 @@ void GameManager::Update(PlatformType type, float deltaTime)
 void GameManager::Draw(RenderWindow& window)
 {
 	window.draw(sprite);
+	window.draw(Leftwall);
+	window.draw(Rightwall);
 	player.Draw(window);
 	for (Platform* p : allPlatform)
 	{

@@ -18,10 +18,12 @@ private:
 	Texture texture;
 	Vector2f backgound = {1200.f,7000.f};
 	Sprite sprite;
+	Sprite Leftwall;
+	Sprite Rightwall;
 
 
 public:
-	GameManager(const string& filepath,Player& player, Collider& collider, Grid& grid);
+	GameManager(const string& filepath, const string& LeftwallPath, const string& RightwallPath, Player& player, Collider& collider, Grid& grid);
 	~GameManager();
 	void LoadPlatformsFromJSON(const std::string& filepath);
 	void Init();

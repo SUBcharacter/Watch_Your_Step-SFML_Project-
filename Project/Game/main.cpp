@@ -16,7 +16,7 @@ int main()
 	Collider collider(player);
 	Camera camera({ 1200,700 });
 
-	GameManager gamemanager("Assets/background.png",player,collider,grid );
+	GameManager gamemanager("Assets/background_Center.png", "Assets/Wall.png", "Assets/Wall.png",player,collider,grid );
 	gamemanager.LoadPlatformsFromJSON("PlatformJsondata/PlatformData.json");
 	camera.C_StartGame({1300,100});
 	while (window.isOpen())
