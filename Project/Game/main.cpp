@@ -9,8 +9,7 @@ int main()
 	window.setFramerateLimit(100);
 	
 	Clock clock;
-
-	Player player("Assets/player.png", { 1000,100 }, 0, 0, 40, 40);  // ÇÃ·¹ÀÌ ¿µ¿ª {x : 900 ~ 1700, y = 0 ~ 40000}
+	Player player("Assets/PlayerSprite.png", { 1000,100 }, 0, 0, 35, 50);  // �÷��� ���� {x : 900 ~ 1700, y = 0 ~ 40000}
 	vector<Platform*> platform;
 
 	Grid grid;
