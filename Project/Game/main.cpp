@@ -46,20 +46,22 @@ int main()
 
 		if (!isPaused)
 		{
-			for (Platform* p : platform)
-			{
-				p->Update(deltaTime);
-			}
-
-			for (Platform* p : platform)
-			{
-				grid.UnregisterPlatform(p);
-				grid.RegisterPlatform(p);
-			}
-
-			player.Update(deltaTime);
-
-			collider.Collider2D(grid.nearByPlayerPlatform(player.GetnearGridcells()));
+			gamemanager.Update(deltaTime);
+		
+			//for (Platform* p : platform)
+			//{
+			//	p->Update(deltaTime);
+			//}
+			//
+			//for (Platform* p : platform)
+			//{
+			//	grid.UnregisterPlatform(p);
+			//	grid.RegisterPlatform(p);
+			//}
+			//
+			//player.Update(deltaTime);
+			//
+			//collider.Collider2D(grid.nearByPlayerPlatform(player.GetnearGridcells()));
 
 			camera.C_UpdateView(player.GetPlayerPos());
 		}
