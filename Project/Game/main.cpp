@@ -1,20 +1,24 @@
 #include "IntegrationLibrary.h"
 #include "GameManager.h"
 #include "Camera.h"
+#include "TitleScreen.h"
 
 int main()
 {
-	RenderWindow window(VideoMode({ 1200, 700 }), "Test");
+	RenderWindow window(VideoMode({ 1200,800 }), "Test");
 	window.setFramerateLimit(100);
-
+	
 	Clock clock;
 
-	Player player("Assets/player.png", { 1000,100 }, 0, 0, 40, 40);  // ÇÃ·¹ÀÌ ¿µ¿ª {x : 900 ~ 1700, y = 0 ~ 40000}
+	Player player("Assets/PlayerSprite.png", { 1000,100 }, 0, 0, 35, 50);  // ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ {x : 900 ~ 1700, y = 0 ~ 40000}
+	vector<Platform*> platform;
 
-
-	Grid grid(100);
+	Grid grid;
 	Collider collider(player);
-	Camera camera({ 1200,700 });
+
+	Camera camera({ 1200, 800 });
+
+	bool isPaused = false;
 
 	GameManager gamemanager("Assets/background_Center.png", "Assets/Wall.png", "Assets/Wall.png",player,collider,grid );
 	gamemanager.LoadPlatformsFromJSON("PlatformJsondata/PlatformData.json");
@@ -28,38 +32,49 @@ int main()
 			{
 				window.close();
 			}
+
+			if (const auto keyPressed = event->getIf<Event::KeyPressed>())
+			{
+				if (keyPressed->scancode == Keyboard::Scancode::Escape)
+				{
+					isPaused = !isPaused;
+				}
+			}
 		}
+
 		window.clear();
-		for (Platform* p : gamemanager.Getallplatform())
+
+		if (!isPaused)
 		{
-			p->Update(deltaTime);
+			for (Platform* p : platform)
+			{
+				p->Update(deltaTime);
+			}
+
+			for (Platform* p : platform)
+			{
+				grid.UnregisterPlatform(p);
+				grid.RegisterPlatform(p);
+			}
+
+			player.Update(deltaTime);
+
+			collider.Collider2D(grid.nearByPlayerPlatform(player.GetnearGridcells()));
+
+			camera.C_UpdateView(player.GetPlayerPos());
 		}
 		
-		for (Platform* p : gamemanager.Getallplatform())
-		{
-			grid.UnregisterPlatform(p);
-			grid.RegisterPlatform(p);
-		}
-
-		player.Update(deltaTime);
-
-		collider.Collider2D(grid.nearByPlayerPlatform(player.GetnearGridcells()));
-
-		camera.C_UpdateView(player.GetPlayerPos());
-
 		window.setView(camera.C_GetView());
 
-		gamemanager.Draw(window);
-		//for (Platform* p : gamemanager.Getallplatform())
-		//{
-		//	p->Draw(window);
-		//}
-		//
-		//
-		//player.Draw(window);
 
+		gamemanager.Draw(window);
+		
+		if (isPaused)
+		{
+			
+		}
 		window.display();
 	}
-
+	
 	return 0;
 }

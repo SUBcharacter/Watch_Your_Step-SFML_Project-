@@ -17,17 +17,17 @@ public:
 	Platform(const string& texturePath,PlatformType type, Vector2f pos, int left, int top, int width, int height);
 	virtual ~Platform() = default;
 
-	PlatformType GetType();
+	virtual PlatformType GetType();
 
-	FloatRect GetHitBox();
+	virtual FloatRect GetHitBox();
 
-	void UpdateHitBox();
+	virtual void UpdateHitBox();
 
-	void SetPosition(Vector2f pos);
+	virtual void SetPosition(Vector2f pos);
 
-	Vector2f GetPosition();
+	virtual Vector2f GetPosition();
 
-	void Draw(RenderWindow& window);
+	virtual void Draw(RenderWindow& window);
 
 	virtual void Update(float deltaTime) {}
 
@@ -39,8 +39,8 @@ class JumpPlatform : public Platform
 {
 private:
 	bool isActive;
-	float ignoreTimer; // 公矫 鸥捞赣
-	float ignoreDuration; // 公矫 瘤加 矫埃(檬)
+	float ignoreTimer;
+	float ignoreDuration; 
 	float jumpForce;
 
 public:

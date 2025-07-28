@@ -10,12 +10,16 @@
 #include <algorithm>
 #include <map>
 #include <vector>
-#include <iostream>
 #include <SFML/Window.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <Windows.h>
 #include <unordered_map>
 #include <utility>
+#include <string>    
+#include <optional>    
+
+
+
 
 using namespace std;
 using namespace sf;

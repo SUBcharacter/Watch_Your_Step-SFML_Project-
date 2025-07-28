@@ -2,9 +2,9 @@
 
 Player::Player(const string& texturePath, Vector2f pos, int left, int top, int width, int height) : sprite(texture)
 {
-	if (!texture.loadFromFile("Assets/player.png"))
+	if (!texture.loadFromFile("Assets/PlayerSprite.png"))
 	{
-		cerr << "¿¡·¯ : player ½ºÇÁ¶óÀÌÆ® Ã£À» ¼ö ¾øÀ½." << endl;
+		cerr << "ì—ëŸ¬ : player ìŠ¤í”„ë¼ì´íŠ¸ ì°¾ì„ ìˆ˜ ì—†ìŒ." << endl;
 		return;
 	}
 	IntRect rectI = { {left,top},{width,height} };
@@ -14,6 +14,7 @@ Player::Player(const string& texturePath, Vector2f pos, int left, int top, int w
 	  { static_cast<Vector2f>(rectI.size)}
 	};
 
+	currentState = PlayerState::Idle;
 	sprite.setTextureRect(rectI);
 	sprite.setOrigin({ rectF.size.x / 2.f,rectF.size.y / 2.f });
 	hitBoxSize = rectF.size;
@@ -27,6 +28,7 @@ void Player::Update(float deltaTime)
 {
 	Move(deltaTime);
 	CrowdControlUpdate(deltaTime);
+	UpdateAnimation(deltaTime);
 }
 
 void Player::SetPlayerPos(Vector2f pos)
@@ -71,28 +73,55 @@ void Player::SetCrowdControlTimer(float time)
 	CrowdControlTimer = time;
 }
 
-void Player::UpdateAnimation()
+void Player::UpdateAnimation(float deltaTime)
 {
+	animationTimer += deltaTime;
 
-}
+	switch (currentState)
+  {
+	case PlayerState::Idle:
+		sprite.setTextureRect(IntRect({ 0, 0 }, { frameWidth, frameHeight }));
+		break;
 
-void Player::UpdateState()
-{
-	if (!IsOnGround) // Á¡ÇÁÇÒ ¶§
-	{
-		currentState = PlayerState::Jumping;
-	}
-	else if (Keyboard::isKeyPressed(Keyboard::Scan::A) && sprite.getPosition().x > 0) // ¿ŞÂÊ Å° ´©¸¦ ¶§
-	{
-		currentState = PlayerState::L_Running;
-	}
-	else if (Keyboard::isKeyPressed(Keyboard::Scan::D) && sprite.getPosition().x < 600) // ¿À¸¥ÂÊ Å° ´©¸¦ ¶§
-	{
-		currentState = PlayerState::R_Running;
-	}
-	else // ¾Æ¹«°Íµµ ¾È ÇÒ ¶§
-	{
-		currentState = PlayerState::Idle;
+	case PlayerState::Jumping:
+		sprite.setTextureRect(IntRect({ frameWidth * 1, 0 }, { frameWidth, frameHeight }));
+		break;
+		
+	case PlayerState::R_Running:
+		if (animationTimer >= animationIntervel)
+		{
+			if (animationIndex == 0)
+			{
+				sprite.setTextureRect(IntRect({ frameWidth * 2, 0 }, { frameWidth, frameHeight }));
+				animationIndex = 1;
+				animationTimer = 0;
+			}
+			else if (animationIndex == 1)
+			{
+				sprite.setTextureRect(IntRect({ frameWidth * 3, 0 }, { frameWidth, frameHeight }));
+				animationIndex = 0;
+				animationTimer = 0;
+			}
+		}
+		break;
+      
+	case PlayerState::L_Running:
+		if (animationTimer >= animationIntervel)
+		{
+			if (animationIndex == 0)
+			{
+				sprite.setTextureRect(IntRect({ frameWidth * 4, 0 }, { frameWidth, frameHeight }));
+				animationIndex = 1;
+				animationTimer = 0;
+			}
+			else if (animationIndex == 1)
+			{
+				sprite.setTextureRect(IntRect({ frameWidth * 5, 0 }, { frameWidth, frameHeight }));
+				animationIndex = 0;
+				animationTimer = 0;
+			}
+		}
+		break;
 	}
 }
 
@@ -101,7 +130,7 @@ void Player::Draw(RenderWindow& window)
 	window.draw(sprite);
 }
 
-// ÀÎ½Ä ¹üÀ§¿¡ ÀÖ´Â ¸Ê ÁÂÇ¥¸¦ ±×¸®µå ÁÂÇ¥·Î ¹İÈ¯ÇÏ´Â ÇÔ¼ö
+// ì¸ì‹ ë²”ìœ„ì— ìˆëŠ” ë§µ ì¢Œí‘œë¥¼ ê·¸ë¦¬ë“œ ì¢Œí‘œë¡œ ë°˜í™˜í•˜ëŠ” í•¨ìˆ˜
 vector<pair<int, int>> Player::GetnearGridcells()
 {
 	vector<pair<int, int>> neargirdcells;
@@ -157,31 +186,47 @@ void Player::Move(float deltaTime)
 
 	}
 	
+	bool IsMoving = false;
+
 	if (!IsOnGround)
 	{
 		velocityY += GRAVITY * deltaTime;
 		sprite.move({ 0.0f, velocityY * deltaTime });
+
+		currentState = PlayerState::Jumping;
 	}
 	else
 	{
 		velocityY = 0.f;
+		currentState = PlayerState::Idle;
 	}
-	
 
 	if (Keyboard::isKeyPressed(Keyboard::Scan::Left) && sprite.getPosition().x > 900)
 	{
-		sprite.move({ -200.0f * deltaTime ,0.0f });
-		sprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
-		sprite.setScale({ -1.0f, 1.0f });
+		sprite.move({ -250.0f * deltaTime ,0.0f });
+		sprite.setScale({ 1.0f, 1.0f });
+		if (IsOnGround)
+		{
+			currentState = PlayerState::L_Running;
+		}
+		IsMoving = true;
 	}
 	if (Keyboard::isKeyPressed(Keyboard::Scan::Right) && sprite.getPosition().x < 1700)
 	{
-		sprite.move({ 200.0f * deltaTime ,0.0f });
-		sprite.setTextureRect(IntRect({ 0,0 }, { 50,50 }));
+		sprite.move({ 250.0f * deltaTime ,0.0f });
 		sprite.setScale({ 1.0f, 1.0f });
-
+		if (IsOnGround)
+		{
+			currentState = PlayerState::R_Running;
+		}
+		IsMoving = true;
 	}
 
+	if(!IsMoving && IsOnGround)
+	{
+		currentState = PlayerState::Idle;
+	}
+	
 	Updatehitbox();
 	UpdatesenseBox();
 }

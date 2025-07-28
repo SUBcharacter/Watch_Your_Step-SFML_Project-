@@ -15,7 +15,7 @@ private:
 
 	FloatRect senseBox;
 
-	enum class PlayerState // ���� CJH
+	enum class PlayerState
 	{
 		Idle,
 		R_Running,
@@ -23,7 +23,14 @@ private:
 		Jumping
 	};
 
-	PlayerState currentState = PlayerState::Idle; // ���� ���� ���� CJH
+	PlayerState currentState = PlayerState::Idle;
+
+	const int frameWidth = 35;
+	const int frameHeight = 50;
+
+	bool animationIndex = 0;
+	float animationTimer = 0.f;
+	float animationIntervel = 0.15f; // 프레임 전환 간격. 수정가능.
 
 	Vector2f senceBoxSize;
 	FloatRect senceBox;
@@ -43,10 +50,8 @@ public:
 	void UpdatesenseBox();
 	void CrowdControlUpdate(float deltaTime);
 	void SetCrowdControlTimer(float time);
-
-
-	void UpdateAnimation(); // ���¿� ���� �ִϸ��̼� ó�� CJH
-	void UpdateState(); // ���� ���� ���� CJH
+	
+	void UpdateAnimation(float deltaTime);
 
 	FloatRect& GetSenseBox();
 	vector<pair<int, int>> GetnearGridcells();

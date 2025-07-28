@@ -1,6 +1,5 @@
 #include "GameManager.h"
 
-
 GameManager::GameManager(const string& filepath, const string& LeftwallPath, const string& RightwallPath, Player& player, Collider& collider,Grid & grid) : player(player), grid(100.f),collider(collider), sprite(texture),Leftwall(texturewall),Rightwall(texturewall2)
 {
 	if (!texture.loadFromFile(filepath))
@@ -39,6 +38,7 @@ GameManager::~GameManager()
 	}
 	allPlatform.clear();
 }
+
 
 void GameManager::LoadPlatformsFromJSON(const std::string& filepath)
 {
@@ -107,11 +107,7 @@ void GameManager::LoadPlatformsFromJSON(const std::string& filepath)
 		default:
 			break;
 		}
-	
-	
 	}
-
-	
 }
 
 void GameManager::Init()
