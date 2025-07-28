@@ -1,7 +1,7 @@
 #include "GameManager.h"
 
 
-GameManager::GameManager(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height , float jumpForce, float mr, float speed, int dir) : player(player), grid(100.f), collider(player)
+GameManager::GameManager(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height , float jumpForce, float mr, float speed, int dir) : player(player), collider(player)
 {
 }
 

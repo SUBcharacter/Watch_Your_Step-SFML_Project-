@@ -115,6 +115,8 @@ int main()
 	Collider collider(player);
 	Camera camera({ 1200, 900 });
 
+	bool isPaused = false;
+
 	camera.C_StartGame({1300,100});
 	while (window.isOpen())
 	{
@@ -125,24 +127,38 @@ int main()
 			{
 				window.close();
 			}
+
+			if (const auto keyPressed = event->getIf<Event::KeyPressed>())
+			{
+				if (keyPressed->scancode == Keyboard::Scancode::Escape)
+				{
+					isPaused = !isPaused;
+				}
+			}
 		}
+
 		window.clear(Color::White);
-		for (Platform* p : platform)
+
+		if (!isPaused)
 		{
-			p->Update(deltaTime);
+			for (Platform* p : platform)
+			{
+				p->Update(deltaTime);
+			}
+
+			for (Platform* p : platform)
+			{
+				grid.UnregisterPlatform(p);
+				grid.RegisterPlatform(p);
+			}
+
+			player.Update(deltaTime);
+
+			collider.Collider2D(grid.nearByPlayerPlatform(player.GetnearGridcells()));
+
+			camera.C_UpdateView(player.GetPlayerPos());
 		}
 		
-		for (Platform* p : platform)
-		{
-			grid.UnregisterPlatform(p);
-			grid.RegisterPlatform(p);
-		}
-
-		player.Update(deltaTime);
-
-		collider.Collider2D(grid.nearByPlayerPlatform(player.GetnearGridcells()));
-
-		camera.C_UpdateView(player.GetPlayerPos());
 
 		window.setView(camera.C_GetView());
 
@@ -151,8 +167,13 @@ int main()
 			p->Draw(window);
 		}
 		
-
 		player.Draw(window);
+		
+		if (isPaused)
+		{
+			// 일시 정지 UI
+			
+		}
 
 		window.display();
 	}
