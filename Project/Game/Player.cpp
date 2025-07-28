@@ -77,7 +77,6 @@ void Player::UpdateAnimation(float deltaTime)
 {
 	animationTimer += deltaTime;
 
-
 	switch (currentState)
   {
 	case PlayerState::Idle:
@@ -124,10 +123,6 @@ void Player::UpdateAnimation(float deltaTime)
 		}
 		break;
 	}
-
-}
-
-	
 }
 
 void Player::Draw(RenderWindow& window)

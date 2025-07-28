@@ -11,18 +11,28 @@ using json = nlohmann::json;
 class GameManager
 {
 private:
-	Player player;
+	Player& player;
 	vector<Platform*> allPlatform;
 	Grid grid;
-	Collider collider;
+	Collider& collider;
 	Texture texture;
+	Texture texturewall;
+	Texture texturewall2;
+	Sprite sprite;
+	Sprite Leftwall;
+	Sprite Rightwall;
+
 
 public:
-	GameManager(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height , float jumpForce, float mr, float speed, int dir);
+	GameManager(const string& filepath, const string& LeftwallPath, const string& RightwallPath, Player& player, Collider& collider, Grid& grid);
+	~GameManager();
 	void LoadPlatformsFromJSON(const std::string& filepath);
 	void Init();
 	void Update(PlatformType type,float deltaTime);
 	void Draw(RenderWindow& window);
-	PlatformType StringtoPlatformType(const std::string& typestring);
+	PlatformType StringtoPlatformType(const string& typestring);
+	JumpForceLevel StringtoJumpForceLevel(const string& Levelstring);
+	vector<Platform*>& Getallplatform();
+	float GetJumpForce(JumpForceLevel level);
 };
 

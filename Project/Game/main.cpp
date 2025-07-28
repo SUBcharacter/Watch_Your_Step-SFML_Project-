@@ -4,11 +4,12 @@
 #include "TitleScreen.h"
 
 int main()
-
+{
 	RenderWindow window(VideoMode({ 1200,800 }), "Test");
 	window.setFramerateLimit(100);
 	
 	Clock clock;
+
 	Player player("Assets/PlayerSprite.png", { 1000,100 }, 0, 0, 35, 50);  // �÷��� ���� {x : 900 ~ 1700, y = 0 ~ 40000}
 	vector<Platform*> platform;
 
@@ -19,6 +20,8 @@ int main()
 
 	bool isPaused = false;
 
+	GameManager gamemanager("Assets/background_Center.png", "Assets/Wall.png", "Assets/Wall.png",player,collider,grid );
+	gamemanager.LoadPlatformsFromJSON("PlatformJsondata/PlatformData.json");
 	camera.C_StartGame({1300,100});
 	while (window.isOpen())
 	{
@@ -39,7 +42,7 @@ int main()
 			}
 		}
 
-		window.clear(Color::White);
+		window.clear();
 
 		if (!isPaused)
 		{
@@ -62,20 +65,14 @@ int main()
 		}
 		
 		window.setView(camera.C_GetView());
-	
-		for (Platform* p : platform)
-		{
-			p->Draw(window);
-		}
-		
-		player.Draw(window);
+
+
+		gamemanager.Draw(window);
 		
 		if (isPaused)
 		{
-			// ÀÏ½Ã Á¤Áö UI
 			
 		}
-
 		window.display();
 	}
 	
