@@ -16,7 +16,8 @@ private:
 	Grid grid;
 	Collider& collider;
 	Texture texture;
-	Vector2f backgound = {1200.f,7000.f};
+	Texture texturewall;
+	Texture texturewall2;
 	Sprite sprite;
 	Sprite Leftwall;
 	Sprite Rightwall;
