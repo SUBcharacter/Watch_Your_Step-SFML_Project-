@@ -5,7 +5,7 @@
 TitleScreen::TitleScreen(sf::RenderWindow& window, const std::string& backgroundTexturePath)
     : m_window(window),
     m_currentState(TITLE),
-    m_backgroundSprite(nullptr),
+    m_backgroundSprite(m_backgroundTexture),
     m_titleText(nullptr),
     m_fontLoaded(false),
     m_highlightedOptionIndex(-1),
@@ -14,6 +14,11 @@ TitleScreen::TitleScreen(sf::RenderWindow& window, const std::string& background
 {  //<-여기서 '"sf::Sprite" 클래스의 기본 생성자가 없습니다.'오류때문에 결과물 확인 못했습니다.
     m_window.setFramerateLimit(60);
 
+    if (!m_backgroundTexture.loadFromFile(""))
+    {
+        cout << "에러 메세지" << endl;
+    }
+    m_backgroundSprite.setTexture(m_backgroundTexture);
     initViews();
     setupTitleElements(backgroundTexturePath);
     setupOptions();
@@ -44,7 +49,7 @@ void TitleScreen::setupTitleElements(const std::string& backgroundTexturePath) {
         m_backgroundSprite = new sf::Sprite(m_backgroundTexture);
         float scaleX = m_titleView.getSize().x / m_backgroundTexture.getSize().x;
         float scaleY = m_titleView.getSize().y / m_backgroundTexture.getSize().y;
-        m_backgroundSprite->setScale({ scaleX, scaleY });
+        m_backgroundSprite.setScale({ scaleX, scaleY });
     }
 
     // 2. 폰트 로드 및 타이틀 텍스트 생성

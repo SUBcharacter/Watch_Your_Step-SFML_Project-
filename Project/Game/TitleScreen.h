@@ -31,7 +31,7 @@ private:
     GameState m_currentState;
 
     sf::Texture m_backgroundTexture;
-    sf::Sprite* m_backgroundSprite;
+    sf::Sprite m_backgroundSprite;
 
     sf::Font m_font;  
     bool m_fontLoaded = false;
