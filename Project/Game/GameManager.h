@@ -34,5 +34,6 @@ public:
 	JumpForceLevel StringtoJumpForceLevel(const string& Levelstring);
 	vector<Platform*>& Getallplatform();
 	float GetJumpForce(JumpForceLevel level);
+	bool GameClear();
 };
 

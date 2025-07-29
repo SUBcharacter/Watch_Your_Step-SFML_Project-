@@ -201,3 +201,8 @@ float GameManager::GetJumpForce(JumpForceLevel level)
 	return (static_cast<float>(level) + 1.f) * 600.f;
 }
 
+bool GameManager::GameClear()
+{
+	return player.GetPlayerPos().y >= 7000.f;
+}
+
