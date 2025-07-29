@@ -10,8 +10,7 @@ int main()
 	
 	Clock clock;
 
-	Player player("Assets/PlayerSprite.png", { 1000,100 }, 0, 0, 35, 50);  // �÷��� ���� {x : 900 ~ 1700, y = 0 ~ 40000}
-	vector<Platform*> platform;
+	Player player("Assets/PlayerSprite.png", { 1000,0 }, 0, 0, 35, 50);  // �÷��� ���� {x : 900 ~ 1700, y = 0 ~ 40000}
 
 	Grid grid;
 	Collider collider(player);
@@ -46,20 +45,7 @@ int main()
 
 		if (!isPaused)
 		{
-			for (Platform* p : platform)
-			{
-				p->Update(deltaTime);
-			}
-
-			for (Platform* p : platform)
-			{
-				grid.UnregisterPlatform(p);
-				grid.RegisterPlatform(p);
-			}
-
-			player.Update(deltaTime);
-
-			collider.Collider2D(grid.nearByPlayerPlatform(player.GetnearGridcells()));
+			gamemanager.Update(deltaTime);
 
 			camera.C_UpdateView(player.GetPlayerPos());
 		}
