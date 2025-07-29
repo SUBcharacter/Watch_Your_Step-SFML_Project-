@@ -23,6 +23,14 @@ public:
     void run();
 
 private:
+    struct m_Sprite
+    {
+        Texture tex;
+        Sprite spr;
+
+
+    };
+
      RenderWindow& m_window;
 
      View m_titleV;
@@ -67,3 +75,8 @@ private:
 
     TitleButton getBtnClicked(const  Vector2f& mousePos);
 };
+
+
+// 1. 필요한 것.
+// 2. 설계도 만들기
+// 3. 용도 대로 쓰기
