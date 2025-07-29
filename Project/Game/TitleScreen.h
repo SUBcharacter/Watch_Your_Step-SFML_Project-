@@ -25,48 +25,45 @@ public:
 private:
      RenderWindow& m_window;
 
-     View m_titleView;
-     View m_gameplayView;
+     View m_titleV;
+     View m_gameV;
 
-    GameState m_currentState;
+    GameState m_state;
 
      Texture b_texture;
      Sprite b_Sprite;
 
-     Font m_font;  
-    bool m_fontLoaded = false;
-     Text m_titleText;
+    int m_selIdx;
 
-    std::vector<std::string> m_optionStrings;
-    std::vector< Text> m_optionTexts;
-    int m_highlightedOptionIndex;
+    const  Color m_defCol =  Color::White;
+    const  Color m_highCol =  Color::Yellow;
 
-    const  Color m_defaultOptionColor =  Color::White;
-    const  Color m_highlightOptionColor =  Color::Yellow;
+     Clock m_keyClk;
+     Time m_keyDly;
 
-     Clock m_keyPressClock;
-     Time m_keyPressDelay;
+     Texture m_indTex; // 지시자 스프라이트의 텍스처
+     Sprite m_indSpr;   // 지시자 스프라이트
 
-     Texture m_indicatorTexture; // 지시자 스프라이트의 텍스처
-     Sprite m_indicatorSprite;   // 지시자 스프라이트
+     std::vector<Sprite> m_optionBtns;
+
 
     void initViews();
-    void setupTitleElements(const std::string& backgroundTexturePath);
+    void setupElements(const std::string& b_textureP);
     void setupOptions();
-    void initGameplayElements();
+    void initGPElems();
 
-    void update(float deltaTime);
+    void update(float dt);
     void render();
 
-    void handleTitleStateEvents(const  Event& event);
-    void handleGameplayStateEvents(const  Event& event);
+    void h_TitleEvs(const  Event& event);
+    void h_GameEvs(const  Event& event);
 
-    void updateTitleState(float deltaTime);
-    void updateGameplayState(float deltaTime);
-    void handleEvents();
+    void u_TitleS(float deltaTime);
+    void u_GameS(float deltaTime);
+    void handleEvs();
 
-    void renderTitleState();
-    void renderGameplayState();
+    void r_TitleState();
+    void r_GameState();
 
-    TitleButton getButtonClicked(const  Vector2f& mousePos);
+    TitleButton getBtnClicked(const  Vector2f& mousePos);
 };
