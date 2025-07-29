@@ -18,6 +18,10 @@ int main()
 
 	Camera camera({ 1200, 800 });
 
+	Music music("Assets/dance_trance.wav");
+	music.play();
+	music.setLooping(true);
+
 	bool isPaused = false;
 
 	GameManager gamemanager("Assets/background_Center.png", "Assets/Wall.png", "Assets/Wall.png",player,collider,grid );
