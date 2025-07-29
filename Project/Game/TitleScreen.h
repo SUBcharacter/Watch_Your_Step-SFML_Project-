@@ -2,11 +2,16 @@
 #pragma once
 
 #include "IntegrationLibrary.h" // SFML 3.0 관련 헤더 포함 가정
+#include "Camera.h"
+#include "GameManager.h"
+
 
 enum GameState
 {
     TITLE,
     GAMEPLAY,
+    CLEAR,
+    EXIT
 };
 
 enum class TitleButton {
@@ -16,64 +21,59 @@ enum class TitleButton {
 };
 
 class TitleScreen {
-public:
-    TitleScreen( RenderWindow& window, const std::string& backgroundTexturePath);
-    ~TitleScreen();
-
-    void run();
-
 private:
-    struct m_Sprite
+    struct SpriteUse
     {
         Texture tex;
         Sprite spr;
 
 
+        SpriteUse(const string& texturePath, Vector2f size, Vector2f pos)
+            :spr(tex)
+        {
+            if (!tex.loadFromFile(texturePath))
+            {
+                cout << "텍스처 없음" << endl;
+            }
+            Vector2i sizeI = { static_cast<int>(size.x), static_cast<int>(size.y) };
+            spr.setTextureRect({ {0,0},sizeI});
+            spr.setOrigin(size / 2.f); //setOrigin->스프라이트 내부 좌표
+            spr.setPosition(pos); // setPosition->월드 좌표
+        }
+
     };
+    GameState state = TITLE;
 
-     RenderWindow& m_window;
+    bool isPaused = false;
+    bool wasLastPressed = false;
 
-     View m_titleV;
-     View m_gameV;
+    SpriteUse backGround;
+    SpriteUse startGame;
+    SpriteUse exitGame;
 
-    GameState m_state;
+    SpriteUse pauseBack;
+    SpriteUse continueGame;
+    SpriteUse breakGame;
 
-     Texture b_texture;
-     Sprite b_Sprite;
-
-    int m_selIdx;
-
-    const  Color m_defCol =  Color::White;
-    const  Color m_highCol =  Color::Yellow;
-
-     Clock m_keyClk;
-     Time m_keyDly;
-
-     Texture m_indTex; // 지시자 스프라이트의 텍스처
-     Sprite m_indSpr;   // 지시자 스프라이트
-
-     std::vector<Sprite> m_optionBtns;
+    SpriteUse clearBack;
+    SpriteUse repeatGame;
 
 
-    void initViews();
-    void setupElements(const std::string& b_textureP);
-    void setupOptions();
-    void initGPElems();
+   
+public:
 
-    void update(float dt);
-    void render();
+    TitleScreen();
+  
+    void run();
 
-    void h_TitleEvs(const  Event& event);
-    void h_GameEvs(const  Event& event);
+    void Draw(RenderWindow& window);
 
-    void u_TitleS(float deltaTime);
-    void u_GameS(float deltaTime);
-    void handleEvs();
+    void UpdateTitle(RenderWindow& window, Camera& camera);
 
-    void r_TitleState();
-    void r_GameState();
+    void UpdatePaused(RenderWindow& window, Camera& camera);
 
-    TitleButton getBtnClicked(const  Vector2f& mousePos);
+    void UpdateClear(RenderWindow& window, Camera& camera);
+    
 };
 
 
