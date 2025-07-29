@@ -7,6 +7,14 @@ Player::Player(const string& texturePath, Vector2f pos, int left, int top, int w
 		cerr << "에러 : player 스프라이트 찾을 수 없음." << endl;
 		return;
 	}
+	if (!jumpBuffer.loadFromFile("Assets/jumpSound.wav"))
+	{
+		cerr << "에러 : jump sound 찾을 수 없음." << endl;
+	}
+	if (!stepBuffer.loadFromFile("Assets/stepSound.wav"))
+	{
+		cerr << "에러 : step sound 찾을 수 없음." << endl;
+	}
 	IntRect rectI = { {left,top},{width,height} };
 	FloatRect rectF =
 	{
@@ -19,6 +27,10 @@ Player::Player(const string& texturePath, Vector2f pos, int left, int top, int w
 	sprite.setOrigin({ rectF.size.x / 2.f,rectF.size.y / 2.f });
 	hitBoxSize = rectF.size;
 	senceBoxSize = {300.f, 300.f };
+
+	jumpSound = new Sound(jumpBuffer);
+	stepSound = new Sound(stepBuffer);
+	stepSound->setVolume(40.f);
 
 	SetPlayerPos(pos);
 
@@ -94,14 +106,14 @@ void Player::UpdateAnimation(float deltaTime)
 			{
 				sprite.setTextureRect(IntRect({ frameWidth * 2, 0 }, { frameWidth, frameHeight }));
 				animationIndex = 1;
-				animationTimer = 0;
+				PlayStepSound();
 			}
 			else if (animationIndex == 1)
 			{
 				sprite.setTextureRect(IntRect({ frameWidth * 3, 0 }, { frameWidth, frameHeight }));
 				animationIndex = 0;
-				animationTimer = 0;
 			}
+			animationTimer = 0;
 		}
 		break;
       
@@ -112,16 +124,32 @@ void Player::UpdateAnimation(float deltaTime)
 			{
 				sprite.setTextureRect(IntRect({ frameWidth * 4, 0 }, { frameWidth, frameHeight }));
 				animationIndex = 1;
-				animationTimer = 0;
+				PlayStepSound();
 			}
 			else if (animationIndex == 1)
 			{
 				sprite.setTextureRect(IntRect({ frameWidth * 5, 0 }, { frameWidth, frameHeight }));
 				animationIndex = 0;
-				animationTimer = 0;
 			}
+			animationTimer = 0;
 		}
 		break;
+	}
+}
+
+void Player::PlayJumpSound()
+{
+	if (jumpSound)
+	{
+		jumpSound->play();
+	}
+}
+
+void Player::PlayStepSound()
+{
+	if (stepSound)
+	{
+		stepSound->play();
 	}
 }
 
@@ -182,6 +210,7 @@ void Player::Move(float deltaTime)
 		{
 			velocityY = -300.f;
 			IsOnGround = false;
+			PlayJumpSound();
 		}
 
 	}
@@ -192,7 +221,7 @@ void Player::Move(float deltaTime)
 	{
 		velocityY += GRAVITY * deltaTime;
 		sprite.move({ 0.0f, velocityY * deltaTime });
-
+		
 		currentState = PlayerState::Jumping;
 	}
 	else
@@ -229,6 +258,12 @@ void Player::Move(float deltaTime)
 	
 	Updatehitbox();
 	UpdatesenseBox();
+}
+
+Player::~Player()
+{
+	delete jumpSound;
+	delete stepSound;
 }
 
 
