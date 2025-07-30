@@ -1,14 +1,14 @@
-/*
-
-// TitleScreen.h
 #pragma once
-
-#include "IntegrationLibrary.h" // SFML 3.0 °ü·Ã Çì´õ Æ÷ÇÔ °¡Á¤
+#include "IntegrationLibrary.h" 
+#include "Camera.h"
+#include "GameManager.h"
 
 enum GameState
 {
     TITLE,
     GAMEPLAY,
+    CLEAR,
+    EXIT
 };
 
 enum class TitleButton {
@@ -18,58 +18,59 @@ enum class TitleButton {
 };
 
 class TitleScreen {
-public:
-    TitleScreen( RenderWindow& window, const std::string& backgroundTexturePath);
-    ~TitleScreen();
+private:
+    struct SpriteUse
+    {
+        Texture tex;
+        Sprite spr;
 
+
+        SpriteUse(const string& texturePath, Vector2f size, Vector2f pos)
+            :spr(tex)
+        {
+            if (!tex.loadFromFile(texturePath))
+            {
+                cout << "í…ìŠ¤ì²˜ ì—†ìŒ" << endl;
+            }
+            Vector2i sizeI = { static_cast<int>(size.x), static_cast<int>(size.y) };
+            spr.setTextureRect({ {0,0},sizeI});
+            spr.setOrigin(size / 2.f); 
+            spr.setPosition(pos); 
+        }
+
+    };
+    GameState state = TITLE;
+
+    bool isPaused = false;
+    bool wasLastPressed = false;
+    Vector2f playerStart = { 1000, 100 };
+
+    SpriteUse backGround;
+    SpriteUse startGame;
+    SpriteUse exitGame;
+
+    SpriteUse pauseBack;
+    SpriteUse continueGame;
+    SpriteUse breakGame;
+
+    SpriteUse clearBack;
+    SpriteUse repeatGame;
+
+
+   
+public:
+
+    TitleScreen();
+  
     void run();
 
-private:
-     RenderWindow& m_window;
+    void Draw(RenderWindow& window);
 
-     View m_titleView;
-     View m_gameplayView;
+    void UpdateTitle(RenderWindow& window, Camera& camera, Player& player);
 
-    GameState m_currentState;
+    void UpdatePaused(RenderWindow& window, Camera& camera);
 
-     Texture b_texture;
-     Sprite b_Sprite;
-
-     Font m_font;  
-    bool m_fontLoaded = false;
-     Text m_titleText;
-
-    std::vector<std::string> m_optionStrings;
-    std::vector< Text> m_optionTexts;
-    int m_highlightedOptionIndex;
-
-    const  Color m_defaultOptionColor =  Color::White;
-    const  Color m_highlightOptionColor =  Color::Yellow;
-
-     Clock m_keyPressClock;
-     Time m_keyPressDelay;
-
-     Texture m_indicatorTexture; // Áö½ÃÀÚ ½ºÇÁ¶óÀÌÆ®ÀÇ ÅØ½ºÃ³
-     Sprite m_indicatorSprite;   // Áö½ÃÀÚ ½ºÇÁ¶óÀÌÆ®
-
-    void initViews();
-    void setupTitleElements(const std::string& backgroundTexturePath);
-    void setupOptions();
-    void initGameplayElements();
-
-    void update(float deltaTime);
-    void render();
-
-    void handleTitleStateEvents(const  Event& event);
-    void handleGameplayStateEvents(const  Event& event);
-
-    void updateTitleState(float deltaTime);
-    void updateGameplayState(float deltaTime);
-    void handleEvents();
-
-    void renderTitleState();
-    void renderGameplayState();
-
-    TitleButton getButtonClicked(const  Vector2f& mousePos);
+    void UpdateClear(RenderWindow& window, Camera& camera, Player& player);
+    
 };
-*/
+

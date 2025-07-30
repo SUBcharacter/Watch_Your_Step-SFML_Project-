@@ -1,329 +1,237 @@
-// TitleScreen.cpp
 #include "TitleScreen.h"
 #include <iostream>
-/*
-TitleScreen::TitleScreen(sf::RenderWindow& window, const std::string& backgroundTexturePath)
-    : m_window(window),
-    m_currentState(TITLE),
-    b_Sprite(b_texture),
-    m_titleText(nullptr),
-    m_fontLoaded(false),
-    m_highlightedOptionIndex(-1),
-    m_keyPressClock(),
-    m_keyPressDelay(sf::milliseconds(200))    
-{  //<-여기서 '"sf::Sprite" 클래스의 기본 생성자가 없습니다.'오류때문에 결과물 확인 못했습니다.
-    m_window.setFramerateLimit(60);
 
-    if (!b_texture.loadFromFile(""))
-    {
-        cout << "에러 메세지" << endl;
-    }
-    b_Sprite.setTexture(b_texture);
-    b_Sprite.setOrigin({600.0f, 400.0f});
-    b_Sprite.setPosition({ 600.f, 400.0f });
-    initViews();
-    setupTitleElements(backgroundTexturePath);
-    setupOptions();
+TitleScreen::TitleScreen()
+	: backGround(SpriteUse("Assets/Title/title.png", { 1201.0f, 802.0f }, { 1201.0f / 2.f, 802.0f / 2.f })),
+	startGame(SpriteUse("Assets/Title/T_B_Start.png", { 350.f,75.f }, { 1201.0f / 2.f,  802.0f / 2.f })),
+	exitGame(SpriteUse("Assets/Title/T_B_Exit.png", { 350.f,75.f }, { 1201.0f / 2.f,   (802.0f / 2.f) + 100.f })),
+	pauseBack(SpriteUse("Assets/Pause/P_pause.png", { 1200.f, 800.f }, { 0.f,0.f })),
+	continueGame(SpriteUse("Assets/Pause/P_B_Continue.png", { 350.0f, 75.f }, { 0.f,0.f })),
+	breakGame(SpriteUse("Assets/Ending/E_B_Exit.png", { 350.0f, 75.f }, { 0.f,0.f })),
+	clearBack(SpriteUse("Assets/Ending/ending.png", {1201.0f, 802.0f} , {0.f,0.f})),
+	repeatGame(SpriteUse("Assets/Ending/E_B_Restart.png", { 350.0f, 75.0f }, { 0.f,0.f }))
+{
 }
 
-TitleScreen::~TitleScreen() {
-    
-   m_optionTexts.clear();
+void TitleScreen::Draw(RenderWindow& window)
+{
+	window.draw(backGround.spr);
+	window.draw(startGame.spr);
+	window.draw(exitGame.spr);
 }
 
-void TitleScreen::initViews() {
-    m_titleView.setCenter({ 1200.0f / 2.0f, 800.0f / 2.0f });
-    m_titleView.setSize({ 1200.0f, 800.0f });
+void TitleScreen::UpdateTitle(RenderWindow& window, Camera& camera, Player& player)
+{
+	Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
+	
+	bool isPressed = Mouse::isButtonPressed(Mouse::Button::Left);
 
-    m_gameplayView.setCenter({ 0.0f, 0.0f });
-    m_gameplayView.setSize({ 1920.0f, 1080.0f });
-}
-void TitleScreen::setupTitleElements(const std::string& backgroundTexturePath) {
-    // 1. 배경 텍스처 로드 및 스프라이트 생성
-    if (!b_texture.loadFromFile("Assets/platform.png")) {
-        std::cerr << "오류: 배경 텍스처를 로드할 수 없습니다: " << backgroundTexturePath << std::endl;
-        b_Sprite = nullptr; 
-       
-    }
-    else {
-        if (b_Sprite) { delete b_Sprite; }
-        b_Sprite = new sf::Sprite(b_texture);
-        float scaleX = m_titleView.getSize().x / b_texture.getSize().x;
-        float scaleY = m_titleView.getSize().y / b_texture.getSize().y;
-        b_Sprite.setScale({ scaleX, scaleY });
-    }
+	bool justClicked = isPressed && !wasLastPressed;
 
-    // 2. 폰트 로드 및 타이틀 텍스트 생성
-	if (!m_font.openFromFile("Assets/KoPubWorld Batang Medium.ttf" )) { // TODO: 실제 폰트 경로로 변경!
-        std::cerr << "오류: 폰트를 로드할 수 없습니다. 폰트 경로를 확인하세요." << std::endl;
-        m_titleText = nullptr; 
-    }
-    else {
-        if (m_titleText) { delete m_titleText; }
+		if (startGame.spr.getGlobalBounds().contains(mousePos))
+		{
+			startGame.spr.setColor(sf::Color(255, 255, 255, 255));
+		if (justClicked)
+			{
+				startGame.spr.setColor(sf::Color(200, 200, 200, 150));
 
-        m_titleText = new sf::Text(m_font, sf::String("My Game Title"), 80);
-        m_titleText->setFillColor(sf::Color::White); // 텍스트 색상 설정
+				state = GAMEPLAY;
+				isPaused = false;
+				player.SetPlayerPos(playerStart);
+				camera.C_StartGame({ 1300,100 });
+				
+			}
+		}
+		else if (exitGame.spr.getGlobalBounds().contains(mousePos))
+		{
+			exitGame.spr.setColor(sf::Color(255, 255, 255, 255));
+			if (justClicked)
+			{
+				exitGame.spr.setColor(sf::Color(200, 200, 200, 150));
+				state = EXIT;
+			}
+		}
+		else
+		{
+			startGame.spr.setColor(sf::Color(225, 225, 225, 255));
+			exitGame.spr.setColor(sf::Color(225, 225, 225, 255));
+		}
+		wasLastPressed = isPressed;
 
-            // 텍스트 원점 및 위치 설정 (기존 로직과 동일)
-            sf::FloatRect textRect = m_titleText->getLocalBounds();
-            m_titleText->setOrigin({
-                textRect.position.x + textRect.size.x / 2.0f,
-                textRect.position.y + textRect.size.y / 2.0f
-                });
-            m_titleText->setPosition({
-                m_titleView.getCenter().x,
-                m_titleView.getCenter().y / 2.0f
-                });
-    }
-    if (!m_indicatorTexture.loadFromFile("Assets/player.png")) {
-        std::cerr << "오류: 지시자 텍스처를 로드할 수 없습니다: Assets/player.png" << std::endl;
-    }
-    else {
-        m_indicatorSprite.setTexture(m_indicatorTexture);
-        sf::FloatRect indicatorRect = m_indicatorSprite.getLocalBounds();
-        m_indicatorSprite.setOrigin({ indicatorRect.position.x + indicatorRect.size.x, indicatorRect.position.y + indicatorRect.size.y / 2.0f });
-        m_indicatorSprite.setScale({ 0.5f, 0.5f }); 
-    }
-}
-void TitleScreen::setupOptions() {
-    m_optionTexts.clear();
+		Draw(window);
+	}
 
-    if (!m_fontLoaded) {
-        std::cerr << "경고: 폰트가 로드되지 않아 옵션 텍스트를 생성할 수 없습니다." << std::endl;
-        return;
-    }
+void TitleScreen::UpdatePaused(RenderWindow& window, Camera& camera)
+{
+	Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
 
-    m_optionStrings.push_back("Game Start");
-    m_optionStrings.push_back("End");
+	pauseBack.spr.setPosition(camera.C_GetView().getCenter());
+	continueGame.spr.setPosition({ camera.C_GetView().getCenter().x, camera.C_GetView().getCenter().y});
+	breakGame.spr.setPosition({ camera.C_GetView().getCenter().x, camera.C_GetView().getCenter().y + 100.f });
 
-    for (size_t i = 0; i < m_optionStrings.size(); ++i) {
-        sf::Text optionText(m_font, sf::String(m_optionStrings[i]), 40);
+	bool isPressed = Mouse::isButtonPressed(Mouse::Button::Left);
+
+	bool justClicked = isPressed && !wasLastPressed;
 
 
-        sf::FloatRect textRect = optionText.getLocalBounds();
-        optionText.setOrigin({
-            textRect.position.x + textRect.size.x / 2.0f,
-            textRect.position.y + textRect.size.y / 2.0f
-            });
-        optionText.setPosition({
-            m_titleView.getCenter().x,
-            m_titleView.getCenter().y + 80.0f + static_cast<float>(i) * 80.0f
-            });
+		if (continueGame.spr.getGlobalBounds().contains(mousePos))
+		{
+			continueGame.spr.setColor(sf::Color(255, 255, 255, 255));
+			if (justClicked)
+			{
+				continueGame.spr.setColor(sf::Color(200, 200, 200, 150));
 
-        m_optionTexts.push_back(optionText);
-    }
-}
-void TitleScreen::initGameplayElements() {
-    std::cout << "게임 플레이 요소들이 초기화되었습니다!" << std::endl;
-}
+				isPaused = false;
 
-void TitleScreen::run() {
-    sf::Clock clock;
+			}
+		}
+		else if (breakGame.spr.getGlobalBounds().contains(mousePos))
+		{
+			breakGame.spr.setColor(sf::Color(255, 255, 255, 255));
+			if (justClicked)
+			{
+				breakGame.spr.setColor(sf::Color(200, 200, 200, 150));
+				state = TITLE;
+				camera.C_StartGame({ 600.f, 400.f });
+			}
+		}
+		else
+		{
+			continueGame.spr.setColor(sf::Color(225, 225, 225, 255));
+			breakGame.spr.setColor(sf::Color(225, 225, 225, 255));
+		}
 
-    while (m_window.isOpen()) {
-        float deltaTime = clock.restart().asSeconds();
-        
-        handleEvents();
-        update(deltaTime);
-        render();
-    }
-}
-void TitleScreen::handleEvents() {
-    while (true) {
-        auto eventOpt = m_window.pollEvent(); 
-        if (!eventOpt.has_value()) {
-            break;
-        }
+		wasLastPressed = isPressed;
 
-        sf::Event& event = eventOpt.value(); // 이벤트 객체 참조
-
-        if (event.is<sf::Event::Closed>()) {
-            m_window.close();
-        }
-
-        event.visit([&](auto& ev) {
-            using T = std::decay_t<decltype(ev)>;
-            if constexpr (std::is_same_v<T, sf::Event::KeyPressed> ||
-                std::is_same_v<T, sf::Event::MouseMoved> ||
-                std::is_same_v<T, sf::Event::MouseButtonPressed>) {
-                if (m_currentState == TITLE) {
-                    handleTitleStateEvents(event);
-                }
-                else if (m_currentState == GAMEPLAY) {
-                    handleGameplayStateEvents(event);
-                }
-            }
-            });
-    }
+		window.draw(pauseBack.spr);
+		window.draw(continueGame.spr);
+		window.draw(breakGame.spr);
+	
 }
 
+void TitleScreen::UpdateClear(RenderWindow& window, Camera& camera, Player& player)
+{
+	Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
+	clearBack.spr.setPosition(camera.C_GetView().getCenter());
+	repeatGame.spr.setPosition({ camera.C_GetView().getCenter().x, camera.C_GetView().getCenter().y });
+	breakGame.spr.setPosition({ camera.C_GetView().getCenter().x, camera.C_GetView().getCenter().y + 100.f });
 
-void TitleScreen::handleTitleStateEvents(const sf::Event& event) {
-    if (event.is<sf::Event::KeyPressed>()) {
-        if (m_keyPressClock.getElapsedTime() >= m_keyPressDelay) {
-            if (auto keyEvent = event.getIf<sf::Event::KeyPressed>()) {
-                if (keyEvent->code == sf::Keyboard::Key::Up) {
-                    if (m_highlightedOptionIndex == -1) {
-                        m_highlightedOptionIndex = m_optionTexts.size() - 1;
-                    }
-                    else {
-                        m_highlightedOptionIndex = (m_highlightedOptionIndex - 1 + m_optionTexts.size()) % m_optionTexts.size();
-                    }
-                    m_keyPressClock.restart();
-                }
-                else if (keyEvent->code == sf::Keyboard::Key::Down) {
-                    if (m_highlightedOptionIndex == -1) {
-                        m_highlightedOptionIndex = 0;
-                    }
-                    else {
-                        m_highlightedOptionIndex = (m_highlightedOptionIndex + 1) % m_optionTexts.size();
-                    }
-                    m_keyPressClock.restart();
-                }
-                else if (keyEvent->code == sf::Keyboard::Key::Enter) {
-                // 엔터키 처리 부분은 나중에 구현 예정
-                
-                }
+	bool isPressed = Mouse::isButtonPressed(Mouse::Button::Left);
 
-                else if (keyEvent->code == sf::Keyboard::Key::Escape) {
-                  m_window.close();
-                    return;
-                }
-            }
-        }
-    }
-    else if (event.is<sf::Event::MouseMoved>()) {
-        // 마우스 이동 시 하이라이트 변경 로직 (현재 마우스 위치를 사용하여 처리)
-        sf::Vector2f mouseWorldPos = m_window.mapPixelToCoords(
-            sf::Mouse::getPosition(m_window), m_titleView);
+	bool justClicked = isPressed && !wasLastPressed;
 
-        int prevHighlightedIndex = m_highlightedOptionIndex;
-        m_highlightedOptionIndex = -1; 
+	if (repeatGame.spr.getGlobalBounds().contains(mousePos))
+	{
+		repeatGame.spr.setColor(sf::Color(255, 255, 255, 255));
+		if (justClicked)
+		{
+			repeatGame.spr.setColor(sf::Color(200, 200, 200, 150));
 
-        for (size_t i = 0; i < m_optionTexts.size(); ++i) {
-            if (m_optionTexts[i].getGlobalBounds().contains(mouseWorldPos)) {
-                m_highlightedOptionIndex = static_cast<int>(i);
-                break;
-            }
-        }
-        // 하이라이트 변경 시 효과음 등을 재생할 수 있음 (prevHighlightedIndex와 비교)
-    }
-    else if (event.is<sf::Event::MouseButtonPressed>()) {
-       if (auto mouseButtonEvent = event.getIf<sf::Event::MouseButtonPressed>()) {
-            if (mouseButtonEvent->button == sf::Mouse::Button::Left) {
-                sf::Vector2f mouseWorldPos = m_window.mapPixelToCoords(
-                    sf::Mouse::getPosition(m_window), m_titleView);
+			isPaused = false;
+			state = GAMEPLAY;
+			player.SetPlayerPos(playerStart);
+			camera.C_StartGame({ 1300,100 });
 
-                TitleButton clickedButton = getButtonClicked(mouseWorldPos);
-                if (clickedButton == TitleButton::StartGame) {
-                    m_currentState = GAMEPLAY;
-                    initGameplayElements();
-                    m_window.setView(m_gameplayView);
-                    std::cout << "마우스로 새 게임 시작! 게임플레이 모드로 전환합니다." << std::endl;
-                }
-                else if (clickedButton == TitleButton::ExitGame) {
-                    m_window.close(); // 게임 종료
-                    std::cout << "마우스로 게임 종료." << std::endl;
-                }
-            }
-        }
-    }
+		}
+	}
+	else if (breakGame.spr.getGlobalBounds().contains(mousePos))
+	{
+		breakGame.spr.setColor(sf::Color(255, 255, 255, 255));
+		if (justClicked)
+		{
+			breakGame.spr.setColor(sf::Color(200, 200, 200, 150));
+			state = TITLE;
+			
+			camera.C_StartGame({ 600.f, 400.f });
+		}
+	}
+	else
+	{
+		continueGame.spr.setColor(sf::Color(225, 225, 225, 255));
+		breakGame.spr.setColor(sf::Color(225, 225, 225, 255));
+	}
+
+	wasLastPressed = isPressed;
+
+	window.draw(clearBack.spr);
+	window.draw(repeatGame.spr);
+	window.draw(breakGame.spr);
 }
 
-void TitleScreen::handleGameplayStateEvents(const sf::Event& event) {
-    // TODO: 게임 플레이 이벤트 처리
+void TitleScreen::run()
+{
+	RenderWindow window(VideoMode({ 1200, 800 }), "Test");
+	window.setFramerateLimit(100);
+
+	Clock clock;
+	Vector2f playerStart = { 1350, 6500 };
+	Player player("Assets/PlayerSprite.png", playerStart, 0, 0, 35, 40);
+	Grid grid;
+
+	Collider collider(player);
+
+	GameManager gamemanager("Assets/background_Center.png", "Assets/Wall.png", "Assets/Wall.png", player, collider, grid);
+
+	gamemanager.LoadPlatformsFromJSON("PlatformJsondata/PlatformData.json");
+
+
+	Camera camera({ 1200, 800 });
+	camera.C_StartGame({ 600.f, 400.f });
+
+
+	while (window.isOpen())
+	{
+		float deltaTime = clock.restart().asSeconds();
+		while (const optional event = window.pollEvent())
+		{
+			if (event->is<Event::Closed>())
+			{
+				window.close();
+			}
+		if (const auto keyPressed = event->getIf<Event::KeyPressed>())
+		{
+			if (keyPressed->scancode == Keyboard::Scancode::Escape)
+			{
+				isPaused = !isPaused;
+			}
+		}
+		}
+		window.clear();
+
+		window.setView(camera.C_GetView());
+
+		switch (state)
+		{
+		case TITLE:
+			UpdateTitle(window, camera, player);
+			break;
+		case GAMEPLAY:
+			if (!isPaused)
+			{
+				gamemanager.Update(deltaTime);
+
+				if (gamemanager.GameClear())
+				{
+					state = CLEAR;
+				}
+
+				camera.C_UpdateView(player.GetPlayerPos());
+			}
+			gamemanager.Draw(window);
+
+			if (isPaused)
+			{
+				UpdatePaused(window, camera);
+			}
+
+			break;
+		case CLEAR:
+			UpdateClear(window, camera, player);
+			break;
+		case EXIT:
+			return;
+			break;
+		}
+		window.display();
+	}
 }
-
-
-
-void TitleScreen::update(float deltaTime) {
-    switch (m_currentState) {
-    case TITLE:
-        updateTitleState(deltaTime);
-        break;
-    case GAMEPLAY:
-        updateGameplayState(deltaTime);
-        break;
-    }
-}
-
-void TitleScreen::updateTitleState(float deltaTime) {
-    // 타이틀 화면은 정적이므로 별도 업데이트 없음
-}
-
-void TitleScreen::updateGameplayState(float deltaTime) {
-    // TODO: 게임 플레이 로직 업데이트
-}
-
-
-
-void TitleScreen::render() {
-    m_window.clear(sf::Color::Black);
-
-    switch (m_currentState) {
-    case TITLE:
-        renderTitleState();
-        break;
-    case GAMEPLAY:
-        renderGameplayState();
-        break;
-    }
-
-    m_window.display();
-}
-
-void TitleScreen::renderTitleState() {
-    m_window.setView(m_titleView);
-
-    if (b_Sprite) {
-        m_window.draw(*b_Sprite);
-    }
-    if (m_titleText) {
-        m_window.draw(*m_titleText);
-    }
-    for (size_t i = 0; i < m_optionTexts.size(); ++i) {//메뉴
-       m_optionTexts[i].setFillColor(
-            (int)i == m_highlightedOptionIndex ? m_highlightOptionColor : m_defaultOptionColor
-        );
-        m_window.draw(m_optionTexts[i]);
-    }
-
-    if (m_highlightedOptionIndex >= 0 && m_highlightedOptionIndex < m_optionTexts.size() && m_indicatorTexture.getSize().x > 0) {
-        sf::Text& highlightedText = m_optionTexts[m_highlightedOptionIndex];
-        sf::FloatRect textBounds = highlightedText.getGlobalBounds();
-            
-        m_indicatorSprite.setPosition({
-       textBounds.position.x - m_indicatorSprite.getGlobalBounds().size.x - 20.0f,
-       textBounds.position.y + textBounds.size.y / 2.0f - m_indicatorSprite.getGlobalBounds().size.y / 2.0f
-            });
-        m_window.draw(m_indicatorSprite);
-    }
-}
-
-
-void TitleScreen::renderGameplayState() {
-    m_window.setView(m_gameplayView);
-
-    sf::Text gameplayDebugText(m_font, sf::String("In Game Play Mode!"),  60);
-    gameplayDebugText.setFillColor(sf::Color::Red);
-    gameplayDebugText.setPosition({
-        m_gameplayView.getCenter().x - 300,
-        m_gameplayView.getCenter().y
-        });
-    m_window.draw(gameplayDebugText);
-}
-
-TitleButton TitleScreen::getButtonClicked(const sf::Vector2f& mousePos) {
-    for (size_t i = 0; i < m_optionTexts.size(); ++i) {
-       if (m_optionTexts[i].getGlobalBounds().contains(mousePos)) {
-            if (m_optionStrings[i] == "새 게임") {
-                return TitleButton::StartGame;
-            }
-            else if (m_optionStrings[i] == "게임 종료") {
-                return TitleButton::ExitGame;
-            }
-        }
-    }
-    return TitleButton::None;
-}
-*/

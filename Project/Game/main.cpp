@@ -67,5 +67,11 @@ int main()
 		window.display();
 	}
 	
+
+  TitleScreen screen;
+  
+  screen.run();
+  
+
 	return 0;
 }

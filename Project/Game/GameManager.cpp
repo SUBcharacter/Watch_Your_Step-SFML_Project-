@@ -124,9 +124,11 @@ void GameManager::Update(float deltaTime)
 	for (Platform* p : allPlatform)
 	{
 		p->Update(deltaTime);
+	}
+	for (Platform* p : allPlatform)
+	{
 		grid.UnregisterPlatform(p);
 		grid.RegisterPlatform(p);
-
 	}
 	player.Update(deltaTime);
 	collider.Collider2D(grid.nearByPlayerPlatform(player.GetnearGridcells()));
@@ -194,5 +196,10 @@ vector<Platform*>& GameManager::Getallplatform()
 float GameManager::GetJumpForce(JumpForceLevel level)
 {
 	return (static_cast<float>(level) + 1.f) * 600.f;
+}
+
+bool GameManager::GameClear()
+{
+	return player.GetPlayerPos().y >= 6600.f;
 }
 
