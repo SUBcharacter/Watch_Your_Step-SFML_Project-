@@ -35,7 +35,5 @@ public:
 	vector<Platform*>& Getallplatform();
 	float GetJumpForce(JumpForceLevel level);
 	bool GameClear();
-
-		
 };
 

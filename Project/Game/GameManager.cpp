@@ -124,9 +124,11 @@ void GameManager::Update(float deltaTime)
 	for (Platform* p : allPlatform)
 	{
 		p->Update(deltaTime);
+	}
+	for (Platform* p : allPlatform)
+	{
 		grid.UnregisterPlatform(p);
 		grid.RegisterPlatform(p);
-
 	}
 	player.Update(deltaTime);
 	collider.Collider2D(grid.nearByPlayerPlatform(player.GetnearGridcells()));

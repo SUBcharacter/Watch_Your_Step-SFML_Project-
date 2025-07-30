@@ -242,4 +242,3 @@ void TitleScreen::run()
 	}
 
 }
-

@@ -1,10 +1,9 @@
 // TitleScreen.h
 #pragma once
 
-#include "IntegrationLibrary.h" // SFML 3.0 °ü·Ã Çì´õ Æ÷ÇÔ °¡Á¤
+#include "IntegrationLibrary.h" // SFML 3.0 ê´€ë ¨ í—¤ë” í¬í•¨ ê°€ì •
 #include "Camera.h"
 #include "GameManager.h"
-
 
 enum GameState
 {
@@ -33,12 +32,12 @@ private:
         {
             if (!tex.loadFromFile(texturePath))
             {
-                cout << "ÅØ½ºÃ³ ¾øÀ½" << endl;
+                cout << "í…ìŠ¤ì²˜ ì—†ìŒ" << endl;
             }
             Vector2i sizeI = { static_cast<int>(size.x), static_cast<int>(size.y) };
             spr.setTextureRect({ {0,0},sizeI});
-            spr.setOrigin(size / 2.f); //setOrigin->½ºÇÁ¶óÀÌÆ® ³»ºÎ ÁÂÇ¥
-            spr.setPosition(pos); // setPosition->¿ùµå ÁÂÇ¥
+            spr.setOrigin(size / 2.f); //setOrigin->ìŠ¤í”„ë¼ì´íŠ¸ ë‚´ë¶€ ì¢Œí‘œ
+            spr.setPosition(pos); // setPosition->ì›”ë“œ ì¢Œí‘œ
         }
 
     };
@@ -76,8 +75,3 @@ public:
     void UpdateClear(RenderWindow& window, Camera& camera, Player& player);
     
 };
-
-
-// 1. ÇÊ¿äÇÑ °Í.
-// 2. ¼³°èµµ ¸¸µé±â
-// 3. ¿ëµµ ´ë·Î ¾²±â
