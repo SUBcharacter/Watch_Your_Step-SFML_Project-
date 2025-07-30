@@ -200,6 +200,6 @@ float GameManager::GetJumpForce(JumpForceLevel level)
 
 bool GameManager::GameClear()
 {
-	return player.GetPlayerPos().y >= 6600.f;
+	return player.GetPlayerPos().y >= 6650.f;
 }
 

@@ -194,8 +194,14 @@ TitleScreen::~TitleScreen()
 
 void TitleScreen::run()
 {
-	RenderWindow window(VideoMode({ 1200, 800 }), "Test");
+	RenderWindow window(VideoMode({ 1200, 800 }), "Watch Your Step!");
 	window.setFramerateLimit(100);
+
+	Image icon;
+	if (icon.loadFromFile("Assets/icon.png"))
+	{
+		window.setIcon(icon.getSize(), icon.getPixelsPtr());
+	}
 
 	Clock clock;
 	Vector2f playerStart = { 1350, 6500 };
