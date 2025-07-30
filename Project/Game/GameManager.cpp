@@ -1,6 +1,7 @@
 #include "GameManager.h"
 
-GameManager::GameManager(const string& filepath, const string& LeftwallPath, const string& RightwallPath, Player& player, Collider& collider,Grid & grid) : player(player) ,collider(collider), grid(grid), sprite(texture),Leftwall(texturewall),Rightwall(texturewall2)
+
+GameManager::GameManager(const string& filepath, const string& LeftwallPath, const string& RightwallPath, Player& player, Collider& collider,Grid & grid) : player(player), grid(grid),collider(collider), sprite(texture),Leftwall(texturewall),Rightwall(texturewall2)
 {
 	if (!texture.loadFromFile(filepath))
 	{
@@ -130,6 +131,7 @@ void GameManager::Update(float deltaTime)
 		grid.UnregisterPlatform(p);
 		grid.RegisterPlatform(p);
 	}
+
 	player.Update(deltaTime);
 	collider.Collider2D(grid.nearByPlayerPlatform(player.GetnearGridcells()));
 }
@@ -196,5 +198,10 @@ vector<Platform*>& GameManager::Getallplatform()
 float GameManager::GetJumpForce(JumpForceLevel level)
 {
 	return (static_cast<float>(level) + 1.f) * 600.f;
+}
+
+bool GameManager::GameClear()
+{
+	return player.GetPlayerPos().y >= 7000.f;
 }
 
