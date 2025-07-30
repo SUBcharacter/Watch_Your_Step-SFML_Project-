@@ -43,12 +43,17 @@ private:
 	float ignoreDuration; 
 	float jumpForce;
 
+	SoundBuffer jumpP_Buffer;
+	Sound* jumpP_Sound;
+
 public:
 	JumpPlatform(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height, float jumpForce);
 
 	void Update(float deltaTime) override;
 
 	void OnCollide(Player& p, CollideDir dir) override;
+
+	void PlayJumpP_Sound();
 
 };
 

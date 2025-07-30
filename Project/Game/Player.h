@@ -7,6 +7,12 @@ private:
 	Texture texture;
 	Sprite sprite;
 
+	SoundBuffer jumpBuffer;
+	SoundBuffer stepBuffer;
+
+	Sound* jumpSound;
+	Sound* stepSound;
+
 	const float GRAVITY = 900.f;
 	float CrowdControlTimer = 0.f;
 
@@ -25,8 +31,8 @@ private:
 
 	PlayerState currentState = PlayerState::Idle;
 
-	const int frameWidth = 35;
-	const int frameHeight = 50;
+	const int frameWidth = 30;
+	const int frameHeight = 40;
 
 	bool animationIndex = 0;
 	float animationTimer = 0.f;
@@ -53,6 +59,9 @@ public:
 	
 	void UpdateAnimation(float deltaTime);
 
+	void PlayJumpSound();
+	void PlayStepSound();
+
 	FloatRect& GetSenseBox();
 	vector<pair<int, int>> GetnearGridcells();
 	Vector2f GetPlayerPos();
@@ -60,5 +69,6 @@ public:
 	
 	void Draw(RenderWindow& window);
 	void Move(float deltaTime);
+	~Player();
 };
 

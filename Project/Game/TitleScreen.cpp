@@ -1,4 +1,5 @@
 #include "TitleScreen.h"
+#include <iostream>
 
 TitleScreen::TitleScreen()
 	: backGround(SpriteUse("Assets/Title/title.png", { 1201.0f, 802.0f }, { 1201.0f / 2.f, 802.0f / 2.f })),
@@ -10,8 +11,6 @@ TitleScreen::TitleScreen()
 	clearBack(SpriteUse("Assets/Ending/ending.png", {1201.0f, 802.0f} , {0.f,0.f})),
 	repeatGame(SpriteUse("Assets/Ending/E_B_Restart.png", { 350.0f, 75.0f }, { 0.f,0.f }))
 {
-
-
 }
 
 void TitleScreen::Draw(RenderWindow& window)
@@ -157,8 +156,6 @@ void TitleScreen::UpdateClear(RenderWindow& window, Camera& camera, Player& play
 	window.draw(clearBack.spr);
 	window.draw(repeatGame.spr);
 	window.draw(breakGame.spr);
-
-
 }
 
 void TitleScreen::run()
@@ -235,10 +232,6 @@ void TitleScreen::run()
 			return;
 			break;
 		}
-
-
-
 		window.display();
 	}
-
 }

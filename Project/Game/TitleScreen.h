@@ -1,7 +1,5 @@
-// TitleScreen.h
 #pragma once
-
-#include "IntegrationLibrary.h" // SFML 3.0 관련 헤더 포함 가정
+#include "IntegrationLibrary.h" 
 #include "Camera.h"
 #include "GameManager.h"
 
@@ -36,8 +34,8 @@ private:
             }
             Vector2i sizeI = { static_cast<int>(size.x), static_cast<int>(size.y) };
             spr.setTextureRect({ {0,0},sizeI});
-            spr.setOrigin(size / 2.f); //setOrigin->스프라이트 내부 좌표
-            spr.setPosition(pos); // setPosition->월드 좌표
+            spr.setOrigin(size / 2.f); 
+            spr.setPosition(pos); 
         }
 
     };
@@ -75,3 +73,4 @@ public:
     void UpdateClear(RenderWindow& window, Camera& camera, Player& player);
     
 };
+

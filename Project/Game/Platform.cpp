@@ -80,6 +80,14 @@ JumpPlatform::JumpPlatform(const string& texturePath, PlatformType type, Vector2
 	isActive = true;
 	ignoreDuration = 0.01f;
 	ignoreTimer = 0.0f;
+
+	if (!jumpP_Buffer.loadFromFile("Assets/jumpP_Sound.wav"))
+	{
+		cerr << "에러 : jump Platform sound 찾을 수 없음." << endl;
+	}
+
+	jumpP_Sound = new Sound(jumpP_Buffer);
+	jumpP_Sound->setVolume(40.f);
 }
 
 void JumpPlatform::Update(float deltaTime)
@@ -128,7 +136,16 @@ void JumpPlatform::OnCollide(Player& p, CollideDir dir)
 	
 	p.velocityY -= jumpForce + p.velocityY;
 	isActive = false;
+	PlayJumpP_Sound();
 	ignoreTimer = 0.f;
+}
+
+void JumpPlatform::PlayJumpP_Sound()
+{
+	if (jumpP_Sound)
+	{
+		jumpP_Sound->play();
+	}
 }
 
 MovingPlatform::MovingPlatform(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height, float mr, float speed, int dir)
