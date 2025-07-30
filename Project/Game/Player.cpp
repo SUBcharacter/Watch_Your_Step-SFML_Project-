@@ -15,6 +15,7 @@ Player::Player(const string& texturePath, Vector2f pos, int left, int top, int w
 	{
 		cerr << "에러 : step sound 찾을 수 없음." << endl;
 	}
+
 	IntRect rectI = { {left,top},{width,height} };
 	FloatRect rectF =
 	{
@@ -41,6 +42,7 @@ void Player::Update(float deltaTime)
 	Move(deltaTime);
 	CrowdControlUpdate(deltaTime);
 	UpdateAnimation(deltaTime);
+	wasOnGround = IsOnGround;
 }
 
 void Player::SetPlayerPos(Vector2f pos)
@@ -228,6 +230,7 @@ void Player::Move(float deltaTime)
 	{
 		velocityY = 0.f;
 		currentState = PlayerState::Idle;
+		
 	}
 
 	if (Keyboard::isKeyPressed(Keyboard::Scan::Left) && sprite.getPosition().x > 900)

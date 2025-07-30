@@ -43,6 +43,15 @@ private:
 
     bool isPaused = false;
     bool wasLastPressed = false;
+    bool clearMusicPlayed = false;
+
+    SoundBuffer clickBuffer;
+    Sound* clickSound;
+
+    Music* titleMusic;
+    Music* playMusic;
+    Music* clearMusic;
+    
     Vector2f playerStart = { 1000, 100 };
 
     SpriteUse backGround;
@@ -72,5 +81,6 @@ public:
 
     void UpdateClear(RenderWindow& window, Camera& camera, Player& player);
     
+    ~TitleScreen();
 };
 

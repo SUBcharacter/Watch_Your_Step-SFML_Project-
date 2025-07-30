@@ -10,6 +10,11 @@ Platform::Platform(const string& texturePath, PlatformType type, Vector2f pos, i
 		cerr << "에러 : 텍스쳐 파일 없음" << endl;
 		return;
 	}
+	if (!landBuffer.loadFromFile("Assets/stepSound.wav"))
+	{
+		cerr << "에러 : 사운드 파일 없음" << endl;
+		return;
+	}
 	IntRect rectI = { {left,top},{width,height} };
 	FloatRect rectF =
 	{ 
@@ -19,7 +24,14 @@ Platform::Platform(const string& texturePath, PlatformType type, Vector2f pos, i
 	sprite.setTextureRect(rectI);
 	sprite.setOrigin({ rectF.size.x / 2.f, rectF.size.y / 2.f });
 	hitBoxSize = rectF.size;
+	landSound = new Sound(landBuffer);
+	landSound->setVolume(40.f);
 	SetPosition(pos);
+}
+
+Platform::~Platform()
+{
+	delete landSound;
 }
 
 PlatformType Platform::GetType()
@@ -66,6 +78,10 @@ void Platform::OnCollide(Player& p, CollideDir dir)
 	switch (dir)
 	{
 	case TOP:
+		if (!p.wasOnGround)
+		{
+			landSound->play();
+		}
 		p.SetPlayerPos({ p.GetPlayerPos().x, platformHB.position.y - (playerHB.size.y / 2)+1 });
 		p.IsOnGround = true;
 		break;
@@ -148,11 +164,23 @@ void JumpPlatform::PlayJumpP_Sound()
 	}
 }
 
+JumpPlatform::~JumpPlatform()
+{
+	delete jumpP_Sound;
+}
+
 MovingPlatform::MovingPlatform(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height, float mr, float speed, int dir)
 	: Platform(texturePath, type, pos, left, top, width, height), moveRange(mr), speed(speed), direction(dir)
 {
 	startPos = pos;
 	prevPos = pos;
+	if (!landBuffer.loadFromFile("Assets/stepSound.wav"))
+	{
+		cerr << "에러 : 사운드 파일 없음" << endl;
+		return;
+	}
+	landSound = new Sound(landBuffer);
+	landSound->setVolume(40.f);
 }
 
 void MovingPlatform::Update(float deltaTime)
@@ -190,11 +218,21 @@ void MovingPlatform::OnCollide(Player& p, CollideDir dir)
 	switch (dir)
 	{
 	case TOP:
+		if (!p.wasOnGround)
+		{
+			landSound->play();
+		}
 		newPlayerPos.x += delta.x;
 		p.SetPlayerPos({ newPlayerPos.x, platformHB.position.y - (playerHB.size.y / 2)+1 });
+		
 		p.IsOnGround = true;
 		break;
 	default:
 		p.IsOnGround = false;
 	}
+}
+
+MovingPlatform::~MovingPlatform()
+{
+	delete landSound;
 }

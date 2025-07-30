@@ -46,6 +46,7 @@ public:
 	Player(const string& texturePath, Vector2f pos,int left, int top, int width, int height);
 	float velocityY = 0.f;
 	bool IsOnGround = false;
+	bool wasOnGround = false;
 	bool CrowdControl = false;
 	
 	void Update(float deltaTime);

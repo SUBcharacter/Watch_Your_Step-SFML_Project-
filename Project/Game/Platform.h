@@ -10,12 +10,15 @@ protected:
 	Sprite sprite;
 	Vector2f hitBoxSize;
 	FloatRect hitBox;
+private:
+	SoundBuffer landBuffer;
+	Sound* landSound;
 
 public:
 	vector<pair<int, int>> registeredCells;
 
 	Platform(const string& texturePath,PlatformType type, Vector2f pos, int left, int top, int width, int height);
-	virtual ~Platform() = default;
+	virtual ~Platform();
 
 	virtual PlatformType GetType();
 
@@ -32,7 +35,6 @@ public:
 	virtual void Update(float deltaTime) {}
 
 	virtual void OnCollide(Player& p, CollideDir dir);
-
 };
 
 class JumpPlatform : public Platform
@@ -55,6 +57,8 @@ public:
 
 	void PlayJumpP_Sound();
 
+	~JumpPlatform();
+
 };
 
 class MovingPlatform : public Platform
@@ -66,13 +70,17 @@ private:
 	Vector2f startPos;
 	Vector2f prevPos;
 
+	SoundBuffer landBuffer;
+	Sound* landSound;
+
 public:
 	MovingPlatform(const string& texturePath, PlatformType type, Vector2f pos, int left, int top, int width, int height,
 		float mr, float speed, int dir);
 
-
 	void Update(float deltaTime) override;
 
 	void OnCollide(Player& p, CollideDir dir) override;
+
+	~MovingPlatform();
 };
 
