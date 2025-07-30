@@ -21,7 +21,7 @@ void TitleScreen::Draw(RenderWindow& window)
 	window.draw(exitGame.spr);
 }
 
-void TitleScreen::UpdateTitle(RenderWindow& window, Camera& camera)
+void TitleScreen::UpdateTitle(RenderWindow& window, Camera& camera, Player& player)
 {
 	Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
 	
@@ -38,6 +38,7 @@ void TitleScreen::UpdateTitle(RenderWindow& window, Camera& camera)
 
 				state = GAMEPLAY;
 				isPaused = false;
+				player.SetPlayerPos(playerStart);
 				camera.C_StartGame({ 1300,100 });
 				
 			}
@@ -109,7 +110,7 @@ void TitleScreen::UpdatePaused(RenderWindow& window, Camera& camera)
 	
 }
 
-void TitleScreen::UpdateClear(RenderWindow& window, Camera& camera)
+void TitleScreen::UpdateClear(RenderWindow& window, Camera& camera, Player& player)
 {
 	Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
 	clearBack.spr.setPosition(camera.C_GetView().getCenter());
@@ -129,6 +130,7 @@ void TitleScreen::UpdateClear(RenderWindow& window, Camera& camera)
 
 			isPaused = false;
 			state = GAMEPLAY;
+			player.SetPlayerPos(playerStart);
 			camera.C_StartGame({ 1300,100 });
 
 		}
@@ -140,6 +142,7 @@ void TitleScreen::UpdateClear(RenderWindow& window, Camera& camera)
 		{
 			breakGame.spr.setColor(sf::Color(200, 200, 200, 150));
 			state = TITLE;
+			
 			camera.C_StartGame({ 600.f, 400.f });
 		}
 	}
@@ -164,8 +167,8 @@ void TitleScreen::run()
 	window.setFramerateLimit(100);
 
 	Clock clock;
-
-	Player player("Assets/PlayerSprite.png", { 1000,100 }, 0, 0, 35, 50);
+	Vector2f playerStart = { 1350, 6500 };
+	Player player("Assets/PlayerSprite.png", playerStart, 0, 0, 35, 40);
 	Grid grid;
 
 	Collider collider(player);
@@ -203,7 +206,7 @@ void TitleScreen::run()
 		switch (state)
 		{
 		case TITLE:
-			UpdateTitle(window, camera);
+			UpdateTitle(window, camera, player);
 			break;
 		case GAMEPLAY:
 			if (!isPaused)
@@ -226,7 +229,7 @@ void TitleScreen::run()
 
 			break;
 		case CLEAR:
-			UpdateClear(window, camera);
+			UpdateClear(window, camera, player);
 			break;
 		case EXIT:
 			return;

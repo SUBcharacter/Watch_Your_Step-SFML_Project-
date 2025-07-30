@@ -5,8 +5,8 @@ Camera::Camera(float width, float height)
 	C_viewWidth(width), C_viewHeight(height)
 {
 	// 위아래 경계 설정 (조절가능)
-	C_top = 200.f;
-	C_bottom = 200.f;
+	C_top = 350.f;
+	C_bottom = 350.f;
 }
 
 void Camera::C_UpdateView(const sf::Vector2f& playerPosition)

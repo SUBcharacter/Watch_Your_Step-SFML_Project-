@@ -46,6 +46,7 @@ private:
 
     bool isPaused = false;
     bool wasLastPressed = false;
+    Vector2f playerStart = { 1000, 100 };
 
     SpriteUse backGround;
     SpriteUse startGame;
@@ -68,11 +69,11 @@ public:
 
     void Draw(RenderWindow& window);
 
-    void UpdateTitle(RenderWindow& window, Camera& camera);
+    void UpdateTitle(RenderWindow& window, Camera& camera, Player& player);
 
     void UpdatePaused(RenderWindow& window, Camera& camera);
 
-    void UpdateClear(RenderWindow& window, Camera& camera);
+    void UpdateClear(RenderWindow& window, Camera& camera, Player& player);
     
 };
 
