@@ -204,7 +204,6 @@ void TitleScreen::run()
 	}
 
 	Clock clock;
-	Vector2f playerStart = { 1350, 6500 };
 	Player player("Assets/PlayerSprite.png", playerStart, 0, 0, 35, 40);
 	Grid grid;
 
