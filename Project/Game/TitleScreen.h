@@ -1,72 +1,77 @@
 // TitleScreen.h
 #pragma once
 
-#include "IntegrationLibrary.h" // SFML 3.0 ∞¸∑√ «Ï¥ı ∆˜«‘ ∞°¡§
+#include "IntegrationLibrary.h" // SFML 3.0 Í¥ÄÎ†® Ìó§Îçî Ìè¨Ìï® Í∞ÄÏ†ï
+#include "Camera.h"
+#include "GameManager.h"
 
-//enum GameState
-//{
-//    TITLE,
-//    GAMEPLAY,
-//};
-//
-//enum class TitleButton {
-//    StartGame,
-//    ExitGame,
-//    None
-//};
-//
-//class TitleScreen {
-//public:
-//    TitleScreen( RenderWindow& window, const std::string& backgroundTexturePath);
-//    ~TitleScreen();
-//
-//    void run();
-//
-//private:
-//     RenderWindow& m_window;
-//
-//     View m_titleView;
-//     View m_gameplayView;
-//
-//    GameState m_currentState;
-//
-//     Texture b_texture;
-//     Sprite b_Sprite;
-//
-//     Font m_font;  
-//    bool m_fontLoaded = false;
-//     Text m_titleText;
-//
-//    std::vector<std::string> m_optionStrings;
-//    std::vector< Text> m_optionTexts;
-//    int m_highlightedOptionIndex;
-//
-//    const  Color m_defaultOptionColor =  Color::White;
-//    const  Color m_highlightOptionColor =  Color::Yellow;
-//
-//     Clock m_keyPressClock;
-//     Time m_keyPressDelay;
-//
-//     Texture m_indicatorTexture; // ¡ˆΩ√¿⁄ Ω∫«¡∂Û¿Ã∆Æ¿« ≈ÿΩ∫√≥
-//     Sprite m_indicatorSprite;   // ¡ˆΩ√¿⁄ Ω∫«¡∂Û¿Ã∆Æ
-//
-//    void initViews();
-//    void setupTitleElements(const std::string& backgroundTexturePath);
-//    void setupOptions();
-//    void initGameplayElements();
-//
-//    void update(float deltaTime);
-//    void render();
-//
-//    void handleTitleStateEvents(const  Event& event);
-//    void handleGameplayStateEvents(const  Event& event);
-//
-//    void updateTitleState(float deltaTime);
-//    void updateGameplayState(float deltaTime);
-//    void handleEvents();
-//
-//    void renderTitleState();
-//    void renderGameplayState();
-//
-//    TitleButton getButtonClicked(const  Vector2f& mousePos);
-//};
+enum GameState
+{
+    TITLE,
+    GAMEPLAY,
+    CLEAR,
+    EXIT
+};
+
+enum class TitleButton {
+    StartGame,
+    ExitGame,
+    None
+};
+
+class TitleScreen {
+private:
+    struct SpriteUse
+    {
+        Texture tex;
+        Sprite spr;
+
+
+        SpriteUse(const string& texturePath, Vector2f size, Vector2f pos)
+            :spr(tex)
+        {
+            if (!tex.loadFromFile(texturePath))
+            {
+                cout << "ÌÖçÏä§Ï≤ò ÏóÜÏùå" << endl;
+            }
+            Vector2i sizeI = { static_cast<int>(size.x), static_cast<int>(size.y) };
+            spr.setTextureRect({ {0,0},sizeI});
+            spr.setOrigin(size / 2.f); //setOrigin->Ïä§ÌîÑÎùºÏù¥Ìä∏ ÎÇ¥Î∂Ä Ï¢åÌëú
+            spr.setPosition(pos); // setPosition->ÏõîÎìú Ï¢åÌëú
+        }
+
+    };
+    GameState state = TITLE;
+
+    bool isPaused = false;
+    bool wasLastPressed = false;
+    Vector2f playerStart = { 1000, 100 };
+
+    SpriteUse backGround;
+    SpriteUse startGame;
+    SpriteUse exitGame;
+
+    SpriteUse pauseBack;
+    SpriteUse continueGame;
+    SpriteUse breakGame;
+
+    SpriteUse clearBack;
+    SpriteUse repeatGame;
+
+
+   
+public:
+
+    TitleScreen();
+  
+    void run();
+
+    void Draw(RenderWindow& window);
+
+    void UpdateTitle(RenderWindow& window, Camera& camera, Player& player);
+
+    void UpdatePaused(RenderWindow& window, Camera& camera);
+
+    void UpdateClear(RenderWindow& window, Camera& camera, Player& player);
+    
+};
