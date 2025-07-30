@@ -28,7 +28,7 @@ public:
 	~GameManager();
 	void LoadPlatformsFromJSON(const std::string& filepath);
 	void Init();
-	void Update(PlatformType type,float deltaTime);
+	void Update(float deltaTime);
 	void Draw(RenderWindow& window);
 	PlatformType StringtoPlatformType(const string& typestring);
 	JumpForceLevel StringtoJumpForceLevel(const string& Levelstring);
