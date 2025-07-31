@@ -246,6 +246,7 @@ void TitleScreen::run()
 			UpdateTitle(window, camera, player);
 			break;
 		case GAMEPLAY:
+			clearMusicPlayed = false;
 			if (!isPaused)
 			{
 				gamemanager.Update(deltaTime);
