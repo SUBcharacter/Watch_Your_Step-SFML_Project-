@@ -56,6 +56,7 @@ void TitleScreen::UpdateTitle(RenderWindow& window, Camera& camera, Player& play
 
 			state = GAMEPLAY;
 			isPaused = false;
+			clearMusicPlayed = false;
 			player.SetPlayerPos(playerStart);
 			camera.C_StartGame({ 1300,100 });
 			titleMusic->stop();
@@ -116,6 +117,7 @@ void TitleScreen::UpdatePaused(RenderWindow& window, Camera& camera)
 			breakGame.spr.setColor(sf::Color(200, 200, 200, 150));
 			clickSound->play();
 			state = TITLE;
+			clearMusicPlayed = false;
 			camera.C_StartGame({ 600.f, 400.f });
 			titleMusic->play();
 		}
@@ -246,7 +248,6 @@ void TitleScreen::run()
 			UpdateTitle(window, camera, player);
 			break;
 		case GAMEPLAY:
-			clearMusicPlayed = false;
 			if (!isPaused)
 			{
 				gamemanager.Update(deltaTime);
