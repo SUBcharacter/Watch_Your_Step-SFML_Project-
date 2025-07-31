@@ -68,7 +68,7 @@ int main()
 	//}
 	
 
-  TitleScreen screen;
+  Screen screen;
   
   screen.run();
   

@@ -17,7 +17,7 @@ enum class TitleButton {
     None
 };
 
-class TitleScreen {
+class Screen {
 private:
     struct SpriteUse
     {
@@ -69,7 +69,7 @@ private:
    
 public:
 
-    TitleScreen();
+    Screen();
   
     void run();
 
@@ -81,6 +81,6 @@ public:
 
     void UpdateClear(RenderWindow& window, Camera& camera, Player& player);
     
-    ~TitleScreen();
+    ~Screen();
 };
 

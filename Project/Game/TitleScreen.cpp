@@ -1,7 +1,7 @@
 #include "TitleScreen.h"
 #include <iostream>
 
-TitleScreen::TitleScreen()
+Screen::Screen()
 	: backGround(SpriteUse("Assets/Title/title.png", { 1201.0f, 802.0f }, { 1201.0f / 2.f, 802.0f / 2.f })),
 	startGame(SpriteUse("Assets/Title/T_B_Start.png", { 350.f,75.f }, { 1201.0f / 2.f,  802.0f / 2.f })),
 	exitGame(SpriteUse("Assets/Title/T_B_Exit.png", { 350.f,75.f }, { 1201.0f / 2.f,   (802.0f / 2.f) + 100.f })),
@@ -31,14 +31,14 @@ TitleScreen::TitleScreen()
 	playMusic->setLooping(true);
 }
 
-void TitleScreen::Draw(RenderWindow& window)
+void Screen::Draw(RenderWindow& window)
 {
 	window.draw(backGround.spr);
 	window.draw(startGame.spr);
 	window.draw(exitGame.spr);
 }
 
-void TitleScreen::UpdateTitle(RenderWindow& window, Camera& camera, Player& player)
+void Screen::UpdateTitle(RenderWindow& window, Camera& camera, Player& player)
 {
 	Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
 	
@@ -83,7 +83,7 @@ void TitleScreen::UpdateTitle(RenderWindow& window, Camera& camera, Player& play
 	Draw(window);
 }
 
-void TitleScreen::UpdatePaused(RenderWindow& window, Camera& camera)
+void Screen::UpdatePaused(RenderWindow& window, Camera& camera)
 {
 	playMusic->setVolume(10.f);
 	Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
@@ -136,7 +136,7 @@ void TitleScreen::UpdatePaused(RenderWindow& window, Camera& camera)
 	
 }
 
-void TitleScreen::UpdateClear(RenderWindow& window, Camera& camera, Player& player)
+void Screen::UpdateClear(RenderWindow& window, Camera& camera, Player& player)
 {
 	Vector2f mousePos = window.mapPixelToCoords(Mouse::getPosition(window));
 	clearBack.spr.setPosition(camera.C_GetView().getCenter());
@@ -186,7 +186,7 @@ void TitleScreen::UpdateClear(RenderWindow& window, Camera& camera, Player& play
 	window.draw(breakGame.spr);
 }
 
-TitleScreen::~TitleScreen()
+Screen::~Screen()
 {
 	delete clickSound;
 	delete titleMusic;
@@ -194,7 +194,7 @@ TitleScreen::~TitleScreen()
 	delete clearMusic;
 }
 
-void TitleScreen::run()
+void Screen::run()
 {
 	RenderWindow window(VideoMode({ 1200, 800 }), "Watch Your Step!");
 	window.setFramerateLimit(100);
